@@ -1,0 +1,5 @@
+{
+  "name": "Shaz (Shatranj AI)",
+  "description": "A premium Chess (Shatranj) application powered by Gemini AI, featuring save/load functionality, game analysis, and a modern sleek interface.",
+  "requestFramePermissions": []
+}
