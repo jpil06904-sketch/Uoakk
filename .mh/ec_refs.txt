@@ -1,0 +1,24 @@
+8901:new Set(activeCurriculumBooks().map(book=>book.id)); return ensureCurriculum(state).curriculum.budget.entries.filter(entry=
+8902:   const curriculumBook = id => ensureCurriculum(state).curriculum.books.find(book=>book.id===i
+8904:  const currentProgress = id => ensureCurriculum(state).curriculum.teachingProgress[id] || {cur
+8916:mNodes(book), progress = currentProgress(book.id), budget = ensureCurriculum(state).curriculum.budget.entries.filter(entry=
+8934:  const updateBook = (bookId, patch) => { ensureCurriculum(state); const index=state.curriculum.books.fin
+9318:  ensureCurriculum(state);
+9319:  const curriculumBudgetSnapshot = () => { ensureCurriculum(state); const c=state.curriculum,b=c.budget; r
+9322:    ensureCurriculum(state); const now=curriculumBudgetSnapshot(),c
+9332:  flushSave = function() { ensureCurriculum(state); preserveDirectBudgetVersion(); return 
+9355:    ensureCurriculum(state);
+9364:     ensureCurriculum(state); const entries=activeCurriculumBudgetEn
+9367:()) => { const d=new Date(`${date}T12:00:00`), start=Number(ensureCurriculum(state).curriculum.budget.weekStart)||6, diff=(
+9375:     ensureCurriculum(state); const activeBooks=activeCurriculumBook
+9388:     ensureCurriculum(state); let target=activeCurriculumBooks()[0]?
+9403:     ensureCurriculum(state); const activeBooks=activeCurriculumBook
+9407:ر تغییر نمی‌کند.`,ok:'تأیید و ذخیره'}))return;const current=ensureCurriculum(state).curriculum;current.budget.entries=check
+9419:      ensureCurriculum(state);const c=state.curriculum;
+9465:     ensureCurriculum(state); const books=activeCurriculumBooks(); i
+9472:       ensureCurriculum(state); const activeBooks=activeCurriculumBook
+9498:      ensureCurriculum(state); const activeBooks=activeCurriculumBook
+9559:    ensureCurriculum(state);
+9567:    function scopeCurriculumForChat() { ensureCurriculum(state); const books=activeCurriculumBooks(), a
+1
+-rw-rw-rw- 1 codespace codespace 4851065 Nov  9 16:54 backup-before-scope-fix.html

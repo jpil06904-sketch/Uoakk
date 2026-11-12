@@ -1,0 +1,41 @@
+### function curriculumScopeKey|curriculumScopeKey\s*= L8812 @4531606
+ || '').replace(/[۰-۹]/g,d=>FA_DIGITS.indexOf(d)).replace(/[–—]/g,'-').replace(/\s+/g,'');⏎   const curriculumScopeKey = data => { const k=data?.klass||{}; const parts=['school','teacher','className','grade','year'].map(name=>normKey(String(k[name]||''))); return parts.some(Boolean)?parts.join('|'):'unassigned'; };⏎   const curriculumContextSnapshot = value => { const out=clone(value||{}); delete out.contexts; return out; };⏎   const classScopedKeys = ['klass','classContexts','fields','students','lists','meeting','plan7','messages','outputSettings','progress','learning','curriculum'];⏎   const classScopeSnapshot = data => { const out={}; for(const key of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };⏎   function ensureClassScope(data) {⏎     if(!data||typeof data!=='object')return data;⏎     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),c
+
+### unassigned L8812 @4531807
+urriculumScopeKey = data => { const k=data?.klass||{}; const parts=['school','teacher','className','grade','year'].map(name=>normKey(String(k[name]||''))); return parts.some(Boolean)?parts.join('|'):'unassigned'; };⏎   const curriculumContextSnapshot = value => { const out=clone(value||{}); delete out.contexts; return out; };⏎   const classScopedKeys = ['klass','classContexts','fields','students','lists','meeting','plan7','messages','outputSettings','progress','learning','curriculum'];⏎   const 
+
+### unassigned L8824 @4533121
+;⏎     const target=contexts[activeKey];⏎     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}⏎     else if(currentKey!=='unassigned'){⏎       const blank=migrate({klass:clone(data.klass)});⏎       for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(blank,key))data[key]=clone(blank[key]);⏎     }⏎     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classContexts=contexts;data.cla
+
+### ensureClassScope\( L8816 @4532326
+= data => { const out={}; for(const key of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };⏎   function ensureClassScope(data) {⏎     if(!data||typeof data!=='object')return data;⏎     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');⏎     if(!currentKey){data.cl
+
+### ensureClassScope\( L9333 @4608775
+lum(migrateBeforeCurriculum(saved));⏎  const flushBeforeCurriculum = flushSave;⏎  flushSave = function() { ensureCurriculum(state); preserveDirectBudgetVersion(); return flushBeforeCurriculum(); };⏎  ensureClassScope(state);⏎  const flushBeforeClassScope = flushSave;⏎  flushSave = function() { ensureClassScope(state); return flushBeforeClassScope(); };⏎  const replaceBeforeCurriculum = replaceState;⏎   replaceState = function(data) {⏎    const in
+
+### ensureClassScope\( L9335 @4608870
+unction() { ensureCurriculum(state); preserveDirectBudgetVersion(); return flushBeforeCurriculum(); };⏎  ensureClassScope(state);⏎  const flushBeforeClassScope = flushSave;⏎  flushSave = function() { ensureClassScope(state); return flushBeforeClassScope(); };⏎  const replaceBeforeCurriculum = replaceState;⏎   replaceState = function(data) {⏎    const incoming = data && typeof data === 'object' ? clone(data) : data, assets = incoming?.curriculumAs
+
+### ensureClassScope\( L9346 @4609543
+f asset.text==='string') putAsset(asset); });⏎     if (ok) curriculumBudgetBaseline=curriculumBudgetSnapshot();⏎     return ok;⏎   };⏎   const migrateBeforeClassScope = migrate;⏎   migrate = saved => ensureClassScope(migrateBeforeClassScope(saved));⏎   const persistBeforeClassScope = persist;⏎   persist = (...args) => { ensureClassScope(state); return persistBeforeClassScope(...args); };⏎   const setStateBeforeClassScope = setState;⏎   setState =
+
+### ensureClassScope\( L9348 @4609665
+n ok;⏎   };⏎   const migrateBeforeClassScope = migrate;⏎   migrate = saved => ensureClassScope(migrateBeforeClassScope(saved));⏎   const persistBeforeClassScope = persist;⏎   persist = (...args) => { ensureClassScope(state); return persistBeforeClassScope(...args); };⏎   const setStateBeforeClassScope = setState;⏎   setState = function(patch, opts = {}) { const result=setStateBeforeClassScope(patch,opts); ensureClassScope(state); return result; }
+
+### ensureClassScope\( L9350 @4609874
+ssScope(state); return persistBeforeClassScope(...args); };⏎   const setStateBeforeClassScope = setState;⏎   setState = function(patch, opts = {}) { const result=setStateBeforeClassScope(patch,opts); ensureClassScope(state); return result; };⏎   const replaceBeforeClassScope = replaceState;⏎   replaceState = function(data) { const ok=replaceBeforeClassScope(data); if(ok) ensureClassScope(state); return ok; };⏎  const exportBeforeCurriculum = expo
+
+### ensureClassScope\( L9352 @4610048
+reClassScope(patch,opts); ensureClassScope(state); return result; };⏎   const replaceBeforeClassScope = replaceState;⏎   replaceState = function(data) { const ok=replaceBeforeClassScope(data); if(ok) ensureClassScope(state); return ok; };⏎  const exportBeforeCurriculum = exportJSON;⏎  exportJSON = async function() {⏎    ensureCurriculum(state);⏎    const payload=clone(state), assets=[];⏎    for (const book of payload.curriculum.books||[]) { const
+
+### classScopeKey L1859 @1330713
+ { teacherPrefix: '', teacher: '', school: '', grade: '', className: '', year: currentYearLabel(), phone: '', principal: '' },⏎    classContexts: {}, classScopeKey: '', classScopeKlass: null,⏎    fields: DEFAULT_FIELDS(),⏎    students: [],⏎    lists: DEFAULT_LISTS(),⏎    meeting: { date: '', time: '', place: '', note: '' },⏎    plan7: DEFAULT_PLAN(),⏎    messages: DEFAULT_MESSAGES(),⏎    outputSet
+
+### classScopeKey L8818 @4532528
+=='object')return data;⏎     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');⏎     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}⏎     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);
+
+### classScopeKey L8819 @4532602
+.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');⏎     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}⏎     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}⏎     const snapshot=classScopeSnapshot(data);snapshot.klass=
+
+### classScopeKey L8828 @4533418
+n(blank,key))data[key]=clone(blank[key]);⏎     }⏎     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;⏎   }⏎    const curriculumDefaults = () => ({⏎      schemaVersion: CURRICULUM_VERSION,⏎      scopeKey:'',⏎      contexts:{},⏎      catalog: { grade:'', academicYear:'', source

@@ -1,0 +1,7 @@
+gemini-3-flash-preview #0 st=200 1303ms { "candidates": [ { "content": { "parts": [ { "text": "سلام", "thoughtSignature": "EmUKYwFpFH0T3X5mCcQ+vOcAk9TqYGwyXmT4Z8GlGci6+LLhpJdedkgUhn2GaOff7MSNataIOKre6
+gemini-3-flash-preview #1 st=200 1349ms { "candidates": [ { "content": { "parts": [ { "text": "سلام", "thoughtSignature": "EmQKYgFpFH0TNqo66z1W4LPB0qejXaLfPR+wCEKtT/LV38QOibhGjg8upqrzXT7J/sLe9hacoPapx
+gemini-3-flash-preview #2 st=200 966ms { "candidates": [ { "content": { "parts": [ { "text": "سلام", "thoughtSignature": "EmUKYwFpFH0Tfk88RiRpV96IXGlBChX9/xcQVYyzb+cAJr35HCi/5FbdjP3NnDK/OxuscFux4sxiH
+cfg #0 st=200 205ms
+cfg #1 st=200 808ms
+cfg #2 st=200 179ms
+DONE

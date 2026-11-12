@@ -1,0 +1,31 @@
+4694389 4694924
+first diff at 4532797 tail same 161592
+--- OLD ---
+asOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };
+   function ensureClassScope(data) {
+     if(!data||typeof data!=='object')return data;
+     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');
+     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}
+     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}
+     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;
+     const target=contexts[activeKey];
+     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}
+     else if(currentKey!=='unassigned'){
+       const blank=migrate({klass:clone(data.klass)});
+       
+--- NEW ---
+asOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };
+   function ensureClassScope(data) {
+     if(!data||typeof data!=='object')return data;
+     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');
+     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}
+     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}
+     // اگر اطلاعات کلاس قبلی ناقص بوده (راه‌اندازی اول یا نمونه)، همان کلاس در حال تکمیل است: داده‌ها حفظ و فقط کلید به‌روز شود.
+     const prevParts=currentKey.split('|'),prevIncomplete=currentKey==='unassigned'||(prevParts.length===5&&prevParts.slice(0,4).some(part=>!part));
+     if(prevIncomplete&&!contexts[activeKey]){if(isObj(data.curriculum)&&data.curriculum.scopeKey===currentKey)data.curriculum.scopeKey=activeKey;data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}
+     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;
+     const target=contexts[activeKey];
+     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}
+     else if(currentKey!=='unassigned'){
+       const blank=migrate({klass:clone(data.klass)});
+       

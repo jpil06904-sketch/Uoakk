@@ -1,0 +1,6 @@
+6512:HEAVY_MODEL = 'gemini-3.8-flash', LIGHT_MODEL = 'gemini-3-flash-preview', FALLBACK_MODEL = LIGHT_MODEL, WORKER_FALLBACK_URL = 'https:/
+7877:HEAVY_MODEL===LIGHT_MODEL ? modelForPrompt(prompt) : await classifyPrompt(prompt,abort.signal)
+6988:waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? PANEL_FETCH_TIMEOUT_MS : timeoutMs;
+7877:           const model = annualBudgetMode?HEAVY_MODEL:aggregateOnly||tomorrowBudgetMode ? HEAVY_MODEL : isClarificationPrompt(prompt) ? LIGHT_MODEL : isInstructionalIdeaPrompt(prompt) ? HEAVY_MODEL : HEAVY_MODEL===LIGHT_MODEL ? modelForPrompt(prompt) : await classifyPrompt(prompt,abort.signal);
+6572:HEAVY_TRIGGERS = ['ایده','راهکار','راه حل','بلخره چکار کنم','بالاخره چکار کنم','چکار کنم','چیکار کنم','چه کار کنم','چی کار کنم','چکار کنیم','چیکار کنیم','چه کار کنیم','چی کار کنیم','چه کنیم','چی کنیم','حالا چکار کنم','حالا چیکار کنم','حالا چه کنم','حالا چی کنم','حالا چکار کنیم','حالا چیکار کنیم','حالا چه کنیم','حالا چی کنیم','قدم بعدی','چه پیشنهادی','تحلیل','تحلیل کن','بررسی','بررسی کن','فکر','فکر می کنی','نظر','نظرت','قضاو
+6571:REQUEST_TIMEOUT_MS = 300000

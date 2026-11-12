@@ -1,0 +1,18 @@
+6:=== Q1 greeting  TOTAL 0.3s  firstVisible 0.3s
+11:=== Q2 list students  TOTAL 5.5s  firstVisible 5.5s
+15:   ai gemini-3-flash-preview st=200 3525ms req=1245B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=12 think={"thinkingBudget":0} usage(in/out/think)=353/1/ finish=STOP
+16:   ai gemini-3-flash-preview st=200 1927ms req=61304B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=3 maxOut=3072 think={"thinkingBudget":1024} usage(in/out/think)=17657/83/ finish=STOP
+19:=== Q3 heavy advice  TOTAL 5.3s  firstVisible 5.3s
+23:   ai gemini-3-flash-preview st=200 5243ms req=1259B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=12 think={"thinkingBudget":0} usage(in/out/think)=354/2/ finish=STOP
+25:=== Q4 record attendance  TOTAL 2.3s  firstVisible 2.3s
+29:   ai gemini-3-flash-preview st=200 2052ms req=62070B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=7 maxOut=3072 think={"thinkingBudget":1024} usage(in/out/think)=17859/120/ finish=STOP
+32:=== Q5 parent message  TOTAL 47.7s  firstVisible 0.0s
+34:RETRY BUTTON SHOWN
+36:   ai gemini-3-flash-preview st=429 671ms req=1282B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=12 think={"thinkingBudget":0} usage(in/out/think)=// finish=undefined ERR={"error":{"code":429,"message":"ظرفیت فعلی این �
+37:   ai gemini-3.8-flash st=- 40001ms req=62402B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=7 maxOut=3072 think={"thinkingBudget":1024} FAIL=AbortError: This operation was aborted ABORTED@40000ms
+38:   ai gemini-3-flash-preview st=503 6917ms req=62402B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=7 maxOut=3072 think={"thinkingBudget":1024} PARSE=SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+41:=== Q6 follow-up  TOTAL 0.3s  firstVisible 0.0s
+43:RETRY BUTTON SHOWN
+45:   ai gemini-3-flash-preview st=- ?ms req=1228B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=12 think={"thinkingBudget":0}
+48:ERRS 0
+42

@@ -1,0 +1,9 @@
+ls: cannot access 'smoke_fatal.txt': No such file or directory
+-rw-rw-rw- 1 codespace codespace 10645 Nov  9 12:53 after_empty.json
+-rw-rw-rw- 1 codespace codespace    19 Nov  9 12:53 after_run1.txt
+-rw-rw-rw- 1 codespace codespace    19 Nov  9 12:53 after_run2.txt
+-rw-rw-rw- 1 codespace codespace 10677 Nov  9 12:53 after_seed.json
+-rw-rw-rw- 1 codespace codespace     4 Nov  9 12:54 fin_all.txt
+-rw-rw-rw- 1 codespace codespace  2553 Nov  9 12:54 texts_empty.txt
+routes 68 errors 0
+routes 68 errors 0

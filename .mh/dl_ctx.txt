@@ -1,0 +1,23 @@
+}
+showStorageAlert=renderStorageNotice;
+function backupFilename(){return 'مهریار-'+(className()||'کلاس')+'-'+localISO()+'.json';}
+function downloadJSONText(text,filename){
+  const blob=new Blob([text],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+}
+function openBackupText(){const text=JSON.stringify(state,null,2);ui.sheet({title:'پشتیبان متنی؛ خصوصی',body:()=>`<p class="backup-help">اگر پیش‌نمایش دانلود را مسدود کرده است، این متن را کامل کپی کنید و در یک فایل با �
+exportJSON=function(){
+  ensureMeta();const text=JSON.stringify(state,null,2);
+  try{downloadJSONText(text,backupFilename());ui.toast('درخواست دانلود پشتیبان ارسال شد؛ پوشهٔ دانلودها را بررسی کنید.');}
+  catch(e){openBackupText();}
+};
+function downloadRawRecovery(){
+  if(!storageRuntime.raw){try{storageRuntime.raw=localStorage.getItem(STORAGE_KEY);}catch(e){}}
+  if(!storageRuntime.raw){ui.toast('نسخهٔ قبلی در این محیط قابل خواندن نیست.');return;}
+  try{downloadJSONText(storageRuntime.raw,'mehryar-previous-recovery.json');ui.toast('نسخهٔ قبلی برای دانلود آماده شد؛ فایل دریافتی را بررسی کنید.');}catch(e){ui.toast('دانلود در این محیط مسدود است.');}
+}
+async function retryDeviceStorage(){
+  if(demoMode){ui.toast('برای بررسی ذخیرهٔ کلاس، ابتدا از نمونه خارج شوید.');return false;}
+  if(storageRuntime.mode==='recovery'){ui.toast('ابتدا نسخهٔ قبلی را بازیابی کنید؛ روی آن نوشته نشد.');return false;}
+3579:const storageRuntime
+DONE

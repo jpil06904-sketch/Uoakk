@@ -1,0 +1,49 @@
+=== جدا نگه count=3
+L7076: فحه و محتوای کتاب را جعل نکن. برای یک ایدهٔ منتخب، نسخهٔ ساده، تمرین و چالش و راه بررسی مشاهده‌نشده‌ها بده. فهرست‌های بلند و نام کودکان غیرضروری را حذف کن.⏎پیش‌بینی مسئولانه: «شاهد ثبت‌شده»، «برداشت موقت» و «پیشنهاد» را جدا نگه دار. دربارهٔ مانع احتمالی جلسهٔ بعد بگو اگر این الگو ادامه یابد چه چیزی ممکن است دشوار شود، چرا، و با کدام سؤال کوتاه بررسی می‌شود. احتمال عددی، تشخیص، موفقیت قطعی و برچسب ثابت کودک نساز. با کمتر از دو روز مشاهده
+L7083: از budget.annual.currentMonthRows بردار؛ این حالت «budget خالی» نیست. پایه، درس و مبحث را فقط از همان داده‌ها بردار؛ از خودت نساز. هر پایهٔ اول تا ششم معتبر است. اگر کلاس چندپایه است، ردیف‌ها و اولویت‌ها را برای هر پایه جدا نگه دار و ایدهٔ یک پایه را به پایهٔ دیگر تعمیم نده.⏎اگر budget خالی، نامعتبر یا دچار خطای خواندن است، هیچ ایده‌ای نده و فقط دقیقاً بگو: «بودجه‌بندی‌ات رو پیست کن تا طبق همون ایده بدم.» اگر برای امروز ردیف بودجهٔ درحا
+L7622: د برای اطمینان از یادگیری» معرفی کن، نه گزارش ضعف.⏎۱۱) دو کلاس هم‌پایه (صبح و عصر یا الف و ب): ساعت پیام فقط قرینه است، نه مدرک. اگر روشن نیست گزارش مال کدام کلاس است یک سؤال کوتاه بپرس («الف یا ب؟») و هر کلاس را کاملاً جدا نگه دار؛ دادهٔ یک کلاس را به کلاس دیگر تعمیم نده.⏎۱۲) کم‌حوصله و تک‌کلمه‌ای: «صفحه ۲۰» یا یک عدد را کافی بدان و فقط یک سؤال دوثانیه‌ای بپرس: «همه فهمیدن یا کسی گیر داشت؟ فقط اسم‌ها». اگر جواب نداد اصرار نکن و با همان
+=== کلاس قبلی count=1
+L3678: rrent&&current!==storageRuntime.raw){⏎    const ok=await ui.confirm('دادهٔ دیگری روی این دستگاه وجود دارد', {message:'برای جایگزینی با اطلاعات این صفحه، ابتدا نسخهٔ قبلی در حافظهٔ بازیابی نگه داشته می‌شود. اگر می‌خواهید کلاس قبلی را نگه دارید، انصراف بزنید.',ok:'پشتیبان قبلی و ذخیرهٔ این صفحه'});⏎    if(!ok)return false;⏎    try{localStorage.setItem(STORAGE_KEY+'_before_import',current);}catch(e){markStorageMode('temporary',classifyStor
+=== هر کلاس count=1
+L7622: یست، آن را «پیشنهاد برای اطمینان از یادگیری» معرفی کن، نه گزارش ضعف.⏎۱۱) دو کلاس هم‌پایه (صبح و عصر یا الف و ب): ساعت پیام فقط قرینه است، نه مدرک. اگر روشن نیست گزارش مال کدام کلاس است یک سؤال کوتاه بپرس («الف یا ب؟») و هر کلاس را کاملاً جدا نگه دار؛ دادهٔ یک کلاس را به کلاس دیگر تعمیم نده.⏎۱۲) کم‌حوصله و تک‌کلمه‌ای: «صفحه ۲۰» یا یک عدد را کافی بدان و فقط یک سؤال دوثانیه‌ای بپرس: «همه فهمیدن یا کسی گیر داشت؟ فقط اسم‌ها». اگر جواب نداد ا
+=== سال قبل count=1
+L6818: با پایهٔ کلاس فعال ('+esc(state.klass?.grade||'')+') فرق دارد؛ بعد از ثبت، برای کلاس فعال پیدا نمی‌شود. اگر درست است، اول پایهٔ کلاس را اصلاح کن.</p>':''}${existing?'<p class="annual-budget-replace-note">برای این پایه و سال قبلاً بودجه ذخیره شده؛ تأیید، همان بودجهٔ سالانه را جایگزین می‌کند.</p>':''}<div class="annual-budget-table-wrap"><table class="annual-budget-table"><thead><tr><th>ماه</th><th>درس (عین متن)</th><th>مبحث / فصل</th></t
+=== بایگانی کلاس count=0
+=== تغییر کلاس count=0
+=== تغییر پایه count=1
+L6117:     out.minutes=out.slots.reduce((n,s)=>n+s.minutes,0);if(out.minutes>480)fail('مدت کل طرح درس بیش از ۴۸۰ دقیقه است.');⏎        if(existing&&p.grade!==undefined&&p.grade!==existing.grade&&p.groups===undefined)fail('برای تغییر پایهٔ طرح درس، گروه‌های جدید را هم مشخص کن.');⏎        const regroup=!existing||p.groups!==undefined;⏎        const roster=regroup?pdRoster(next,{grade:out.grade==='چندپایه'?'':out.grade,to:out.date}):next.students
+=== contexts\[ count=4
+L8821: data;}⏎     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}⏎     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;⏎     const target=contexts[activeKey];⏎     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}⏎     else if(curre
+L8822: Contexts=contexts;data.classScopeKlass=clone(data.klass);return data;}⏎     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;⏎     const target=contexts[activeKey];⏎     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}⏎     else if(currentKey!=='unassigned'){⏎       const blank=migrate
+L8861: de=String(data.klass?.grade||'').trim(), activeYear=academicYearKey(data.klass?.year||''), contexts=isObj(raw.contexts)?clone(raw.contexts):{};⏎      let current=raw;⏎      if(raw.scopeKey&&raw.scopeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeScope]||{...base,scopeKey:activeScope}; }⏎      current=curriculumContextSnapshot(current);⏎      data.curriculum = {...base,...current,scopeK
+L8861: rKey(data.klass?.year||''), contexts=isObj(raw.contexts)?clone(raw.contexts):{};⏎      let current=raw;⏎      if(raw.scopeKey&&raw.scopeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeScope]||{...base,scopeKey:activeScope}; }⏎      current=curriculumContextSnapshot(current);⏎      data.curriculum = {...base,...current,scopeKey:activeScope,contexts,catalog:{...base.catalog,...(current.ca
+=== curriculum\.contexts|\.contexts\b count=3
+L8813: her','className','grade','year'].map(name=>normKey(String(k[name]||''))); return parts.some(Boolean)?parts.join('|'):'unassigned'; };⏎   const curriculumContextSnapshot = value => { const out=clone(value||{}); delete out.contexts; return out; };⏎   const classScopedKeys = ['klass','classContexts','fields','students','lists','meeting','plan7','messages','outputSettings','progress','learning','curriculum'];⏎   const classScopeSnapshot = d
+L8859:  && typeof data.curriculum === 'object' ? data.curriculum : {}, activeScope=curriculumScopeKey(data), activeGrade=String(data.klass?.grade||'').trim(), activeYear=academicYearKey(data.klass?.year||''), contexts=isObj(raw.contexts)?clone(raw.contexts):{};⏎      let current=raw;⏎      if(raw.scopeKey&&raw.scopeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeScope]||{...base,scopeKey:activ
+L8859: iculum === 'object' ? data.curriculum : {}, activeScope=curriculumScopeKey(data), activeGrade=String(data.klass?.grade||'').trim(), activeYear=academicYearKey(data.klass?.year||''), contexts=isObj(raw.contexts)?clone(raw.contexts):{};⏎      let current=raw;⏎      if(raw.scopeKey&&raw.scopeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeScope]||{...base,scopeKey:activeScope}; }⏎      cur
+=== renderClass len=3016
+function renderClass() {
+  const k = state.klass;
+  const upd = (patch) => setState({ klass: patch }, { silent: true }) || refreshPreview();
+  const refreshPreview = () => { const p = $('#class-preview'); if (p) p.innerHTML = classPreviewHtml(); };
+  const classPreviewHtml = () => `<b>${esc(state.klass.school || 'نام مدرسه')}</b>${esc(className() || 'نام کلاس')} · ${esc(state.klass.year || '')}<br>آموزگار: ${esc(teacherName() || '…')}${state.klass.phone ? ` · ${esc(state.klass.phone)}` : ''}`;
+  mount({
+    title: 'اطلاعات کلاس', help: 'class', backHref: returnToAssistant ? '#/pulse/assistant' : '#/home',
+    content: `${ui.card(`
+      ${ui.field('پیشوند', ui.segmented([['خانم', 'خانم'], ['آقای', 'آقای'], ['', '—']], k.teacherPrefix, v => { setState({ klass: { teacherPrefix: v } }); }))}
+      ${ui.field('نام و نام خانوادگی آموزگار', ui.input({ id: 'f-teacher', value: k.teacher, placeholder: 'مثلاً مریم رضوانی', onInput: v => upd({ teacher: v }) }))}
+      ${ui.field('نام مدرسه', ui.input({ id: 'f-school', value: k.school, placeholder: 'مثلاً دبستان شهید بهشتی', onInput: v => upd({ school: v }) }))}
+      ${ui.field('پایه', ui.select({ id: 'f-grade', value: k.grade, options: [['', 'انتخاب کنید']].concat(GRADES.map(g => [g, g])), onChange: v => { const patch = { grade: v }; if (!k.className || GRADES.includes(k.className)) patch.className = v; setState({ klass: patch }); } }))}
+      ${ui.field('نام کلاس', ui.input({ id: 'f-class', value: k.className, placeholder: k.grade ? `پیش‌فرض: ${k.grade}` : 'مثلاً دوم الف', onInput: v => upd({ className: v }) }))}
+      ${ui.field('سال تحصیلی', ui.input({ id: 'f-year', value: k.year, placeholder: currentYearLabel(), onInput: v => upd({ year: v }) }))}
+      ${ui.field('تلفن آموزگار (اختیاری)', ui.input({ id: 'f-phone', value: k.phone, type: 'tel', ltr: true, inputmode: 'tel', placeholder: '0912…', onInput: v => upd({ phone: v }) }))}
+      ${ui.field('نام مدیر (اختیاری)', ui.input({ id: 'f-principal', value: k.principal, onInput: v => upd({ principal: v }) }))}`)}
+      ${ui.card(`<div class="card-title">پیش‌نمایش سربرگ</div><div class="class-preview" id="class-preview">${classPreviewHtml()}</div>`)}
+      ${ui.btnPrimary(returnToAssistant ? 'ذخیره و بازگشت به چت‌بات' : 'ذخیره و ادامه ← دانش‌آموزان', () => { if(returnToAssistant && (!String(state.klass.teacher || '').trim() || !String(state.klass.school || '').trim() || !GRADES.includes(state.klass.grade))){ui.toast('نام معلم، مدرسه و پایه را تکمیل کن.');return;} setState({ progress: { classDone: true } }, { silent: true }); if(!flushSave())return; ui.toast('اطلاعات کلاس ذخیره شد', { icon: 'check' }); location.hash = returnToAssistant ? '#/pulse/assistant' : state.students.length ? '#/students' : '#/students/import'; returnToAssistant=false; }, { block: true })}`
+  });
+}
+
+/* ============================================================
+   JS — Pages: دانش‌آموزان
+   ============================================================ */
+let studentsQ = ''; let studentsEdit = false;

@@ -1,0 +1,13 @@
+lines 9780 9783
+--- 
++++ 
+@@ -8820,0 +8821,3 @@
++     // اگر اطلاعات کلاس قبلی ناقص بوده (راه‌اندازی اول یا نمونه)، همان کلاس در حال تکمیل است: داده‌ها حفظ و فقط کلید به‌روز شود.
++     const prevParts=currentKey.split('|'),prevIncomplete=currentKey==='unassigned'||(prevParts.length===5&&prevParts.slice(0,4).some(part=>!part));
++     if(prevIncomplete&&!contexts[activeKey]){if(isObj(data.curriculum)&&data.curriculum.scopeKey===currentKey)data.curriculum.scopeKey=activeKey;data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}
+@@ -9370 +9373 @@
+-  const bookProgressSummary = book => { const nodes=curriculumNodes(book), progress=currentProgress(book.id), statuses=progress.statuses||{}, taught=nodes.filter(node=>statuses[node.id]==='taught'), active=nodes.find(node=>statuses[node.id]==='in_progress')||nodes.find(node=>node.id===progress.currentNodeId), started=nodes.some(node=>statuses[node.id]&&statuses[node.id]!=='not_started'); return {
++  const bookProgressSummary = book => { const nodes=curriculumNodes(book), progress=currentProgress(book?.id), statuses=progress.statuses||{}, taught=nodes.filter(node=>statuses[node.id]==='taught'), active=nodes.find(node=>statuses[node.id]==='in_progress')||nodes.find(node=>node.id===progress.currentNodeId), started=nodes.some(node=>statuses[node.id]&&statuses[node.id]!=='not_started'); return 
+@@ -9465 +9468 @@
+-     ensureCurriculum(state); const books=activeCurriculumBooks(), selected=books.find(book=>book.id===progressEditor.bookId)||books.find(book=>curriculumNodes(book).length)||books[0], bookId=selected?.id||''; progressEditor.bookId=bookId; const nodes=curriculumNodes(selected), progress=currentProgress(bookId), summary=bookProgressSummary(selected);
++     ensureCurriculum(state); const books=activeCurriculumBooks(); if(!books.length){progressEditor.bookId='';progressEditor.selectedNodeId='';progressEditor.preview=null;mount({title:'جایگاه واقعی تدریس',backHref:'#/curriculum',content:`${curriculumNav('curriculum/progress')}${classCurriculumNotice()}<div class="curriculum-empty">هنوز کتاب فعالی برای این کلاس وجود ندارد؛ جایگاه تدریس بدون کتاب ق

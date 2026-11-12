@@ -1,0 +1,17 @@
+== downloadJSONText uses
+3655:function downloadJSONText(text,filename){
+3662:  try{downloadJSONText(text,backupFilename());ui.toast('درخواست دانلود پشتیبان ارسا
+3668:  try{downloadJSONText(storageRuntime.raw,'mehryar-previous-recovery.json');ui.toas
+9368:    try { const text=JSON.stringify(payload,null,2); downloadJSONText(text,backupFilename()); ui.toast('پشتیبان کتاب‌ها و نقشهٔ آم
+== syncStudentDossiers
+3342:function syncStudentDossiers(data=state,changes=[],persist=true){
+== demoMode decl
+3384:let demoMode=false,realSnapshot=null,saveTimer2=null,saveEpoch=0,loadWarning=''
+== loadStudentDossierStore calls
+3334:function loadStudentDossierStore(){
+3344:nst month=localISO().slice(0,7),base=demoMode?{students:{}}:loadStudentDossierStore().students||{},out={};
+== storage listener budget
+6318:       try{indexedKey=localStorage.getItem('mehyar_last_budget_key')||'';}catch(_){}
+6822:n=preview.json,key=`mehyar_budget_${json.grade}_${json.academicYear}`,indexKey='mehyar_last_budget_key';let previousBudget=null,previousIndex=null,writesStarted=false;
+9489:    try{idx=localStorage.getItem('mehyar_last_budget_key')||'';}catch(_){}
+DONE

@@ -1,0 +1,14 @@
+PASS A1 demo has 12 students after render  n=12 | دانش‌آموزان۱۲ نفرروی هر نام بزنید تا شماره‌ها، کمبودها و سنجش را ثبت کنید. برای 
+A2 demo classScopeKey="کلاسفرضی|آموزگارنمونه|دومنمونه|دوم|۱۴۰۵–۱۴۰۶"
+PASS A3 demo did not create stray class contexts  []
+PASS A4 exitDemo restores real (empty) state
+PASS A5 no runtime errors
+B0 fresh key="||||۱۴۰۵–۱۴۰۶"
+PASS B1 students added
+PASS B2 students kept after first-time teacher name  n=3 ctx=[]
+PASS B3 students kept after completing class info  n=3
+PASS B4 persisted state still has students
+PASS B5 switching to a different complete class gives a separate (empty) roster  n=0
+PASS B6 switching back restores the original roster  n=3
+PASS B7 no runtime errors
+RESULT: ALL PASSED

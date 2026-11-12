@@ -1,0 +1,517 @@
+{
+ "file": "mehryar-v4-final (10).html",
+ "bootErrors": 0,
+ "routes": [
+  {
+   "route": "#/about",
+   "final": "#/about",
+   "textLen": 430,
+   "errors": 0,
+   "title": "دربارهٔ ما"
+  },
+  {
+   "route": "#/class",
+   "final": "#/class",
+   "textLen": 384,
+   "errors": 0,
+   "title": "اطلاعات کلاس"
+  },
+  {
+   "route": "#/curriculum",
+   "final": "#/curriculum",
+   "textLen": 787,
+   "errors": 0,
+   "title": "نقشهٔ آموزشی"
+  },
+  {
+   "route": "#/curriculum/books",
+   "final": "#/curriculum/books",
+   "textLen": 2510,
+   "errors": 0,
+   "title": "کتاب‌ها و منابع آموزشی"
+  },
+  {
+   "route": "#/curriculum/budget",
+   "final": "#/curriculum/budget",
+   "textLen": 1027,
+   "errors": 0,
+   "title": "بودجه‌بندی معلم"
+  },
+  {
+   "route": "#/curriculum/progress",
+   "final": "#/curriculum/progress",
+   "textLen": 457,
+   "errors": 0,
+   "title": "جایگاه واقعی تدریس"
+  },
+  {
+   "route": "#/curriculum/week",
+   "final": "#/curriculum/week",
+   "textLen": 490,
+   "errors": 0,
+   "title": "برنامهٔ این هفته"
+  },
+  {
+   "route": "#/guide/home",
+   "final": "#/guide/home",
+   "textLen": 646,
+   "errors": 0,
+   "title": "راهنمای داشبورد مهریار"
+  },
+  {
+   "route": "#/home",
+   "final": "#/home",
+   "textLen": 881,
+   "errors": 0,
+   "title": "خانه"
+  },
+  {
+   "route": "#/output/assessment",
+   "final": "#/output/assessment",
+   "textLen": 2420,
+   "errors": 0,
+   "title": "سنجش آغازین ساده"
+  },
+  {
+   "route": "#/output/attendance",
+   "final": "#/output/attendance",
+   "textLen": 638,
+   "errors": 0,
+   "title": "لیست حضور و غیاب"
+  },
+  {
+   "route": "#/output/contacts",
+   "final": "#/output/contacts",
+   "textLen": 530,
+   "errors": 0,
+   "title": "دفتر تماس فوری کلاس"
+  },
+  {
+   "route": "#/output/deskCards",
+   "final": "#/output/deskCards",
+   "textLen": 347,
+   "errors": 0,
+   "title": "کارت اسم روی میز"
+  },
+  {
+   "route": "#/output/envelope",
+   "final": "#/output/envelope",
+   "textLen": 1420,
+   "errors": 0,
+   "title": "پاکت اول مهر"
+  },
+  {
+   "route": "#/output/infoForm",
+   "final": "#/output/infoForm",
+   "textLen": 1123,
+   "errors": 0,
+   "title": "فرم اطلاعات و تحویل دانش‌آموز"
+  },
+  {
+   "route": "#/output/labels",
+   "final": "#/output/labels",
+   "textLen": 1129,
+   "errors": 0,
+   "title": "برچسب دفتر و کتاب"
+  },
+  {
+   "route": "#/output/meeting",
+   "final": "#/output/meeting",
+   "textLen": 1000,
+   "errors": 0,
+   "title": "جلسهٔ اولیاساز"
+  },
+  {
+   "route": "#/output/messages",
+   "final": "#/output/messages",
+   "textLen": 2559,
+   "errors": 0,
+   "title": "پیام‌ساز اولیا"
+  },
+  {
+   "route": "#/output/notebook",
+   "final": "#/output/notebook",
+   "textLen": 268,
+   "errors": 0,
+   "title": "دفترچهٔ آمادهٔ معلم"
+  },
+  {
+   "route": "#/output/plan7",
+   "final": "#/output/plan7",
+   "textLen": 4270,
+   "errors": 0,
+   "title": "برنامهٔ ۷ روز اول مدرسه"
+  },
+  {
+   "route": "#/output/shortage",
+   "final": "#/output/shortage",
+   "textLen": 2021,
+   "errors": 0,
+   "title": "کمبودیار اول مهر"
+  },
+  {
+   "route": "#/outputs",
+   "final": "#/outputs",
+   "textLen": 1410,
+   "errors": 0,
+   "title": "ابزارها"
+  },
+  {
+   "route": "#/pro",
+   "final": "#/pro",
+   "textLen": 165,
+   "errors": 0,
+   "title": "پرو"
+  },
+  {
+   "route": "#/pulse",
+   "final": "#/pulse",
+   "textLen": 4123,
+   "errors": 0,
+   "title": "نبض‌کلاس"
+  },
+  {
+   "route": "#/pulse/actions",
+   "final": "#/pulse/actions",
+   "textLen": 587,
+   "errors": 0,
+   "title": "کارتابلِ اقدام"
+  },
+  {
+   "route": "#/pulse/activities",
+   "final": "#/pulse/activities",
+   "textLen": 1855,
+   "errors": 0,
+   "title": "فعالیت‌های متناسب با پایه"
+  },
+  {
+   "route": "#/pulse/assistant",
+   "final": "#/pulse/assistant",
+   "textLen": 583,
+   "errors": 0,
+   "title": "چت‌بات مهریار"
+  },
+  {
+   "route": "#/pulse/assistant-preview",
+   "final": "#/pulse/assistant-preview",
+   "textLen": 57,
+   "errors": 0,
+   "title": "پیش‌نمایش در دسترس نیست"
+  },
+  {
+   "route": "#/pulse/att-stats",
+   "final": "#/pulse/att-stats",
+   "textLen": 1693,
+   "errors": 0,
+   "title": "آمارِ حضور و غیاب (ماهانه)"
+  },
+  {
+   "route": "#/pulse/attendance",
+   "final": "#/pulse/attendance",
+   "textLen": 713,
+   "errors": 0,
+   "title": "حضور و غیابِ امروز"
+  },
+  {
+   "route": "#/pulse/class-agreements",
+   "final": "#/pulse/class-agreements",
+   "textLen": 103,
+   "errors": 0,
+   "title": "قول‌های کلاس"
+  },
+  {
+   "route": "#/pulse/color/red",
+   "final": "#/pulse/color/red",
+   "textLen": 852,
+   "errors": 0,
+   "title": "قرمز — نیازمند آموزش دوباره"
+  },
+  {
+   "route": "#/pulse/followups",
+   "final": "#/pulse/followups",
+   "textLen": 1251,
+   "errors": 0,
+   "title": "پیگیری تا نتیجه"
+  },
+  {
+   "route": "#/pulse/grades",
+   "final": "#/pulse/grades",
+   "textLen": 871,
+   "errors": 0,
+   "title": "پایهٔ دانش‌آموزان"
+  },
+  {
+   "route": "#/pulse/missions",
+   "final": "#/pulse/missions",
+   "textLen": 1747,
+   "errors": 0,
+   "title": "مأموریت فردا"
+  },
+  {
+   "route": "#/pulse/overview/needs",
+   "final": "#/pulse/overview/needs",
+   "textLen": 912,
+   "errors": 0,
+   "title": "نیازهای تکرارشدهٔ هفته"
+  },
+  {
+   "route": "#/pulse/overview/roster",
+   "final": "#/pulse/overview/roster",
+   "textLen": 857,
+   "errors": 0,
+   "title": "اعضای گروه"
+  },
+  {
+   "route": "#/pulse/overview/seen",
+   "final": "#/pulse/overview/seen",
+   "textLen": 853,
+   "errors": 0,
+   "title": "مشاهده‌شده‌های هفته"
+  },
+  {
+   "route": "#/pulse/overview/unseen",
+   "final": "#/pulse/overview/unseen",
+   "textLen": 690,
+   "errors": 0,
+   "title": "فرصت مشاهده برای این هفته"
+  },
+  {
+   "route": "#/pulse/parent-meeting",
+   "final": "#/pulse/parent-meeting",
+   "textLen": 60,
+   "errors": 0,
+   "title": "جلسهٔ اولیا — آموزشی"
+  },
+  {
+   "route": "#/pulse/paths",
+   "final": "#/pulse/paths",
+   "textLen": 2841,
+   "errors": 0,
+   "title": "سه مسیر یادگیری"
+  },
+  {
+   "route": "#/pulse/plan",
+   "final": "#/pulse/plan",
+   "textLen": 380,
+   "errors": 0,
+   "title": "برنامهٔ جلسهٔ بعد"
+  },
+  {
+   "route": "#/pulse/quick",
+   "final": "#/pulse/quick",
+   "textLen": 3320,
+   "errors": 0,
+   "title": "ثبت سریع امروز"
+  },
+  {
+   "route": "#/pulse/radar",
+   "final": "#/pulse/radar",
+   "textLen": 1145,
+   "errors": 0,
+   "title": "عدالت توجه"
+  },
+  {
+   "route": "#/pulse/report-card/sample-0",
+   "final": "#/pulse/report-card/sample-0",
+   "textLen": 340,
+   "errors": 0,
+   "title": "کارنامهٔ تصویری — امیر"
+  },
+  {
+   "route": "#/pulse/report/sample-0",
+   "final": "#/pulse/report/sample-0",
+   "textLen": 868,
+   "errors": 0,
+   "title": "گزارش امیر"
+  },
+  {
+   "route": "#/pulse/responsibilities",
+   "final": "#/pulse/responsibilities",
+   "textLen": 1341,
+   "errors": 0,
+   "title": "گردش مسئولیت"
+  },
+  {
+   "route": "#/pulse/sessions",
+   "final": "#/pulse/sessions",
+   "textLen": 367,
+   "errors": 0,
+   "title": "جلسه‌های ثبت‌شده"
+  },
+  {
+   "route": "#/pulse/student/sample-0",
+   "final": "#/pulse/student/sample-0",
+   "textLen": 2515,
+   "errors": 0,
+   "title": "پروندهٔ امیر"
+  },
+  {
+   "route": "#/pulse/tomorrow",
+   "final": "#/pulse/tomorrow",
+   "textLen": 1547,
+   "errors": 0,
+   "title": "برای فردا چه کار کنم؟"
+  },
+  {
+   "route": "#/pulse/tomorrow-bag",
+   "final": "#/pulse/tomorrow-bag",
+   "textLen": 192,
+   "errors": 0,
+   "title": "کیف فردا"
+  },
+  {
+   "route": "#/pulse/week",
+   "final": "#/pulse/week",
+   "textLen": 3899,
+   "errors": 0,
+   "title": "گزارش هفتگی"
+  },
+  {
+   "route": "#/pulse/week-digest",
+   "final": "#/pulse/week-digest",
+   "textLen": 267,
+   "errors": 0,
+   "title": "خلاصهٔ هفته"
+  },
+  {
+   "route": "#/settings",
+   "final": "#/settings",
+   "textLen": 1496,
+   "errors": 0,
+   "title": "تنظیمات"
+  },
+  {
+   "route": "#/settings/appearance",
+   "final": "#/settings/appearance",
+   "textLen": 167,
+   "errors": 0,
+   "title": "ظاهر"
+  },
+  {
+   "route": "#/settings/data",
+   "final": "#/settings/data",
+   "textLen": 590,
+   "errors": 0,
+   "title": "داده‌ها"
+  },
+  {
+   "route": "#/settings/fields",
+   "final": "#/settings/fields",
+   "textLen": 266,
+   "errors": 0,
+   "title": "فیلدهای دانش‌آموز"
+  },
+  {
+   "route": "#/settings/help",
+   "final": "#/settings/help",
+   "textLen": 2290,
+   "errors": 0,
+   "title": "راهنما و درباره"
+  },
+  {
+   "route": "#/settings/learning",
+   "final": "#/settings/learning",
+   "textLen": 469,
+   "errors": 0,
+   "title": "تنظیمات یادگیری"
+  },
+  {
+   "route": "#/settings/list/agenda",
+   "final": "#/settings/list/agenda",
+   "textLen": 83,
+   "errors": 0,
+   "title": "دستور جلسه"
+  },
+  {
+   "route": "#/settings/list/assessCriteria",
+   "final": "#/settings",
+   "textLen": 1496,
+   "errors": 0,
+   "title": "تنظیمات"
+  },
+  {
+   "route": "#/settings/list/books",
+   "final": "#/settings/list/books",
+   "textLen": 86,
+   "errors": 0,
+   "title": "دفتر و کتاب‌ها"
+  },
+  {
+   "route": "#/settings/meeting",
+   "final": "#/settings/meeting",
+   "textLen": 215,
+   "errors": 0,
+   "title": "جلسهٔ اولیا"
+  },
+  {
+   "route": "#/settings/messages",
+   "final": "#/settings/messages",
+   "textLen": 766,
+   "errors": 0,
+   "title": "قالب پیام‌ها"
+  },
+  {
+   "route": "#/settings/messages/shortage",
+   "final": "#/settings/messages/shortage",
+   "textLen": 403,
+   "errors": 0,
+   "title": "پیگیری کمبود وسایل"
+  },
+  {
+   "route": "#/settings/messages/welcome",
+   "final": "#/settings/messages/welcome",
+   "textLen": 563,
+   "errors": 0,
+   "title": "خوشامد سال تحصیلی"
+  },
+  {
+   "route": "#/settings/share",
+   "final": "#/settings/share",
+   "textLen": 728,
+   "errors": 0,
+   "title": "برای همکارام بفرستم"
+  },
+  {
+   "route": "#/students",
+   "final": "#/students",
+   "textLen": 378,
+   "errors": 0,
+   "title": "دانش‌آموزان"
+  },
+  {
+   "route": "#/students/done",
+   "final": "#/students/done",
+   "textLen": 235,
+   "errors": 0,
+   "title": "ثبت شد"
+  },
+  {
+   "route": "#/students/import",
+   "final": "#/students/import",
+   "textLen": 265,
+   "errors": 0,
+   "title": "چسباندن لیست"
+  },
+  {
+   "route": "#/students/sample-0",
+   "final": "#/students/sample-0",
+   "textLen": 552,
+   "errors": 0,
+   "title": "امیر"
+  },
+  {
+   "route": "#/welcome",
+   "final": "#/welcome",
+   "textLen": 144,
+   "errors": 0,
+   "title": "مهریار"
+  }
+ ],
+ "seed": "loadSample() called",
+ "totalErrors": 0,
+ "blockedRequests": [
+  "https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=p",
+  "https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=cfg"
+ ],
+ "errors": []
+}

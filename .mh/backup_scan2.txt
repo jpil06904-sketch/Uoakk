@@ -1,0 +1,106 @@
+== 1965-1995
+  students[2].assess = { fa: 2, math: 3, reading: 2, dictation: 2, attention: 1 };
+  students[4].assess = { fa: 0, math: 1, reading: 1, dictation: 1, attention: 1 };
+  students[6].assess = { fa: 3, math: 3, reading: 3, dictation: 3, attention: 3 };
+  const fresh = defaultState();
+  fresh.klass = { teacherPrefix: 'خانم', teacher: 'مریم رضوانی', school: 'دبستان شهید بهشتی', grade: 'دوم', className: 'دوم الف', year: currentYearLabel(), phone: '09120000000', principal: 'آقای کریمی' };
+  fresh.students = students;
+  fresh.meeting = { date: '۱۴ مهر', time: '۱۶:۰۰', place: 'نمازخانهٔ مدرسه', note: 'لطفاً بدون همراهی دانش‌آموز تشریف بیاورید.' };
+  fresh.progress = Object.assign(fresh.progress, { welcomeSeen: true, classDone: true, studentsDone: true, shortageStarted: true });
+  fresh.ui = Object.assign(fresh.ui, { theme: state.ui.theme, fontScale: state.ui.fontScale, lastRoute: '#/home' });
+  replaceState(fresh);
+}
+function exportJSON() {
+  const name = `مهریار-${className() || 'کلاس'}-${state.klass.year || ''}.json`;
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  ui.toast('فایل کلاس ذخیره شد', { icon: 'check' });
+}
+
+/* ============================================================
+   JS — Router
+   ============================================================ */
+const ROUTES = [
+  [/^#\/welcome$/, () => renderWelcome()],
+  [/^#\/home$/, () => renderHome()],
+  [/^#\/class$/, () => renderClass()],
+  [/^#\/students$/, () => renderStudents()],
+  [/^#\/students\/import$/, () => renderImport()],
+  [/^#\/students\/done$/, () => renderStudentsDone()],
+  [/^#\/students\/([a-zA-Z0-9_-]+)$/, m => renderStudent(m[1])],
+  [/^#\/settings$/, () => renderSettings()],
+== 2600-2625
+      <div class="chips">${MSG_VARS.map(v => ui.chip(v, { onClick: () => { const ta = $('#msg-tpl'); const p = ta.selectionStart || ta.value.length; ta.value = ta.value.slice(0, p) + v + ta.value.slice(ta.selectionEnd || p); m.template = ta.value; setState({}, { silent: true }); refresh(); ta.focus(); ta.setSelectionRange(p + v.length, p + v.length); } })).join('')}</div>`)}
+      ${ui.card(`<div class="card-title">پیش‌نمایش زنده</div><div class="msg-text" id="msg-preview">${preview()}</div><div class="flex mt12 wrap">${ui.btnTintedBlue('کپی', () => copyText(fillTemplate(m.template, { 'نام': sample ? sample.name : '' })), { sm: true, icon: 'copy' })}${def ? ui.btnGray('بازگشت به پیش‌فرض', async () => { if (await ui.confirm('بازگشت به متن پیش‌فرض؟', { ok: 'بازگردان' })) { m.template = def.template; m.title = def.title; m.scope = def.scope; setState({}); } }, { sm: true, icon: 'refresh' }) : ''}</div>`)}`
+  });
+}
+function renderData() {
+  const importFile = () => { const inp = $('#file-in'); inp.value = ''; inp.click(); };
+  const onFile = async (v, el) => {
+    const f = el.files && el.files[0]; if (!f) return;
+    try { const txt = await f.text(); const data = JSON.parse(txt); validateImport(data); if (!data || !Array.isArray(data.students)) throw new Error('bad'); if (!await ui.confirm('جایگزینی داده‌های فعلی؟', { message: `فایل شامل ${plural(data.students.length, 'دانش‌آموز')}${data.klass && data.klass.school ? ` از ${esc(data.klass.school)}` : ''} است. داده‌های فعلی این دستگاه جایگزین می‌شود.`, ok: 'بارگذاری' })) return; if(replaceState(data)) ui.toast('فایل بارگذاری شد', { icon: 'check' }); }
+    catch (e) { ui.toast('فایل معتبر نیست'); }
+  };
+  const clearAll = () => ui.actionSheet({ title: 'پاک کردن همهٔ داده‌ها', message: 'پیشنهاد می‌کنیم اول یک پشتیبان بگیرید.', actions: [{ label: 'اول پشتیبان بگیر', onClick: exportJSON }, { label: 'پاک کن (مرحلهٔ بعد تأیید)', destructive: true, onClick: async () => { if (await ui.confirm('مطمئن هستید؟', { message: 'همهٔ دانش‌آموزان، تنظیمات، لیست‌ها، چت و رمز حذف می‌شوند. این کار برگشت‌پذیر نیست.', ok: 'بله، پاک کن', destructive: true })) { const keep = { theme: state.ui.theme, fontScale: state.ui.fontScale }; if(demoM
+  mount({
+    title: 'داده‌ها', help: 'data', backHref: '#/settings',
+    content: `${ui.banner({ icon: 'swap', gradient: 'blue', color: 'blue', title: 'انتقال بین دستگاه‌ها', text: 'با «ذخیرهٔ فایل کلاس» یک فایل JSON می‌گیرید؛ آن را به گوشی یا رایانهٔ دیگر بفرستید و آنجا «بارگذاری» کنید. فایل حاوی شمارهٔ والدین است؛ در گروه‌ها ارسال نکنید.' })}
+      ${ui.list(ui.row({ icon: 'download', gradient: 'green', title: 'ذخیرهٔ فایل کلاس', subtitle: `مهریار-${esc(className() || 'کلاس')}-${esc(state.klass.year || '')}.json`, onClick: exportJSON }) + ui.row({ icon: 'upload', gradient: 'blue', title: 'بارگذاری فایل', subtitle: 'انتخاب فایل JSON ذخیره‌شده', onClick: importFile }) + ui.row({ icon: 'sparkles', gradient: 'orange', title: 'نمونهٔ آزمایشی', subtitle: '۱۲ دانش‌آموز، شماره‌ها، کمبودها و سنجش فرضی', onClick: async () => {  loadSample(); ui.toast('نمونهٔ آزمایشی بارگذاری شد', { icon: 'sparkles' }); location
+      <input type="file" id="file-in" class="file-input" accept="application/json,.json" data-change="${h(onFile)}">
+      ${!storageOk ? ui.banner({ color: 'orange', icon: 'warning', gradient: 'orange', text: 'ذخیره‌سازی محلی در این مرورگر در دسترس نیست؛ با بستن صفحه داده‌ها از بین می‌روند. حتماً فایل کلاس را ذخیره کنید.' }) : ''}`
+  });
+}
+function applyTheme() {
+  const t = state.ui.theme || 'auto';
+  const dark = t === 'dark' || (t === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  document.documentElement.style.setProperty('--fs', state.ui.fontScale || 1);
+}
+== 3520-3532
+function finishIntro(path){state.progress.pulseIntroSeen=true;state.progress.welcomeSeen=true;dirty=true;if(!flushSave())ui.toast('ترجیحات معرفی ذخیره نشد؛ ممکن است دوباره نمایش داده شود.');introIndex=0;location.hash=path;}
+function introMove(n){introIndex=clamp(n,0,7);renderWelcome();$('#intro-heading')?.focus({preventScroll:true});$('#app').scrollTop=0;}
+renderWelcome=function(){const [title,example,help,next]=INTRO_SLIDES[introIndex];mount({title:'مهریار',back:false,content:`<section class="intro"><div class="flex between">${ui.tile('chart','green',40)}<span class="steps-label" role="status">مرحلهٔ ${fa(introIndex+1)} از ۸</span>${ui.btnPlain('رد کردن معرفی',()=>finishIntro('#/home'))}</div><h1 id="intro-heading" tabindex="-1">${title}</h1><p class="example">${example}</p>${introIndex<6?ui.card(`<b>مهریار چه کمکی می‌کند؟</b><p>${help}</p>`)+`<div class="preview"><span class="chip blue mb12">مثال فرضی</span>${introPreview(introIndex)}</div>`:`<div class="pulse-actions">${ui.btnPrimary(activeStudents().length?'برگردم به کلاس خودم':'کلاس خودم رو بسازم',()=>finishIntro(activeStudents().length?'#/home':'#/class'),{block:true})}${ui.btnTinted('اول نمون
+document.addEventListener('keydown',e=>{if(e.defaultPrevented||e.isComposing||e.keyCode===229||document.getElementById('salawat-loading')?.hidden===false||location.hash!=='#/welcome'||layers.length||e.target.isContentEditable||e.target.closest('input,textarea,select,[contenteditable=true],[role=tablist]'))return;if(e.key==='ArrowLeft'&&introIndex<7){e.preventDefault();introMove(introIndex+1);}if(e.key==='ArrowRight'&&introIndex>0){e.preventDefault();introMove(introIndex-1);}});
+function renderLearningSettings(){const l=state.learning;const save=()=>{setState({},{silent:true});};pulseMount('تنظیمات یادگیری',ui.card(`${ui.field('شروع ردیابی (شمسی)',ui.input({type:'date',value:l.trackingStartedOn,onChange:v=>{if(validDay(v)){l.trackingStartedOn=v;save();}}}))}${ui.field('شروع هفته',ui.select({value:l.settings.weekStart,options:[[6,'شنبه'],[0,'یکشنبه'],[1,'دوشنبه'],[2,'سه‌شنبه'],[3,'چهارشنبه'],[4,'پنجشنبه'],[5,'جمعه']],onChange:v=>{l.settings.weekStart=+v;save();}}))}<h2>روزهای کاری کلاس</h2>${[[6,'شنبه'],[0,'یکشنبه'],[1,'دوشنبه'],[2,'سه‌شنبه'],[3,'چهارشنبه'],[4,'پنجشنبه'],[5,'جمعه']].map(([n,t])=>ui.switchRow(t,l.settings.schoolDays.includes(n),v=>{const ds=v?[...new Set([...l.settings.schoolDays,n])]:l.settings.schoolDays.filter(
+const oldSettings=renderSettings;renderSettings=function(){oldSettings();const el=document.createElement('section');el.className='pulse';el.innerHTML=ui.list(ui.row({title:'تنظیمات یادگیری و بایگانی',icon:'chart',gradient:'green',href:'#/settings/learning'})+ui.row({title:'برای همکارام بفرستم',icon:'share',gradient:'blue',href:'#/settings/share'}));$('#content').prepend(el);};
+const oldHelp=renderHelp;renderHelp=function(){oldHelp();const el=document.createElement('section');el.className='pulse';el.innerHTML=ui.card(`<h2>مهریار + نبض‌کلاس</h2><p>مشاهدهٔ یادگیری با حضور و تکلیف فرق دارد. سبز فرضی شاهد یادگیری نیست. گزارش‌ها بر پایهٔ دادهٔ ثبت‌شده‌اند.</p><div class="pulse-actions">${ui.btnPrimary('نمایش معرفی هفت‌مرحله‌ای',()=>{introIndex=0;location.hash='#/welcome';})}${link('#/settings/share','برای همکارام بفرستم','share')}${ui.btnTinted('نمونهٔ امن',loadSample)}</div>`);$('#content').prepend(el);};
+ROUTES.unshift(...[['pulse',renderPulse],['pulse/quick',()=>renderQuick()],['pulse/sessions',renderSessions],['pulse/radar',renderRadar],['pulse/paths',renderPaths],['pulse/tomorrow',renderTomorrow],['pulse/week',renderWeek],['pulse/followups',renderFollowups],['pulse/activities',()=>renderActivities()],['pulse/rescue',renderRescue],['pulse/responsibilities',renderResponsibilities],['pulse/multigrade',renderMultigrade],['pulse/class-agreements',renderAgreements],['pulse/parent-meeting',renderParentMeetings],['pulse/tomorrow-bag',renderBag],['settings/learning',renderLearningSettings],['settings/share',renderShare]].map(([p,fn])=>[new RegExp('^#/'+p+'$'),fn]),[/^#\/pulse\/session\/([a-zA-Z0-9_-]+)$/,m=>renderQuick(m[1])],[/^#\/pulse\/student\/([a-zA-Z0-9_-]+)$/,m=>renderStudentLearning(m[1])],[/^#\/pulse\/report\/([a-zA-Z0-9_-]+)$/,m=>renderReport(m[1])],[/^#\/pulse\/activities\/([a-zA-Z0
+const oldData=renderData;renderData=function(){oldData();const box=document.createElement('section');box.className='pulse';box.innerHTML=ui.card(`<h2>ذخیره و بازیابی</h2><div class="pulse-actions">${ui.btnPrimary('ذخیرهٔ دستی',()=>{if(flushSave())ui.toast(demoMode?'نمونه فقط موقت است':'ذخیره شد');})}${ui.btnTinted('دریافت نسخهٔ قبل از مهاجرت',()=>downloadStored(STORAGE_KEY+'_before_learning'))}${ui.btnTinted('دریافت نسخهٔ قبل از ورود فایل',()=>downloadStored(STORAGE_KEY+'_before_import'))}${ui.btnTinted('دریافت دادهٔ خام ذخیره‌شده',()=>downloadStored(STORAGE_KEY))}</div><p class="sub">نسخه‌های بازیابی حاوی اطلاعات حساس‌اند. پشتیبان‌ها فقط در همین مرورگر نگه داشته می‌شوند.</p>`);$('#content').prepen
+function downloadStored(key){try{const raw=localStorage.getItem(key);if(!raw){ui.toast('نسخه‌ای برای این گزینه موجود نیست');return;}const a=document.createElement('a'),url=URL.createObjectURL(new Blob([raw],{type:'application/json'}));a.href=url;a.download='mehryar-recovery.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);}catch(e){ui.toast('دسترسی به حافظه ممکن نشد.');}}
+
+
+/* چاپ مستقل؛ همان صفحات در پیش‌نمایش و iframe */
+== 3640-3665
+  const content=document.getElementById('content');if(!content)return;
+  let el=document.getElementById('storage-notice');
+  if(storageRuntime.mode==='persistent'||demoMode){el?.remove();return;}
+  const recovery=storageRuntime.mode==='recovery';
+  const title=recovery?'دادهٔ قبلی نیاز به بازیابی دارد':'ذخیرهٔ موقت در این صفحه';
+  const sub=recovery?'نوشتن روی دادهٔ قبلی متوقف شده است.':'با بستن صفحه، تغییرات ممکن است پاک شوند.';
+  if(el&&el.dataset.mode===storageRuntime.mode&&content.contains(el))return;
+  el?.remove();el=document.createElement('section');el.id='storage-notice';el.className='storage-notice';el.dataset.mode=storageRuntime.mode;el.setAttribute('role','note');
+  const svg=document.createElement('span');svg.className='storage-notice-icon';svg.innerHTML=icon(recovery?'lock':'info');
+  const text=document.createElement('div');text.className='storage-notice-copy';const strong=document.createElement('strong');strong.textContent=title;const small=document.createElement('span');small.textContent=sub;text.append(strong,small);
+  const action=document.createElement('button');action.type='button';action.textContent=recovery?'بازیابی':'راهنما';action.className='storage-notice-action';action.addEventListener('click',openStorageHelp);
+  el.append(svg,text,action);content.prepend(el);
+}
+showStorageAlert=renderStorageNotice;
+function backupFilename(){return 'مهریار-'+(className()||'کلاس')+'-'+localISO()+'.json';}
+function downloadJSONText(text,filename){
+  const blob=new Blob([text],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+}
+function openBackupText(){const text=JSON.stringify(state,null,2);ui.sheet({title:'پشتیبان متنی؛ خصوصی',body:()=>`<p class="backup-help">اگر پیش‌نمایش دانلود را مسدود کرده است، این متن را کامل کپی کنید و در یک فایل با پسوند json نگه دارید. متن حاوی اطلاعات کلاس است؛ در گروه نفرستید.</p>${ui.textarea({id:'safe-backup-text',value:text,style:'min-height:210px',cls:'mono'})}`,footer:()=>ui.btnTinted('انتخاب تمام متن',()=>{const el=$('#safe-backup-text');el.focus();el.select();},{block:true})});}
+exportJSON=function(){
+  ensureMeta();const text=JSON.stringify(state,null,2);
+  try{downloadJSONText(text,backupFilename());ui.toast('درخواست دانلود پشتیبان ارسال شد؛ پوشهٔ دانلودها را بررسی کنید.');}
+  catch(e){openBackupText();}
+};
+function downloadRawRecovery(){
+== storage keys
+      8 `mehyar_budget_
+== onFile/import
+1976:function exportJSON() {
+2606:  const onFile = async (v, el) => {
+DONE

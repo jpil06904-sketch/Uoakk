@@ -1,0 +1,72 @@
+async function fetchModelWithRetry(model, body, signal, timeoutMs, retries = MAX_MODEL_RETRIES) {
+    await reserveRequestSlot(signal, model);
+    if (isActCode(key) && !window.__mehryarPanel) { const e = new Error('اتصال به پنل در این نسخه روشن نیست.'); e.code = 'MODEL_NETWORK'; throw e; }
+    const viaPanel = isActCode(key);
+    const url = viaPanel ? window.__mehryarPanel.base+'/api.php?a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent';
+    const makeOptions = () => viaPanel ? {method:'POST',headers:{'Content-Type':'text/plain'},body:key+'|'+window.__mehryarPanel.id+'\n'+JSON.stringify(body)} : {method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(body)};
+    let options = makeOptions();
+    const waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? PANEL_FETCH_TIMEOUT_MS : timeoutMs;
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      if (attempt) await waitAbortable(MODEL_RETRY_DELAY_MS * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 400), signal);
+      try {
+        let result = await fetchJsonWithTimeout(url, options, signal, waitMs);
+        if (result.response.status === 400 && body.generationConfig && body.generationConfig.thinkingConfig && /think/i.test(JSON.stringify(result.data || {}))) {
+          thinkingTrimBroken = true; delete body.generationConfig.thinkingConfig; options = makeOptions();
+          result = await fetchJsonWithTimeout(url, options, signal, waitMs);
+        }
+        if (RETRYABLE_MODEL_STATUSES.has(result.response.status) && attempt < retries && !(viaPanel && result.response.status === 504)) continue;
+        return result;
+      } catch (error) {
+        if (error.name === 'AbortError') throw error;
+        if (viaPanel && error.code === 'MODEL_TIMEOUT') throw error;
+        if (!isTransientModelFailure(error) || attempt >= retries) {
+          if (error instanceof TypeError) {
+            const networkError = new Error('ارتباط برقرار نشد. اینترنت و دسترسی به سرویس را بررسی کن.');
+            networkError.code = 'MODEL_NETWORK';
+            networkError.cause = error;
+            throw networkError;
+          }
+          throw error;
+        }
+      }
+    }
+    throw new Error('پاسخ سرویس مدل دریافت نشد.');
+  }
+  function quotaKind(data) {
+    const text = JSON.stringify(data?.error?.details || []) + ' ' + (data?.error?.message || '');
+    return /PerDay|per day|daily/i.test(text) ? 'day' : /PerMinute|per minute/i.test(text) ? 'minute' : '';
+  }
+  function retrySeconds(response, data) {
+    const header = Number(response.headers?.get('retry-after'));
+    const detail = (data.error?.details || []).find(x => typeof x.retryDelay === 'string')?.retryDelay;
+    const fromDetail = detail ? Number(String(detail).replace(/s$/,'')) : 0;
+    const fromMessage = Number((data.error?.message || '').match(/retry in\s+([\d.]+)s/i)?.[1]);
+    return clamp(Math.ceil(header || fromDetail || fromMessage || 30), 5, 300);
+  }
+  const intentCache = new Map();
+  function intentOf(prompt) { return intentCache.get(normKey(prompt)) || ''; }
+  const INTENT_SYSTEM_PROMPT = 'تو مسیریاب پیام‌های یک معلم دبستان در دستیار آموزشی هستی. فقط یک برچسب بنویس، بدون هیچ کلمهٔ اضافه. معلم ممکن است هر طوری و حتی خیلی کوتاه بنویسد؛ منظورش را بفهم، نه کلمه‌ها را. برچسب‌ها: LEARN = خود معلم می‌خواهد مطلبی را بفهمد یا یاد بگیرد: «چیه»، «یعنی چی»، «یادم بده»، «توضیح بده»، «از صفر بگو»، «نفهمیدم»، «سخت بود»، «واژه‌آموزی این درس چیه»، یا از پاسخ قبلی ناراضی است و فهم بیشتر می‌خواهد. قانون: اگر هم توضیح می‌خواهد هم ایده، LEARN بزن؛ IDEA فقط وقتی صریحاً بازی یا ایدهٔ تازه می‌خواهد و خود مفهوم را می‌داند. NEXT = می‌خواهد بداند در یک روز (امروز، فردا، پس‌فردا یا بدون روز) یا یک درس چه مبحثی را تدریس کند، ادامه بدهد یا چه کاری بکند، طبق بودجه‌بندی درسی؛ مثل «امروز»، «ریاضی چکار کنم»، «بعدش؟»، «حالا چی درس بدم». IDEA = ایدهٔ خلاقانه، بازی یا فعالیت کلاسی تازه می‌خواهد. STUDENT = دربارهٔ ضعف، مشکل یا رفتار یک دانش‌آموز یا کلاس و راه‌حل آن می‌پرسد. RECORD = ثبت، اصلاح، حضور و غیاب، نمره، مشاهده یا گزارش‌گیری از داده‌های کلاس. OTHER = هر چیز دیگر مثل سلام یا سؤال عمومی.';
+  async function classifyIntent(prompt) {
+    try {
+      if (demoMode || !useTools) return;
+      const key = normKey(prompt);
+      if (intentCache.has(key) || prompt.length > 400) return;
+      if (isAnnualBudgetPrompt(prompt) || isClarificationPrompt(prompt) || isLightRecordPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt) || isLearnPrompt(prompt) || isInstructionalIdeaPrompt(prompt)) return;
+      const names = new Set();
+      try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (!k || !k.startsWith('mehyar_budget_')) continue; const b = JSON.parse(localStorage.getItem(k) || 'null'); for (const m of (b && b.months) || []) for (const sub of m.subjects || []) if (sub && sub.subjectTitle) names.add(String(sub.subjectTitle)); } } catch (_) {}
+      const ctl = new AbortController();
+      const {response, data} = await fetchModelWithRetry(LIGHT_MODEL, {systemInstruction:{parts:[{text:INTENT_SYSTEM_PROMPT + (names.size ? ' درس‌های موجود در بودجهٔ معلم: ' + [...names].slice(0, 20).join('، ') + '.' : '')}]}, contents:[{role:'user', parts:[{text:prompt}]}], generationConfig:{temperature:0, maxOutputTokens:12, thinkingConfig:{thinkingBudget:0}}}, ctl.signal, ROUTER_FETCH_TIMEOUT_MS, 0);
+      if (!response.ok) {
+        if (response.status === 429) 
+
+#### classify
+@ 4304425 code = 'MODEL_ ::    } catch (error) { |       if (timedOut && !signal.aborted) { |         const timeoutError = new Error('پاسخ سرویس مدل دیر رسید؛ اطلاعات ابزارها تغییر نکرده است. دوباره تلاش کن.'); |         timeoutError.code = 'MODEL_TIMEOUT'; |         throw timeoutError; |       } |       throw error; |     } finally { |       clearTimeout(timer); |       signal.removeEventListener('abort', forwardAbort); |     } |   } |   function isTransientModelFailure(error) { |     return error?.code === 'MODEL_TIMEOUT' || error?.code === 'MODEL_NETWORK' || error?.code === 'MODEL_UNAVAILABLE' || error?.code === 'MODEL_RATE_LIMIT' || error instanceof TypeError; |   } |   async function fetchJsonWithTimeout(url, options, signal, timeoutMs) { |     const controller = new AbortController(); |     let timedOut = false; |     const forwardAbort = () => controller.abort(); |     if (signal.aborted) controller.abort(); else signal.addEventListener('abort',
+---
+@ 4305685 code = 'MODEL_ ::    } catch (error) { |       if (timedOut && !signal.aborted) { |         const timeoutError = new Error('پاسخ سرویس مدل دیر رسید؛ اطلاعات ابزارها تغییر نکرده است. دوباره تلاش کن.'); |         timeoutError.code = 'MODEL_TIMEOUT'; |         throw timeoutError; |       } |       throw error; |     } finally { |       clearTimeout(timer); |       signal.removeEventListener('abort', forwardAbort); |     } |   } |   async function fetchModelWithRetry(model, body, signal, timeoutMs, retries = MAX_MODEL_RETRIES) { |     await reserveRequestSlot(signal, model); |     if (isActCode(key) && !window.__mehryarPanel) { const e = new Error('اتصال به پنل در این نسخه روشن نیست.'); e.code = 'MODEL_NETWORK'; throw e; } |     const viaPanel = isActCode(key); |     const url = viaPanel ? window.__mehryarPanel.base+'/api.php?a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateCont
+---
+@ 4311360 status === 429 :: ts:[{text:prompt}]}], generationConfig:{temperature:0, maxOutputTokens:12, thinkingConfig:{thinkingBudget:0}}}, ctl.signal, ROUTER_FETCH_TIMEOUT_MS, 0); |       if (!response.ok) { |         if (response.status === 429) { const seconds = retrySeconds(response, data), rate = rateState(); rate.backoffUntilByModel[LIGHT_MODEL] = Date.now() + seconds * 1000; rate.kindByModel = rate.kindByModel || {}; rate.kindByModel[LIGHT_MODEL] = quotaKind(data); saveRateState(rate); } |         return; |       } |       const answer = (data.candidates?.[0]?.content?.parts || []).filter(x => !x.thought && typeof x.text === 'string').map(x => x.text).join(' ').trim().toUpperCase(); |       const label = (answer.match(/\b(NEXT|IDEA|STUDENT|RECORD|OTHER|LEARN)\b/) || [])[1]; |       if (!label) return; |       intentCache.set(key, label); if (intentCache.size > 60) intentCache.delete(intentCache.keys().next().value); |       r
+---
+@ 4312925 status===429 :: t}]}],generationConfig:{temperature:0,maxOutputTokens:8,...(thinkingTrimBroken?{}:{thinkingConfig:{thinkingBudget:0}})}},signal,ROUTER_FETCH_TIMEOUT_MS,0); |       if(!response.ok){ |         if(response.status===429){const seconds=retrySeconds(response,data),rate=rateState();rate.backoffUntilByModel[LIGHT_MODEL]=Date.now()+seconds*1000;rate.kindByModel=rate.kindByModel||{};rate.kindByModel[LIGHT_MODEL]=quotaKind(data);saveRateState(rate);} |         throw new Error(friendlyError(response.status,(data.error?.details||[]).map(d=>d.reason||'').join(' '),data.error?.message,LIGHT_MODEL)); |       } |       const answer=(data.candidates?.[0]?.content?.parts||[]).filter(p=>!p.thought&&typeof p.text==='string').map(p=>p.text).join(' ').trim().toUpperCase(); |       const model=/\bHARD\b/.test(answer)?HEAVY_MODEL:LIGHT_MODEL; |       routeCache.set(prompt,model); if(routeCache.size>40)routeCache.delete(route
+---
+@ 4410489 status===429 ::   if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&response.status===400&&model===HEAVY_MODEL&&fallbackPrompt)return workerFallback(fallbackPrompt,signal); |              if(response.status===429){const seconds=retrySeconds(response,data),rate=rateState();rate.backoffUntilByModel[model]=Date.now()+seconds*1000;rate.kindByModel=rate.kindByModel||{};rate.kindByModel[model]=quotaKind(data);rate.secondsByModel=rate.secondsByModel||{};rate.secondsByModel[model]=seconds;rate.rawByModel=rate.rawByModel||{};rate.rawByModel[model]=response.status+': '+String(data.error?.message||'').replace(/\s+/g,' ').slice(0,200)+' (انتظار پیشنهادی: '+seconds+' ثانیه)';saveRateState(rate);if(model!==FALLBACK_MODEL)return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL});if(!options.triedHeavy&&!annualBudgetMode)return request(contents,info,signal,expectedProfile,{.
+---

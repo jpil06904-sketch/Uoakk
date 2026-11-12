@@ -1,0 +1,20 @@
+DIRECT /panel/api.php?a=ping try1 code=200 dns=0.215729 conn=0.302223 tls=0.394890 ttfb=0.607655 total=0.607719 ip=185.31.40.24
+DIRECT /panel/api.php?a=ping try2 code=200 dns=0.000807 conn=0.090305 tls=0.185794 ttfb=0.407087 total=0.407130 ip=185.31.40.24
+DIRECT /panel/api.php?a=ping try3 code=200 dns=0.000826 conn=0.083759 tls=0.173846 ttfb=0.383841 total=0.383887 ip=185.31.40.24
+DIRECT /panel/api.php?a=ping try4 code=200 dns=0.000850 conn=0.083954 tls=0.173109 ttfb=0.379312 total=0.379370 ip=185.31.40.24
+DIRECT /panel/api.php?a=ping try5 code=200 dns=0.000813 conn=0.090416 tls=0.187320 ttfb=0.407942 total=0.407992 ip=185.31.40.24
+DIRECT /panel/api.php?a=cfg try1 code=200 dns=0.000798 conn=0.083970 tls=0.173338 ttfb=0.379996 total=0.380045 ip=185.31.40.24
+DIRECT /panel/api.php?a=cfg try2 code=200 dns=0.000856 conn=0.083896 tls=0.173144 ttfb=0.379264 total=0.379323 ip=185.31.40.24
+DIRECT /panel/api.php?a=cfg try3 code=200 dns=0.000837 conn=0.095402 tls=0.187620 ttfb=0.400355 total=0.400407 ip=185.31.40.24
+DIRECT /panel/api.php?a=cfg try4 code=200 dns=0.000897 conn=0.083976 tls=0.175518 ttfb=0.385763 total=0.385817 ip=185.31.40.24
+DIRECT /panel/api.php?a=cfg try5 code=200 dns=0.000823 conn=0.084606 tls=0.178707 ttfb=0.385417 total=0.385470 ip=185.31.40.24
+DIRECT /panel/api.php?a=diag try1 code=200 dns=0.000868 conn=0.083863 tls=0.175357 ttfb=0.381172 total=0.381240 ip=185.31.40.24
+DIRECT /panel/api.php?a=diag try2 code=200 dns=0.000818 conn=0.083898 tls=0.175133 ttfb=0.381427 total=0.381483 ip=185.31.40.24
+DIRECT /panel/api.php?a=diag try3 code=200 dns=0.000831 conn=0.084068 tls=0.174809 ttfb=0.381121 total=0.381171 ip=185.31.40.24
+DIRECT /panel/api.php?a=diag try4 code=200 dns=0.000855 conn=0.087284 tls=0.176567 ttfb=0.385725 total=0.385777 ip=185.31.40.24
+DIRECT /panel/api.php?a=diag try5 code=200 dns=0.000896 conn=0.084084 tls=0.173092 ttfb=0.379613 total=0.379669 ip=185.31.40.24
+WORKER ping try1 ttfb=0.431640 total=0.431678
+WORKER ping try2 ttfb=0.301391 total=0.301818
+WORKER ping try3 ttfb=0.230451 total=0.230495
+WORKER ping try4 ttfb=0.429284 total=0.429334
+WORKER ping try5 ttfb=0.143174 total=0.143219

@@ -1,0 +1,31 @@
+DATE 2026-11-12T10:59:00.836Z  FILE=/workspaces/Uoakk/.mh/variant_heavyrec.html  panel.id match=true
+tools checkbox default: ai-tools-access=false
+tools turned ON
+welcome: امروز کجای کلاس کمکت کنم؟متن کامل بودجه‌بندی را بفرست؛ پیش‌نمایش را می‌بینی و فقط پس از تأیید معلم ذخیره می‌شود.آمار واقعی کلاسبدون مصرف درخواست آنلاینبرای فردا چه پیشنهادی داری؟ایدهٔ تدریس از شواهد ه
+
+=== D1 attendance record  TOTAL 32.1s  firstVisible 32.1s
+Q: امروز سارا غایب بود، ثبت کن
+A[0] (ai-message assistant): مهریارپیش‌نویس نسخهٔ ۱ آماده است؛ ۱ مورد، هنوز بدون ثبت. جزئیات زیر را بررسی کن. می‌توانی همین‌جا اصلاح بخواهی یا دکمهٔ «تأیید و ثبت در ابزارها» را بزنی. کپی پاسخ
+REQS:
+   ai gemini-3.5-flash st=200 17081ms req=61077B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=1 maxOut=3072 think={"thinkingBudget":2048} usage(in/out/think)=17609/18/ finish=STOP
+   ai gemini-3.5-flash st=200 14936ms req=62080B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=3 maxOut=3072 think={"thinkingBudget":2048} usage(in/out/think)=17941/43/ finish=STOP
+   p st=- ?ms
+
+=== D2 daily teaching report  TOTAL 7.3s  firstVisible 0.0s
+Q: امروز ریاضی جمع با انتقال درس دادم، امیر و کیان بلد نبودن، مینا خوب بود. ثبت کن
+RETRY BUTTON SHOWN
+REQS:
+   ai gemini-3.5-flash st=503 7058ms req=61521B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=3 maxOut=3072 think={"thinkingBudget":2048} PARSE=SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+   p st=- ?ms
+
+=== D3 tomorrow (thinking)  TOTAL 6.8s  firstVisible 0.0s
+Q: فردا چی داریم و چیکار کنم؟
+RETRY BUTTON SHOWN
+REQS:
+   ai gemini-3.5-flash st=503 6632ms req=64809B keys=systemInstruction,contents,tools,toolConfig,generationConfig tools=1 cont=1 maxOut=2048 think={"thinkingBudget":2048} PARSE=SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+   p st=- ?ms
+
+history saved=610 chars
+ERRS 0
+
+DONE

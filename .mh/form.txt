@@ -1,0 +1,4 @@
+2352:  const upd = (patch) => setState({ klass: patch }, { silent: true }) || refreshPreview();
+2358:      ${ui.field('پیشوند', ui.segmented([['خانم', 'خانم'], ['آقای', 'آقای'], ['', '—']], k.teacherPrefix, v => { setState({ klass: { teacherPrefix: v } }); }))}
+2361:.concat(GRADES.map(g => [g, g])), onChange: v => { const patch = { grade: v }; if (!k.className || GRADES.includes(k.className)) patch.className = v; setState({ klass: patch }); } }))}
+1910:function setState(patch, opts = {}) {

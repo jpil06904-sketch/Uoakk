@@ -1,0 +1,60 @@
+=== chat_err.cjs fetch mock
+8:const MODE = process.env.MODE || 'ok';
+22:    if (MODE !== 'ok') {
+23:      rec.kind = 'forced-' + MODE;
+24:      if (MODE === 'net') return Promise.reject(new TypeError('Failed to fetch'));
+25:      if (MODE === '429') return Promise.resolve(new Response(JSON.stringify({ error: { code: 429, message: 'Resource exhausted. Please retry in 6s.', status: 'RESOURCE_EXHAUSTED' } }), { status: 429, headers: { 'Content-Type': 'application/json' } }));
+26:      if (MODE === '403') return Promise.resolve(new Response(JSON.stringify({ ok: false, err: 'used', error: { code: 403, message: 'code bound to another device' } }), { status: 403, headers: { 'Content-Type': 'application/json' } }));
+27:      if (MODE === '500') return Promise.resolve(new Response('<html>error</html>', { status: 500, headers: { 'Content-Type': 'text/html' } }));
+41:  return Promise.resolve(new Response(txt, { status: 200, headers: { 'Content-Type': raw !== null ? 'text/plain' : 'application/json' } }));
+105:  await ask('یک ایده برای مرور ارزش مکانی با بازی بده', 'S2 MODE='+MODE, 70000);
+=== fetchModelWithRetry @ 4305876
+async function fetchModelWithRetry(model, body, signal, timeoutMs, retries = MAX_MODEL_RETRIES) {
+    await reserveRequestSlot(signal, model);
+    if (isActCode(key) && !window.__mehryarPanel) { const e = new Error('اتصال به پنل در این نسخه روشن نیست.'); e.code = 'MODEL_NETWORK'; throw e; }
+    const viaPanel = isActCode(key);
+    const url = viaPanel ? window.__mehryarPanel.base+'/api.php?a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent';
+    const makeOptions = () => viaPanel ? {method:'POST',headers:{'Content-Type':'text/plain'},body:key+'|'+window.__mehryarPanel.id+'\n'+JSON.stringify(body)} : {method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(body)};
+    let options = makeOptions();
+    const waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? PANEL_FETCH_TIMEOUT_MS : timeoutMs;
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      if (attempt) await waitAbortable(MODEL_RETRY_DELAY_MS * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 400), signal);
+      try {
+        let result = await fetchJsonWithTimeout(url, options, signal, waitMs);
+        if (result.response.status === 400 && body.generationConfig && body.generationConfig.thinkingConfig && /think/i.test(JSON.stringify(result.data || {}))) {
+          thinkingTrimBroken = true; delete body.generationConfig.thinkingConfig; options = makeOptions();
+          result = await fetchJsonWithTimeout(url, options, signal, waitMs);
+        }
+        if (RETRYABLE_MODEL_STATUSES.has(result.response.status) && attempt < retries && !(viaPanel && result.response.status === 504)) continue;
+        return result;
+      } catch (error) {
+        if (error.name === 'AbortError') throw error;
+        if (viaPanel && error.code === 'MODEL_TIMEOUT') throw error;
+        if (!isTransientModelFailure(error) || attempt >= retries) {
+          if (error instanceof TypeError) {
+            const networkError = new Error('ارتباط برقرار نشد. اینترنت و دسترسی به سرویس را بررسی کن.');
+            networkError.code = 'MODEL_NETWORK';
+            networkError.cause = error;
+            throw networkError;
+          }
+          throw error;
+        }
+      }
+    }
+    throw new Error('پاسخ سرویس مدل دریافت نشد.');
+  }
+  function quotaKind(data) {
+    const text = JSON.stringify(data?.error?.details || []) + ' ' + (data?.error?.message || '');
+    return /PerDay|per day|daily/i.test(text) ? 'day' : /PerMinute|per minute/i.test(text) ? 'minute' : '';
+  }
+  function retrySeconds(response, data) {
+    const header = Number(response.headers?.get('retry-after'));
+    const detail = (data.error?.details || []).find(x => typeof x.retryDelay === 'string')?.retryDelay;
+    const fromDetail = detail ? Number(String(detail).replace(/s$/,'')) : 0;
+    const fromMessage = Number((data.error?.message || '').match(/retry in\s+([\d.]+)s/i)?.[1]);
+    return clamp(Math.ceil(header || fromDetail || fromMessage || 30), 5, 300);
+  }
+  const intentCache = new Map();
+  function intentOf(prompt) { return intentCache.get(normKey(prompt)) || ''; }
+  const INTENT_SYSTEM_PROMPT = 'تو مسیریاب پیام‌های یک معلم دبستان در دستیار آموزشی هستی. فقط یک برچسب بنویس، بدون هیچ کلمهٔ اضافه. معلم ممکن است هر طوری و حتی خیلی کوتاه بنویسد؛ منظورش را بفهم، نه کلمه‌ها را. برچسب‌ها: LEARN = خود معلم می‌خواهد مطلبی را بفهمد یا یاد بگیرد: «چیه»، «یعنی چی»، «یادم بده»، «توضیح بده»، «از صفر بگو»، «نفهمیدم»، «سخت بود»، «واژه‌آموزی این درس چیه»، یا از پاسخ قبلی ناراضی است و فهم بیشتر می‌خواهد. قانون: اگر هم توضیح می‌خواهد هم ایده، LEARN بزن؛ IDEA فقط وقتی صریحاً بازی یا ایدهٔ تازه می‌خواهد و خود مفهوم را می‌داند. NEXT = می‌خواهد بداند در یک روز (امروز، فردا، پس‌فردا یا بدون روز) یا یک درس چه مبحثی را تدریس کند، ادامه بدهد یا چه کاری بکند، طبق بودجه‌بندی درسی؛ مثل «امروز»، «ریاضی چکار کنم»، «بعدش؟»، «حالا چی درس بدم». IDEA = ایدهٔ خلاقانه، بازی یا فعالیت کلاسی تازه می‌خواهد. STUDENT = دربارهٔ ضعف، مشکل یا رفتار یک دانش‌آموز یا کلاس و راه‌حل آن می‌پرسد. RECORD = ثبت، اصلاح، حضور و غیاب، نمره، مشاهده یا گزارش‌گیری از داده‌های کلاس. OTHER = هر چیز دیگر مثل سلام یا سؤال عمومی.';
+  async function classifyInte

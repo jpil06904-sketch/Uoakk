@@ -1,0 +1,14 @@
+FAIL A1 demo has 12 students after render  n=0 | دانش‌آموزان۰ نفرلیست خالی استاسم بچه‌ها را از واتساپ یا اکسل کپی کنید و اینجا بچ
+A2 demo classScopeKey="کلاسفرضی|آموزگارنمونه|دومنمونه|دوم|۱۴۰۵–۱۴۰۶"
+FAIL A3 demo did not create stray class contexts  ["||||۱۴۰۵–۱۴۰۶"]
+PASS A4 exitDemo restores real (empty) state
+PASS A5 no runtime errors
+B0 fresh key="||||۱۴۰۵–۱۴۰۶"
+PASS B1 students added
+FAIL B2 students kept after first-time teacher name  n=0 ctx=["||||۱۴۰۵–۱۴۰۶","|م|||۱۴۰۵–۱۴۰۶","|مر|||۱۴۰۵–۱۴۰۶","|مری|||۱۴۰۵–۱۴۰۶"]
+FAIL B3 students kept after completing class info  n=0
+FAIL B4 persisted state still has students
+PASS B5 switching to a different complete class gives a separate (empty) roster  n=0
+FAIL B6 switching back restores the original roster  n=0
+PASS B7 no runtime errors
+RESULT: 6 FAILED

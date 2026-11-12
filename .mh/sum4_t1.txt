@@ -1,0 +1,13 @@
+6:=== Q1 greeting  TOTAL 0.3s  firstVisible 0.3s
+11:=== Q2 list students  TOTAL 19.3s  firstVisible 19.3s
+15:   ai gemini-3-flash-preview st=200 19193ms req=61304B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=3 maxOut=3072 think={"thinkingBudget":1024} usage(in/out/think)=17657/88/ finish=STOP
+18:=== Q3 heavy advice  TOTAL 23.3s  firstVisible 23.3s
+22:   ai gemini-3.8-flash st=503 16892ms req=61730B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=5 maxOut=3072 think={"thinkingBudget":1024} usage(in/out/think)=// finish=undefined ERR={
+30:   ai gemini-3-flash-preview st=200 6190ms req=61730B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=5 maxOut=3072 think={"thinkingBudget":1024} usage(in/out/think)=17779/747/ finish=STOP
+33:=== Q4 record attendance  TOTAL 3.5s  firstVisible 3.5s
+37:   ai gemini-3-flash-preview st=200 3258ms req=64100B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=7 maxOut=3072 think={"thinkingBudget":1024} usage(in/out/think)=18561/347/ finish=STOP
+40:=== Q5 parent message  TOTAL 3.8s  firstVisible 3.8s
+44:   ai gemini-3-flash-preview st=200 3732ms req=65056B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=7 maxOut=3072 think={"thinkingBudget":1024} usage(in/out/think)=18902/293/ finish=STOP
+47:=== Q6 follow-up  TOTAL 2.0s  firstVisible 2.0s
+51:   ai gemini-3-flash-preview st=200 1762ms req=41045B keys=systemInstruction,contents,generationConfig tools=0 cont=7 maxOut=3072 think={"thinkingBudget":512} usage(in/out/think)=12872/110/ finish=STOP
+55:ERRS 0

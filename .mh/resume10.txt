@@ -1,0 +1,73 @@
+Tue Nov 10 14:33:23 UTC 2026
+=== LS recent
+total 15948
+-rw-rw-rw-  1 codespace codespace      43 14:33:23 resume10.txt
+drwxrwxrwx+ 3 codespace codespace   12288 14:33:23 .
+-rw-rw-rw-  1 codespace codespace   16329 13:03:01 err4.txt
+-rw-rw-rw-  1 codespace codespace     606 13:00:54 ce_wait2.txt
+-rw-rw-rw-  1 codespace codespace       5 13:00:07 ce_done.txt
+-rw-rw-rw-  1 codespace codespace    2866 13:00:06 ce_500.txt
+-rw-rw-rw-  1 codespace codespace       0 13:00:02 ce_500_log.txt
+-rw-rw-rw-  1 codespace codespace    3000 13:00:02 ce_403.txt
+-rw-rw-rw-  1 codespace codespace       0 12:59:57 ce_403_log.txt
+-rw-rw-rw-  1 codespace codespace    3088 12:59:57 ce_429.txt
+-rw-rw-rw-  1 codespace codespace       0 12:59:52 ce_429_log.txt
+-rw-rw-rw-  1 codespace codespace    2776 12:59:52 ce_net.txt
+-rw-rw-rw-  1 codespace codespace       0 12:59:47 ce_net_log.txt
+-rw-rw-rw-  1 codespace codespace      16 12:59:02 mk_err_log.txt
+-rw-rw-rw-  1 codespace codespace    8162 12:59:02 chat_err.cjs
+-rw-rw-rw-  1 codespace codespace    7365 12:57:09 err3.txt
+-rw-rw-rw-  1 codespace codespace   12954 12:56:09 err2.txt
+-rw-rw-rw-  1 codespace codespace   11323 12:55:02 err1.txt
+-rw-rw-rw-  1 codespace codespace     968 12:53:50 state9.txt
+-rw-rw-rw-  1 codespace codespace    7768 12:50:30 resume9.txt
+-rw-rw-rw-  1 codespace codespace    2445 12:32:41 gping.txt
+-rw-rw-rw-  1 codespace codespace    9205 12:32:14 act_fn.txt
+-rw-rw-rw-  1 codespace codespace    4020 12:31:52 act_check.txt
+-rw-rw-rw-  1 codespace codespace    2868 12:31:21 net_check.txt
+=== root
+total 9700
+drwxrwxrwx+   9 codespace root         4096 11-09_18:24 .
+drwxr-xrwx+   5 codespace root         4096 11-08_16:40 ..
+drwxrwxrwx+   8 codespace root         4096 11-10_12:53 .git
+-rw-rw-rw-    1 codespace root          253 11-08_16:40 .gitignore
+drwxrwxrwx+   3 codespace codespace   12288 11-10_14:33 .mh
+-rw-rw-rw-    1 codespace root        13953 11-08_16:40 App.tsx
+-rw-rw-rw-    1 codespace root          553 11-08_16:40 README.md
+drwxrwxrwx+   2 codespace root         4096 11-08_16:40 components
+-rw-rw-rw-    1 codespace root         7305 11-08_16:40 constants.tsx
+drwxrwxrwx+   3 codespace codespace    4096 11-08_16:41 dist
+-rw-rw-rw-    1 codespace root         1055 11-08_16:40 index.html
+-rw-rw-rw-    1 codespace root          349 11-08_16:40 index.tsx
+-rw-rw-rw-    1 codespace codespace 4850421 11-09_18:24 mehryar-v4-final (10).html
+-rw-rw-rw-    1 codespace codespace 4851698 11-09_18:24 mehryar-v4-final-fixed.html
+-rw-rw-rw-    1 codespace root          228 11-08_16:40 metadata.json
+drwxrwxrwx+ 137 codespace codespace    4096 11-08_16:40 node_modules
+-rw-rw-rw-    1 codespace codespace  109579 11-08_16:40 package-lock.json
+-rw-rw-rw-    1 codespace root          840 11-08_16:40 package.json
+-rw-rw-rw-    1 codespace root           79 11-08_16:40 postcss.config.js
+drwxrwxrwx+   2 codespace root         4096 11-08_16:40 services
+drwxrwxrwx+   4 codespace root         4096 11-08_16:40 src
+-rw-rw-rw-    1 codespace root          459 11-08_16:40 tailwind.config.js
+-rw-rw-rw-    1 codespace root          628 11-08_16:40 tsconfig.json
+-rw-rw-rw-    1 codespace root          212 11-08_16:40 tsconfig.node.json
+-rw-rw-rw-    1 codespace root          669 11-08_16:40 vite.config.ts
+=== md5
+f08e92fecaecaaafff389b3234cce1cf  /workspaces/Uoakk/index.html
+0b40689d4d3e7566819236ee45d20df0  /workspaces/Uoakk/mehryar-v4-final (10).html
+89096129599b2e24e2ce4bf81d571373  /workspaces/Uoakk/mehryar-v4-final-fixed.html
+f2293543b251d8fe07a15ff344b3371a  backup-before-scope-fix.html
+0b40689d4d3e7566819236ee45d20df0  backup-original.html
+=== err4 size
+16329 err4.txt
+ 3000 ce_403.txt
+    0 ce_403_log.txt
+ 3088 ce_429.txt
+    0 ce_429_log.txt
+ 2866 ce_500.txt
+    0 ce_500_log.txt
+    5 ce_done.txt
+ 2776 ce_net.txt
+    0 ce_net_log.txt
+  606 ce_wait2.txt
+28670 total

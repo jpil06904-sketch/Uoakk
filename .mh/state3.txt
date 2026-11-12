@@ -1,0 +1,79 @@
+=== LS ROOT
+total 4952
+drwxrwxrwx+   9 codespace root         4096 11-09_03:20:56 .
+drwxr-xrwx+   5 codespace root         4096 11-08_16:40:38 ..
+drwxrwxrwx+   8 codespace root         4096 11-09_17:49:10 .git
+-rw-rw-rw-    1 codespace root          253 11-08_16:40:31 .gitignore
+drwxrwxrwx+   3 codespace codespace    4096 11-09_18:17:06 .mh
+-rw-rw-rw-    1 codespace root        13953 11-08_16:40:31 App.tsx
+-rw-rw-rw-    1 codespace root          553 11-08_16:40:31 README.md
+drwxrwxrwx+   2 codespace root         4096 11-08_16:40:31 components
+-rw-rw-rw-    1 codespace root         7305 11-08_16:40:31 constants.tsx
+drwxrwxrwx+   3 codespace codespace    4096 11-08_16:41:05 dist
+-rw-rw-rw-    1 codespace root         1055 11-08_16:40:31 index.html
+-rw-rw-rw-    1 codespace root          349 11-08_16:40:31 index.tsx
+-rw-rw-rw-    1 codespace codespace 4851698 11-09_17:08:28 mehryar-v4-final (10).html
+-rw-rw-rw-    1 codespace root          228 11-08_16:40:31 metadata.json
+drwxrwxrwx+ 137 codespace codespace    4096 11-08_16:40:57 node_modules
+-rw-rw-rw-    1 codespace codespace  109579 11-08_16:40:57 package-lock.json
+-rw-rw-rw-    1 codespace root          840 11-08_16:40:31 package.json
+-rw-rw-rw-    1 codespace root           79 11-08_16:40:31 postcss.config.js
+drwxrwxrwx+   2 codespace root         4096 11-08_16:40:31 services
+drwxrwxrwx+   4 codespace root         4096 11-08_16:40:31 src
+-rw-rw-rw-    1 codespace root          459 11-08_16:40:31 tailwind.config.js
+-rw-rw-rw-    1 codespace root          628 11-08_16:40:31 tsconfig.json
+-rw-rw-rw-    1 codespace root          212 11-08_16:40:31 tsconfig.node.json
+-rw-rw-rw-    1 codespace root          669 11-08_16:40:31 vite.config.ts
+=== LS MH tail
+-rw-rw-rw-  1 codespace codespace    1237 11-09_03:20:57 script_00.js
+-rw-rw-rw-  1 codespace codespace   18156 11-09_03:20:57 script_01.js
+-rw-rw-rw-  1 codespace codespace     647 11-09_03:20:57 script_02.js
+-rw-rw-rw-  1 codespace codespace 2898353 11-09_03:20:57 script_03.js
+-rw-rw-rw-  1 codespace codespace    1404 11-09_03:20:57 script_04.js
+-rw-rw-rw-  1 codespace codespace  115732 11-09_03:20:57 script_05.js
+-rw-rw-rw-  1 codespace codespace  267861 11-09_03:20:57 script_06.js
+-rw-rw-rw-  1 codespace codespace   11462 11-09_03:20:57 script_07.js
+-rw-rw-rw-  1 codespace codespace   16721 11-09_03:20:57 script_08.js
+-rw-rw-rw-  1 codespace codespace   18407 11-09_03:20:57 script_09.js
+-rw-rw-rw-  1 codespace codespace   19829 11-09_03:20:57 script_10.js
+-rw-rw-rw-  1 codespace codespace  163698 11-09_03:20:57 script_11.js
+-rw-rw-rw-  1 codespace codespace   16851 11-09_03:20:58 script_12.js
+-rw-rw-rw-  1 codespace codespace    6478 11-09_03:21:37 sections.txt
+-rw-rw-rw-  1 codespace codespace    4913 11-09_03:24:47 smoke.cjs
+-rw-rw-rw-  1 codespace codespace   11434 11-09_03:25:10 smoke_empty.json
+-rw-rw-rw-  1 codespace codespace      26 11-09_03:25:10 smoke_run1.txt
+-rw-rw-rw-  1 codespace codespace      41 11-09_12:34:22 smoke_run2.txt
+-rw-rw-rw-  1 codespace codespace   10677 11-09_12:34:22 smoke_seed.json
+-rw-rw-rw-  1 codespace codespace     752 11-09_18:10:00 st2_log.txt
+-rw-rw-rw-  1 codespace codespace     752 11-09_18:10:00 st2_old_log.txt
+-rw-rw-rw-  1 codespace codespace    1731 11-09_18:17:06 state3.txt
+-rw-rw-rw-  1 codespace codespace   17518 11-09_15:49:29 state_now.txt
+-rw-rw-rw-  1 codespace codespace     229 11-09_03:26:01 status.txt
+-rw-rw-rw-  1 codespace codespace 1375119 11-09_03:20:57 stripped.html
+-rw-rw-rw-  1 codespace codespace     955 11-09_03:29:59 summary.py
+-rw-rw-rw-  1 codespace codespace    2946 11-09_03:30:18 summary.txt
+-rw-rw-rw-  1 codespace codespace    1225 11-09_03:30:01 summary1.txt
+-rw-rw-rw-  1 codespace codespace       0 11-09_03:30:18 summary_err.txt
+-rw-rw-rw-  1 codespace codespace      26 11-09_18:04:09 syntax_now.txt
+-rw-rw-rw-  1 codespace codespace    1849 11-09_12:50:19 texts.cjs
+-rw-rw-rw-  1 codespace codespace       4 11-09_12:50:25 texts_done.txt
+-rw-rw-rw-  1 codespace codespace    2553 11-09_12:54:01 texts_empty.txt
+-rw-rw-rw-  1 codespace codespace       0 11-09_12:53:58 texts_empty_log.txt
+-rw-rw-rw-  1 codespace codespace    2555 11-09_12:50:22 texts_seed.txt
+-rw-rw-rw-  1 codespace codespace       0 11-09_12:50:19 texts_seed_log.txt
+-rw-rw-rw-  1 codespace codespace    1012 11-09_12:53:38 verify.py
+-rw-rw-rw-  1 codespace codespace    1740 11-09_12:53:38 verify.txt
+-rw-rw-rw-  1 codespace codespace       5 11-09_12:53:38 verify_log.txt
+-rw-rw-rw-  1 codespace codespace     504 11-09_12:54:29 wait2.txt
+=== backups
+ls: cannot access '*.bak*': No such file or directory
+-rw-rw-rw- 1 codespace codespace 4851065 11-09_16:54:36 backup-before-scope-fix.html
+-rw-rw-rw- 1 codespace codespace 4850421 11-08_17:27:02 backup-original.html
+=== md5
+89096129599b2e24e2ce4bf81d571373  /workspaces/Uoakk/mehryar-v4-final (10).html
+f2293543b251d8fe07a15ff344b3371a  backup-before-scope-fix.html
+0b40689d4d3e7566819236ee45d20df0  backup-original.html
+=== git
+?? .mh/
+?? "mehryar-v4-final (10).html"
+?? package-lock.json

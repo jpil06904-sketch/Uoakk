@@ -1,0 +1,9 @@
+6544:          lines.push('۴) مدل قوی، جواب کوتاه: ' + sec(d.strong_ms) + ' ثانیه' + (d.strong_th ? '، فکر: ' + fa(String(d.strong_th)) + ' توکن' : '') + bad(d.strong_st));
+6547:          else if (d.strong_ms > 20000) verdict = 'نتیجه: مدل قوی حتی برای جواب کوتاه کند است؛ کندی از فکر کردن مدل است.';
+---
+6570:thinkingTrimBroken = false;
+6995:thinkingTrimBroken = true; delete body.generationConfig.thinkingConfig; options = makeOptions();
+---
+.mh/panel_src/admin.php:64:  $cs=[['gemini-3.8-flash','پیش‌فرض',[]],['gemini-3.8-flash','سقف ۱۰۲۴',['thinkingConfig'=>['thinkingBudget'=>1024]]],['gemini-3.8-flash','سطح کم',['thinkingConfig'=>['thinkingLevel'=>'low']]],['gemini-3-flash-pre
+.mh/panel_src/api.php:54:if($a==='gping'){
+.mh/panel_src/api.php:66: $tests=[['fast','gemini-3-flash-preview',['maxOutputTokens'=>8,'thinkingConfig'=>['thinkingBudget'=>0]],'فقط بنویس: آماده'],['strong','gemini-3.8-flash',['maxOutputTokens'=>160],'برای آموزش حرف «ب» به ب�

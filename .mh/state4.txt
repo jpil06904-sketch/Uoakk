@@ -1,0 +1,95 @@
+=== st2_log.txt
+node:internal/modules/cjs/loader:1568
+  throw err;
+  ^
+
+Error: Cannot find module '/workspaces/Uoakk/.mh/scope_test2.cjs'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+    at Module._load (node:internal/modules/cjs/loader:1341:5)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v24.22.2
+
+=== st2_old_log.txt
+node:internal/modules/cjs/loader:1568
+  throw err;
+  ^
+
+Error: Cannot find module '/workspaces/Uoakk/.mh/scope_test2.cjs'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+    at Module._load (node:internal/modules/cjs/loader:1341:5)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v24.22.2
+
+=== syntax_now.txt
+scripts=13 syntaxErrors=0
+
+=== patch_log.txt
+count 1
+patched
+
+=== scope_test2.txt
+head: cannot open 'scope_test2.txt' for reading: No such file or directory
+
+=== scope_test2_old.txt
+head: cannot open 'scope_test2_old.txt' for reading: No such file or directory
+
+=== scope_test_after.txt
+PASS A1 demo has 12 students after render  n=12 | دانش‌آموزان۱۲ نفرروی هر نام بزنید تا شماره‌ها، کمبودها و سنجش را ثبت کنید. برای 
+A2 demo classScopeKey="کلاسفرضی|آموزگارنمونه|دومنمونه|دوم|۱۴۰۵–۱۴۰۶"
+PASS A3 demo did not create stray class contexts  []
+PASS A4 exitDemo restores real (empty) state
+PASS A5 no runtime errors
+B0 fresh key="||||۱۴۰۵–۱۴۰۶"
+PASS B1 students added
+PASS B2 students kept after first-time teacher name  n=3 ctx=[]
+PASS B3 students kept after completing class info  n=3
+PASS B4 persisted state still has students
+PASS B5 switching to a different complete class gives a separate (empty) roster  n=0
+PASS B6 switching back restores the original roster  n=3
+PASS B7 no runtime errors
+RESULT: ALL PASSED
+=== scope_test_after_log.txt
+
+=== fix_out.txt
+done
+
+=== verify.txt
+scripts=13 syntaxErrors=0
+NEW HEAD: function renderProgress() {
+     ensureCurriculum(state); const books=activeCurriculumBooks(); if(!books.length){progressEditor.bookId='';progressEditor.selectedNodeId='';progressEditor.preview=null;mount({title:'جایگاه واقعی تدریس',backHref:'#/curriculum',content:`${curriculumNav('curriculum/progress')}${classCurriculumNotice()}<div class="curriculum-empty">هنوز کتاب فعالی برای این کلاس وجود ندارد؛ جایگاه تدریس بدون کتاب قابل ثبت نیست. ابتدا پایهٔ کلاس را مشخص کن یا از بخش «کتاب‌ها» کتاب واقعی کلاس را اضافه کن. ${link('#/curriculum/books','کتاب‌ها','book')}</div>`});return;} const selected=books.find(book=>book.id===progressEditor.bookId)||books.find(book=>curriculumNodes(book).length)||books[0], bookId=selected?.id||''; progressEditor.bookId=bookId; const nodes=curriculumNodes(selected), progress=currentPro
+SUMMARY: const bookProgressSummary = book => { const nodes=curriculumNodes(book), progress=currentProgress(book?.id), statuses=progress.sta
+const link\s*=|function link\(: const link=(path,title,ic='arrowLeft')=>`<a class="btn btn-tinted" href="${path}">${icon(ic)}${esc(title)}</a>`; const listText=items=>`<ul class="pulse-list">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`; const note=t=>ui.banner({icon:'info',gradient:'
+\bbook\s*:\s*['\"`]<|['\"]book['\"]\s*:: book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5zM4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/>',   notebook: '<rect x="5" y="2" width="15" height="20" rx="2"/><path d="M9 2v20M2 7h3M2 12h3M2 17h3"/>',   phone: '<path d="M22 16.9v3a2 2 0 0 1-2.
+=== ls scope
+-rw-rw-rw- 1 codespace codespace 10645 12:53:48 after_empty.json
+-rw-rw-rw- 1 codespace codespace    19 12:53:48 after_run1.txt
+-rw-rw-rw- 1 codespace codespace    19 12:53:58 after_run2.txt
+-rw-rw-rw- 1 codespace codespace 10677 12:53:58 after_seed.json
+-rw-rw-rw- 1 codespace codespace  2714 17:49:36 diff_scope.txt
+-rw-rw-rw- 1 codespace codespace     4 12:54:01 fin_all.txt
+-rw-rw-rw- 1 codespace codespace  4780 13:09:49 scope_test.cjs
+-rw-rw-rw- 1 codespace codespace   980 13:09:53 scope_test.txt
+-rw-rw-rw- 1 codespace codespace  2227 18:10:30 scope_test2.cjs
+-rw-rw-rw- 1 codespace codespace  3959 18:10:39 scope_test2_part2.js
+-rw-rw-rw- 1 codespace codespace   842 17:52:12 scope_test_after.txt
+-rw-rw-rw- 1 codespace codespace     0 17:52:03 scope_test_after_log.txt
+-rw-rw-rw- 1 codespace codespace  4780 15:49:53 scope_test_copy.txt
+-rw-rw-rw- 1 codespace codespace     7 13:09:53 scope_test_log.txt

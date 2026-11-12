@@ -1,0 +1,8 @@
+rerun3.done
+rerun3.sh
+res3_t0.log
+res3_t0.txt
+res3_t1.log
+res3_t1.txt
+sum3_t0.txt
+sum3_t1.txt

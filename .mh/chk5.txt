@@ -1,0 +1,3 @@
+NETWORK_INTENT_CLASSIFIER = false
+NETWORK_INTENT_CLASSIFIER || demoMode || !useTools) ret
+NETWORK_INTENT_CLASSIFIER) return modelForPrompt(prompt

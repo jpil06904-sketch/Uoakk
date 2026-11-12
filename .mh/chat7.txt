@@ -1,0 +1,37 @@
+8100 |   window.__mehryarDailyMessage = true;
+8101 | 
+8102 |   const DAILY_MESSAGE_WORKER = 'https://red-heart-c9c0.ssioojiu63.workers.dev/';
+8103 |   const dailyMessageState = {day:'',busy:false,text:'',error:''};
+8104 | 
+8169 |       if (dailyMessageState.busy || !data.rows.length) return;
+8170 |       dailyMessageState.day = data.today; dailyMessageState.busy = true; dailyMessageState.text = ''; dailyMessageState.error = ''; paint();
+8171 |       const controller = new AbortController();
+8172 |       const timer = setTimeout(() => controller.abort(), 240000);
+8173 |       try {
+8174 |         let answer = '';
+8175 |         for (let attempt=0; attempt<3; attempt++) {
+8176 |           const response = await fetch(DAILY_MESSAGE_WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:dailyMessagePrompt(data)}),signal:controller.signal});
+8177 |           const body = await response.json().catch(() => ({}));
+8178 |           if (!response.ok || typeof body.text !== 'string' || !body.text.trim()) throw new Error('پاسخ معتبر نبود.');
+8179 |           answer = body.text.trim();
+8180 |           if (attempt < 2 && /پاسخ موقتاً با کندی مواجه شد|مجدداً امتحان کنید/.test(answer)) { await new Promise(resolve => setTimeout(resolve,1200)); continue; }
+8181 |           break;
+8182 |         }
+8183 |         if (!answer || /پاسخ موقتاً با کندی مواجه شد|مجدداً امتحان کنید/.test(answer)) throw new Error('پاسخ کامل دریافت نشد.');
+8184 |         dailyMessageState.text = answer;
+8185 |       } catch (error) {
+8186 |         dailyMessageState.error = error.name === 'AbortError' ? 'ساخت پیام طول کشید؛ دوباره تلاش کن.' : 'ساخت پیام ممکن نشد؛ دوباره تلاش کن.';
+8187 |       } finally {
+8188 |         clearTimeout(timer); dailyMessageState.busy = false; paint();
+8189 |       }
+8190 |     });
+8191 |     paint();
+8192 |     return panel;
+8193 |   }
+8194 | 
+8195 |   const previousRenderPulse = typeof renderPulse === 'function' ? renderPulse : null;
+8196 |   if (!previousRenderPulse) return;
+8197 |   renderPulse = function() {
+8198 |     previousRenderPulse();
+8199 |     const root = document.getElementById('content');
+8200 |     const actions = root?.querySelector('.pd-main-actions');

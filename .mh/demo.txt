@@ -1,0 +1,6 @@
+before: demo=false students=0 grade=""
+after: demo=true students=0 grade="دوم" hash=#/pulse
+sampleState students=12 keys=["version","klass","classContexts","classScopeKey","classScopeKlass","fields","students","lists","meeting","plan7","messages","outputSettings","progress","ui","learning","curriculum"]
+students page: مهریاراز آماده‌سازی اول مهر تا یادگیری هر دانش‌آموزخانهدانش‌آموزاننبض‌کلاسابزارهاپروچت‌باتتنظیماتنسخهٔ ۶ · ابزارهای آفلاین + چت آنلایندانش‌آموزاننمونهٔ آزمایشی داده‌ها فرضی‌اندخروج از نمونهدانش‌آموزان
+pulse page: مهریاراز آماده‌سازی اول مهر تا یادگیری هر دانش‌آموزخانهدانش‌آموزاننبض‌کلاسابزارهاپروچت‌باتتنظیماتنسخهٔ ۶ · ابزارهای آفلاین + چت آنلایننبض‌کلاسنمونهٔ آزمایشی داده‌ها فرضی‌اندخروج از نمونهدوم نمونه · ۱۸ آبان ۱۴۰۵یک نگاه، یک قدم روشنببین چه ثبت شده؛ تصمیم بگیر قدم بعدی چیست. پایهٔ کلاسهمهٔ پایه‌هاپیش‌د
+ERRS 0 

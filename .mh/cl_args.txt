@@ -1,0 +1,7 @@
+5:const FILE = process.argv[2] || '/workspaces/Uoakk/mehryar-v4-final-fixed.html';
+6:const OUT = process.argv[3] || '/workspaces/Uoakk/.mh/live_run.txt';
+7:const QSET = process.env.QSET || 'teacher';
+12:const flush = () => fs.writeFileSync(OUT, o.join('\n'));
+116:  if (process.env.TOOLS === '1' && cb && !cb.checked) { cb.checked = true; cb.dispatchEvent(new w.Event('change', { bubbles: true })); await sleep(500); o.push('tools turned ON'); }
+119:  for (const [q, l] of SETS[QSET]) await ask(q, l);
+124:setTimeout(() => { o.push('GLOBAL TIMEOUT'); flush(); process.exit(2); }, 1000000);

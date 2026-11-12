@@ -1,0 +1,14 @@
+5:=== Q1 greeting  TOTAL 0.3s  firstVisible 0.3s
+10:=== Q2 list students  TOTAL 6.8s  firstVisible 0.0s
+12:RETRY BUTTON SHOWN
+14:   ai gemini-3-flash-preview st=503 6574ms req=9764B keys=systemInstruction,contents,generationConfig tools=0 cont=3 maxOut=3072 think={"thinkingBudget":512} PARSE=SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+17:=== Q3 heavy advice  TOTAL 6.8s  firstVisible 0.0s
+19:RETRY BUTTON SHOWN
+21:   ai gemini-3.8-flash st=503 6571ms req=9779B keys=systemInstruction,contents,generationConfig tools=0 cont=3 maxOut=3072 think={"thinkingBudget":1024} PARSE=SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+24:=== Q4 record attendance  TOTAL 9.3s  firstVisible 9.3s
+28:   ai gemini-3-flash-preview st=200 9213ms req=9771B keys=systemInstruction,contents,generationConfig tools=0 cont=3 maxOut=3072 think={"thinkingBudget":512} usage(in/out/think)=2942/156/718 finish=STOP
+31:=== Q5 parent message  TOTAL 3.0s  firstVisible 3.0s
+35:   ai gemini-3-flash-preview st=200 2811ms req=10401B keys=systemInstruction,contents,generationConfig tools=0 cont=5 maxOut=3072 think={"thinkingBudget":512} usage(in/out/think)=3120/270/ finish=STOP
+38:=== Q6 follow-up  TOTAL 2.0s  firstVisible 2.0s
+42:   ai gemini-3-flash-preview st=200 1935ms req=11362B keys=systemInstruction,contents,generationConfig tools=0 cont=7 maxOut=3072 think={"thinkingBudget":512} usage(in/out/think)=3398/118/ finish=STOP
+46:ERRS 0

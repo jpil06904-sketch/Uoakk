@@ -1,0 +1,27 @@
+Tue Nov 10 11:47:08 UTC 2026
+-rw-rw-rw-  1 codespace codespace    1551 18:23:08 t_res.txt
+-rw-rw-rw-  1 codespace codespace     842 18:21:56 t_s1.txt
+-rw-rw-rw-  1 codespace codespace       0 18:21:51 t_s1_log.txt
+-rw-rw-rw-  1 codespace codespace    1195 18:23:53 t_s2.txt
+-rw-rw-rw-  1 codespace codespace       0 18:23:46 t_s2_log.txt
+-rw-rw-rw-  1 codespace codespace    1849 12:50:19 texts.cjs
+-rw-rw-rw-  1 codespace codespace       4 12:50:25 texts_done.txt
+-rw-rw-rw-  1 codespace codespace    2553 12:54:01 texts_empty.txt
+-rw-rw-rw-  1 codespace codespace       0 12:53:58 texts_empty_log.txt
+-rw-rw-rw-  1 codespace codespace    2555 12:50:22 texts_seed.txt
+-rw-rw-rw-  1 codespace codespace       0 12:50:19 texts_seed_log.txt
+-rw-rw-rw-  1 codespace codespace    1012 12:53:38 verify.py
+-rw-rw-rw-  1 codespace codespace    1740 12:53:38 verify.txt
+-rw-rw-rw-  1 codespace codespace       5 12:53:38 verify_log.txt
+-rw-rw-rw-  1 codespace codespace     504 12:54:29 wait2.txt
+=== md5
+0b40689d4d3e7566819236ee45d20df0  /workspaces/Uoakk/mehryar-v4-final (10).html
+89096129599b2e24e2ce4bf81d571373  /workspaces/Uoakk/mehryar-v4-final-fixed.html
+0b40689d4d3e7566819236ee45d20df0  /workspaces/Uoakk/mehryar-v4-final (10).html
+0b40689d4d3e7566819236ee45d20df0  .mh/backup-original.html
+89096129599b2e24e2ce4bf81d571373  /workspaces/Uoakk/mehryar-v4-final-fixed.html
+=== ai9_log
+done
+
+=== ai8_log
+done

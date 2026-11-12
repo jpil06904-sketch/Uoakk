@@ -1,0 +1,8 @@
+-rw-rw-rw- 1 codespace codespace 3933 Nov 10 15:03 ce2_500.txt
+-rw-rw-rw- 1 codespace codespace    0 Nov 10 15:03 ce2_500_log.txt
+-rw-rw-rw- 1 codespace codespace    5 Nov 10 15:03 ce2_done.txt
+-rw-rw-rw- 1 codespace codespace 5069 Nov 10 15:03 ce2_net.txt
+-rw-rw-rw- 1 codespace codespace    0 Nov 10 15:02 ce2_net_log.txt
+-rw-rw-rw- 1 codespace codespace  154 Nov 10 15:02 ce2_wait.txt
+-rw-rw-rw- 1 codespace codespace    0 Nov 10 15:04 ce2_wait2.txt
+Tue Nov 10 15:04:57 UTC 2026

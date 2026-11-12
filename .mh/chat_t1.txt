@@ -1,0 +1,12 @@
+7926:      } else { try { localStorage.removeItem(CODE_SLOT); } catch (_) {} }
+7933:      try { localStorage.removeItem(CODE_SLOT); } catch (_) {} try { sessionStorage.removeItem(KEY_SLOT); } catch (_) { ui.toast('حذف رمز ذخیره‌شده ممکن نشد. این برگه را ببند.'); }
+8065:     try { localStorage.removeItem(CODE_SLOT); } catch (_) {} try { sessionStorage.removeItem(KEY_SLOT); } catch (_) { ui.toast('برای حذف کامل رمز، این برگه را هم ببند.'); }
+8089:sessionStorage.getItem(KEY_SLOT) || ''; } catch (_) {} if (!key) { try { key = localStorage.getItem(CODE_SLOT) || ''; } catch (_) {} }
+3527:ROUTES.unshift(...[['pulse',renderPulse],['pulse/quick',()=>renderQuick()],['pulse/sessions',renderSessions],['pulse/radar',renderRadar],['pulse/paths',renderPaths],['pulse/tomorrow',renderTomorrow],['pulse/week',r
+4048:ROUTES.unshift([/^#\/guide\/([^/]+)$/,m=>{let key='home';try{key=decodeURIComponent(m[1]);}catch(e){}renderInlineGuide(key);}]);
+4082:ROUTES.unshift([/^#\/pro$/,renderProPage],[/^#\/about$/,renderAboutPage]);
+4144:ROUTES.unshift([/^#\/pulse\/overview\/(roster|seen|unseen|needs)$/,m=>pdOverview(m[1])],[/^#\/pulse\/grades$/,pdGradesPage]);
+4147:ROUTES.unshift([/^#\/pulse$/,()=>renderPulse()],[/^#\/pulse\/week$/,()=>renderWeek()],[/^#\/pulse\/activities$/,()=>renderActivities()],[/^#\/pulse\/followups$/,()=>renderFollowups()]);
+5475:    ROUTES.unshift(
+8040:  ROUTES.unshift([/^#\/pulse\/assistant-preview$/,()=>MehryarTools.viewOutput()],[/^#\/pulse\/assistant$/,render],[/^#\/settings\/ai$/,() => { location.replace(routePath); }]);
+8507:  ROUTES.unshift([/^#\/pulse\/color\/(red|yellow|green|gray)$/, match => renderTopicColorList(match[1])]);

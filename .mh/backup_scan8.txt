@@ -1,0 +1,27 @@
+== curriculumAssets
+9347:    const incoming = data && typeof data === 'object' ? clone(data) : data, assets = incoming?.curriculumAssets;
+9348:    if (incoming && typeof incoming === 'object') delete incoming.curriculumAssets;
+9367:    if (assets.length) payload.curriculumAssets=assets;
+== 3395
+replaceState=function(data){try{validateImport(data);const next=migrate(data);if(!demoMode){const old=localStorage.getItem(STORAGE_KEY);if(old)localStorage.setItem(STORAGE_KEY+'_before_import',old);localStorage.setItem(STORAGE_KEY,JSON.stringify(next));}state=next;syncStudentDossiers(state,[],true);savingBlocked=false;loadWarning='';dirty=false;storageOk=true;applyTheme();scheduleRender();return true;}catch(e){ui.toast('بارگذاری انجام نشد: '+e.message,{duration:6000});return false;}};
+== 3685-3695
+  let message='';const recovery=storageRuntime.mode==='recovery';
+  const sheet=ui.sheet({title:recovery?'بازیابی امن داده':'ذخیره‌سازی در این محیط',body:()=>`<div class="storage-help"><h3>${recovery?'نسخهٔ قبلی دست‌نخورده است':'برنامه کار می‌کند، اما ذخیرهٔ دائمی فعال نیست'}</h3><p>${recovery?'دادهٔ قبلی معتبر شناخته نشد یا نسخه‌اش پشتیبانی نمی‌شود. برنامه خودکار روی آن نمی‌نویسد. ابتدا فایل بازیابی را دریافت و سپس پشتیبان معتبر را بارگذاری کنید.':'این محیط اجازهٔ ذخیره‌سازی نمی‌دهد، یا حافظه �
+}
+replaceState=function(data){
+  let next;try{validateImport(data);next=migrate(data);}catch(e){ui.toast('فایل معتبر نیست؛ دادهٔ فعلی تغییر نکرد.');return false;}
+  clearTimeout(saveTimer2);saveEpoch++;
+  if(demoMode){state=next;dirty=false;applyTheme();scheduleRender();return true;}
+  let persisted=false;
+  if(storageRuntime.mode==='persistent'){
+    try{const previous=localStorage.getItem(STORAGE_KEY);if(previous)localStorage.setItem(STORAGE_KEY+'_before_import',previous);localStorage.setItem(STORAGE_KEY,JSON.stringify(next));storageRuntime.raw=JSON.stringify(next);persisted=true;}
+    catch(e){markStorageMode('temporary',classifyStorageError(e));}
+== 3554
+validateImport=function(d){validateBase(d);for(const k of ['klass','lists','progress','ui','outputSettings'])if(d[k]!==undefined&&!isObj(d[k]))throw Error('ساختار '+k+' نامعتبر است');if(d.fields!==undefined&&(!Array.isArray(d.fields)||d.fields.some(f=>!f||typeof f.key!=='string'||!/^[\w-]+$/.test(f.key)||typeof f.label!=='string'||!['text','tel','check'].includes(f.type))))throw Error('فیلد نامعتبر');if(d.messages!==undefined&&(!Array.isArray(d.messages)||d.messages.some(m=>!m||typeof m.key!=='string'||!/^[\w-]+$/.test(m.key)||typeof m.title!=='string'||typeof m.template!=='string')))throw Error('پیام نامعتبر');if(d.plan7!==undefined&&(!Array.isArray(d.p
+== last script end lines
+8793:</script>
+9596:</script>
+9791:</script>
+9793 mehryar-v4-final-fixed.html
+== exportJSON 9363 scope start
+DONE

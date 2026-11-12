@@ -1,0 +1,142 @@
+total 9960
+drwxrwxrwx+ 3 codespace codespace    4096 Nov  9 13:03 .
+drwxrwxrwx+ 9 codespace root         4096 Nov  9 03:20 ..
+-rw-rw-rw-  1 codespace codespace   10645 Nov  9 12:53 after_empty.json
+-rw-rw-rw-  1 codespace codespace      19 Nov  9 12:53 after_run1.txt
+-rw-rw-rw-  1 codespace codespace      19 Nov  9 12:53 after_run2.txt
+-rw-rw-rw-  1 codespace codespace   10677 Nov  9 12:53 after_seed.json
+-rw-rw-rw-  1 codespace codespace    2810 Nov  9 03:24 api.txt
+-rw-rw-rw-  1 codespace codespace 4850421 Nov  8 17:27 backup-original.html
+-rw-rw-rw-  1 codespace codespace    1604 Nov  9 12:31 bug.txt
+-rw-rw-rw-  1 codespace codespace    1751 Nov  9 12:32 bug2.txt
+-rw-rw-rw-  1 codespace codespace       0 Nov  9 12:32 bug2_err.txt
+-rw-rw-rw-  1 codespace codespace     761 Nov  9 12:49 ctx.py
+-rw-rw-rw-  1 codespace codespace    8361 Nov  9 12:49 ctx.txt
+-rw-rw-rw-  1 codespace codespace     295 Nov  9 12:50 ctx2.py
+-rw-rw-rw-  1 codespace codespace    2433 Nov  9 12:50 ctx2.txt
+-rw-rw-rw-  1 codespace codespace       5 Nov  9 12:50 ctx2_log.txt
+-rw-rw-rw-  1 codespace codespace     624 Nov  9 12:50 ctx3.py
+-rw-rw-rw-  1 codespace codespace    5242 Nov  9 12:50 ctx3.txt
+-rw-rw-rw-  1 codespace codespace       5 Nov  9 12:50 ctx3_log.txt
+-rw-rw-rw-  1 codespace codespace     461 Nov  9 12:51 ctx4.py
+-rw-rw-rw-  1 codespace codespace    3796 Nov  9 12:51 ctx4.txt
+-rw-rw-rw-  1 codespace codespace      90 Nov  9 12:51 ctx4_log.txt
+-rw-rw-rw-  1 codespace codespace     554 Nov  9 12:51 ctx5.py
+-rw-rw-rw-  1 codespace codespace    3388 Nov  9 12:51 ctx5.txt
+-rw-rw-rw-  1 codespace codespace       5 Nov  9 12:51 ctx5_log.txt
+-rw-rw-rw-  1 codespace codespace     523 Nov  9 12:56 ctx6.py
+-rw-rw-rw-  1 codespace codespace    3912 Nov  9 12:56 ctx6.txt
+-rw-rw-rw-  1 codespace codespace       5 Nov  9 12:56 ctx6_log.txt
+-rw-rw-rw-  1 codespace codespace     926 Nov  9 12:56 ctx7.py
+-rw-rw-rw-  1 codespace codespace   11075 Nov  9 12:56 ctx7.txt
+-rw-rw-rw-  1 codespace codespace       5 Nov  9 12:56 ctx7_log.txt
+-rw-rw-rw-  1 codespace codespace       5 Nov  9 12:49 ctx_log.txt
+-rw-rw-rw-  1 codespace codespace    2323 Nov  9 12:55 demo.cjs
+-rw-rw-rw-  1 codespace codespace    1302 Nov  9 12:55 demo.txt
+-rw-rw-rw-  1 codespace codespace    2213 Nov  9 12:56 demo2.cjs
+-rw-rw-rw-  1 codespace codespace    2739 Nov  9 12:56 demo2.txt
+-rw-rw-rw-  1 codespace codespace       4 Nov  9 12:56 demo2_log.txt
+-rw-rw-rw-  1 codespace codespace       4 Nov  9 12:56 demo2_wait.txt
+-rw-rw-rw-  1 codespace codespace       4 Nov  9 12:55 demo_log.txt
+-rw-rw-rw-  1 codespace codespace       4 Nov  9 12:56 demo_wait.txt
+-rw-rw-rw-  1 codespace codespace    3267 Nov  9 12:57 ecs.txt
+-rw-rw-rw-  1 codespace codespace       5 Nov  9 12:57 ecs_log.txt
+drwxrwxrwx+ 3 codespace codespace    4096 Nov  9 03:24 env
+-rw-rw-rw-  1 codespace codespace       4 Nov  9 12:54 fin_all.txt
+-rw-rw-rw-  1 codespace codespace    1640 Nov  9 12:52 fix.py
+-rw-rw-rw-  1 codespace codespace      30 Nov  9 12:52 fix_log.txt
+-rw-rw-rw-  1 codespace codespace       5 Nov  9 12:52 fix_out.txt
+-rw-rw-rw-  1 codespace codespace   12446 Nov  9 03:20 functions.txt
+-rw-rw-rw-  1 codespace codespace    1530 Nov  9 12:55 ls8052.txt
+-rw-rw-rw-  1 codespace codespace       5 Nov  9 12:55 ls_log.txt
+-rw-rw-rw-  1 codespace codespace    2657 Nov  9 12:39 ls_now.txt
+-rw-rw-rw-  1 codespace codespace    2099 Nov  9 03:20 map.py
+-rw-rw-rw-  1 codespace codespace    6799 Nov  9 03:20 map.txt
+-rw-rw-rw-  1 codespace codespace      79 Nov  9 03:20 map_log.txt
+-rw-rw-rw-  1 codespace codespace    7748 Nov  9 12:49 now.txt
+-rw-rw-rw-  1 codespace codespace       7 Nov  9 03:24 npm_install.txt
+-rw-rw-rw-  1 codespace codespace       7 Nov  9 03:21 npmcheck.txt
+-rw-rw-rw-  1 codespace codespace       0 Nov  9 13:03 resume.txt
+-rw-rw-rw-  1 codespace codespace    3659 Nov  9 12:59 sc.txt
+-rw-rw-rw-  1 codespace codespace       5 Nov  9 12:59 sc_log.txt
+-rw-rw-rw-  1 codespace codespace    1237 Nov  9 03:20 script_00.js
+-rw-rw-rw-  1 codespace codespace   18156 Nov  9 03:20 script_01.js
+-rw-rw-rw-  1 codespace codespace     647 Nov  9 03:20 script_02.js
+-rw-rw-rw-  1 codespace codespace 2898353 Nov  9 03:20 script_03.js
+-rw-rw-rw-  1 codespace codespace    1404 Nov  9 03:20 script_04.js
+-rw-rw-rw-  1 codespace codespace  115732 Nov  9 03:20 script_05.js
+-rw-rw-rw-  1 codespace codespace  267861 Nov  9 03:20 script_06.js
+-rw-rw-rw-  1 codespace codespace   11462 Nov  9 03:20 script_07.js
+-rw-rw-rw-  1 codespace codespace   16721 Nov  9 03:20 script_08.js
+-rw-rw-rw-  1 codespace codespace   18407 Nov  9 03:20 script_09.js
+-rw-rw-rw-  1 codespace codespace   19829 Nov  9 03:20 script_10.js
+-rw-rw-rw-  1 codespace codespace  163698 Nov  9 03:20 script_11.js
+-rw-rw-rw-  1 codespace codespace   16851 Nov  9 03:20 script_12.js
+-rw-rw-rw-  1 codespace codespace    6478 Nov  9 03:21 sections.txt
+-rw-rw-rw-  1 codespace codespace    4913 Nov  9 03:24 smoke.cjs
+-rw-rw-rw-  1 codespace codespace   11434 Nov  9 03:25 smoke_empty.json
+-rw-rw-rw-  1 codespace codespace      26 Nov  9 03:25 smoke_run1.txt
+-rw-rw-rw-  1 codespace codespace      41 Nov  9 12:34 smoke_run2.txt
+-rw-rw-rw-  1 codespace codespace   10677 Nov  9 12:34 smoke_seed.json
+-rw-rw-rw-  1 codespace codespace     229 Nov  9 03:26 status.txt
+-rw-rw-rw-  1 codespace codespace 1375119 Nov  9 03:20 stripped.html
+-rw-rw-rw-  1 codespace codespace     955 Nov  9 03:29 summary.py
+-rw-rw-rw-  1 codespace codespace    2946 Nov  9 03:30 summary.txt
+-rw-rw-rw-  1 codespace codespace    1225 Nov  9 03:30 summary1.txt
+-rw-rw-rw-  1 codespace codespace       0 Nov  9 03:30 summary_err.txt
+-rw-rw-rw-  1 codespace codespace    1849 Nov  9 12:50 texts.cjs
+-rw-rw-rw-  1 codespace codespace       4 Nov  9 12:50 texts_done.txt
+-rw-rw-rw-  1 codespace codespace    2553 Nov  9 12:54 texts_empty.txt
+-rw-rw-rw-  1 codespace codespace       0 Nov  9 12:53 texts_empty_log.txt
+-rw-rw-rw-  1 codespace codespace    2555 Nov  9 12:50 texts_seed.txt
+-rw-rw-rw-  1 codespace codespace       0 Nov  9 12:50 texts_seed_log.txt
+-rw-rw-rw-  1 codespace codespace    1012 Nov  9 12:53 verify.py
+-rw-rw-rw-  1 codespace codespace    1740 Nov  9 12:53 verify.txt
+-rw-rw-rw-  1 codespace codespace       5 Nov  9 12:53 verify_log.txt
+-rw-rw-rw-  1 codespace codespace     504 Nov  9 12:54 wait2.txt
+=== fix_out
+done
+=== verify
+scripts=13 syntaxErrors=0
+NEW HEAD: function renderProgress() {
+     ensureCurriculum(state); const books=activeCurriculumBooks(); if(!books.length){progressEditor.bookId='';progressEditor.selectedNodeId='';progressEditor.preview=null;mount({title:'جایگاه واقعی تدریس',backHref:'#/curriculum',content:`${curriculumNav('curriculum/progress')}${classCurriculumNotice()}<div class="curriculum-empty">هنوز کتاب فعالی برای این کلاس وجود ندارد؛ جایگاه تدریس بدون کتاب قابل ثبت نیست. ابتدا پایهٔ کلاس را مشخص کن یا از بخش «کتاب‌ها» کتاب واقعی کلاس را اضافه کن. ${link('#/curriculum/books','کتاب‌ها','book')}</div>`});return;} const selected=books.find(book=>book.id===progressEditor.bookId)||books.find(book=>curriculumNodes(book).length)||books[0], bookId=selected?.id||''; progressEditor.bookId=bookId; const nodes=curriculumNodes(selected), progress=currentPro
+SUMMARY: const bookProgressSummary = book => { const nodes=curriculumNodes(book), progress=currentProgress(book?.id), statuses=progress.sta
+const link\s*=|function link\(: const link=(path,title,ic='arrowLeft')=>`<a class="btn btn-tinted" href="${path}">${icon(ic)}${esc(title)}</a>`; const listText=items=>`<ul class="pulse-list">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`; const note=t=>ui.banner({icon:'info',gradient:'
+\bbook\s*:\s*['\"`]<|['\"]book['\"]\s*:: book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5zM4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/>',   notebook: '<rect x="5" y="2" width="15" height="20" rx="2"/><path d="M9 2v20M2 7h3M2 12h3M2 17h3"/>',   phone: '<path d="M22 16.9v3a2 2 0 0 1-2.=== ecs
+LINE 8816
+const classScopedKeys = ['klass','classContexts','fields','students','lists','meeting','plan7','messages','outputSettings','progress','learning','curriculum'];
+   const classScopeSnapshot = data => { const out={}; for(const key of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };
+   
+=====
+function ensureClassScope(data) {
+     if(!data||typeof data!=='object')return data;
+     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');
+     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}
+     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}
+     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;
+     const target=contexts[activeKey];
+     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}
+     else if(currentKey!=='unassigned'){
+       const blank=migrate({klass:clone(data.klass)});
+       for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(blank,key))data[key]=clone(blank[key]);
+     }
+     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;
+   }
+    
+===== sampleState tail
+onIds:['sample-session-0'],action:'آموزش با ده‌تایی و یکی',activityId:'a-m-carry',createdOn:plusDays(localISO(),-3),dueOn:localISO(),status:'planned',outcome:'unchecked',note:'',completedOn:''},{id:'sample-fu-2',studentId:'sample-1',subject:'ریاضی',skillId:'m-carry',sourceSessionIds:['sample-session-1'],recheckSessionId:'sample-session-4',action:'تمرین ارزش مکانی',activityId:'a-m-place',createdOn:plusDays(localISO(),-3),dueOn:plusDays(localISO(),-1),status:'done',outcome:'improved',note:'در مشاهدهٔ مرتبط بعدی سبز ثبت شده؛ علیت قطعی نیست.',completedOn:plusDays(localISO(),-1)},{id:'sample-fu-3',studentId:'sample-0',subject:'فارسی',skillId:'f-fluency',sourceSessionIds:['sample-session-3'],action:'روخوانی کوتاه دونفره',activityId:'a-f-fluency',createdOn:plusDays(localISO(),-1),dueOn:localISO(),status:'done',outcome:'unchecked',note:'',completedOn:plusDays(localISO(),-1)}];s.learning.responsibilityHistory=[{id:'sample-role',studentId:'sample-8',role:'کتابخانه',date:plusDays(localISO(),-3),undone:false}];s.progress={...s.progress,welcomeSeen:true,pulseIntroSeen:true,classDone:true,studentsDone:true};return s;}
+loadSample=function(){if(demoMode){location.hash='#/pulse';return;}if(dirty&&!flushSave()){ui.toast('ابتدا پشتیبان بگیرید؛ ورود به نمونه تا رفع خطای ذخیره انجام نشد.');return;}clearTimeout(saveTimer2);saveEpoch++;realSnapshot=state;demoMode=true;state=sampleState();quickDraft=null;quickKey='';planDraft=null;dirty=false;location.hash='#/pulse';applyTheme();scheduleRender();};
+=== sc
+sampleState\( L3509: اقدام موعددار ثبت نشده؛ نیاز جدیدی حدس زده نمی‌شود.'))+link('#/pulse/tomorrow','برنامهٔ فردا')+link('#/outputs','انتخاب و چاپ برگه‌ها'));}   function sampleState(){const s=migrate({}),names=['امیر','سارا','مینا','کیان','پارسا','رها','یاسمن','آرمان','نگار','مانی','سیده فاطمه‌زهرا موسوی‌نژاد','هانا'];s.klass={...s.klass,teacher:'آموزگار نمونه',school:'کلاس فرضی',grade:'دوم',className:'دوم نمونه'};s.
+sampleState\( L3510: بتدا پشتیبان بگیرید؛ ورود به نمونه تا رفع خطای ذخیره انجام نشد.');return;}clearTimeout(saveTimer2);saveEpoch++;realSnapshot=state;demoMode=true;state=sampleState();quickDraft=null;quickKey='';planDraft=null;dirty=false;location.hash='#/pulse';applyTheme();scheduleRender();}; function exitDemo(){if(!demoMode)return;clearTimeout(saveTimer2);saveEpoch++;state=realSnapshot;realSnapshot=null;demoMode=f
+sampleState\( L3517: ینترنت می‌خواهند. این برنامه از صفحهٔ پرشدهٔ کلاس فایل اشتراک نمی‌سازد.</p>`));} let introIndex=0; function withSample(fn){const real=state;try{state=sampleState();return fn();}finally{state=real;}} function introPreview(i){return withSample(()=>{if(i===0){const a=activitiesFor('m-carry','دوم')[0];return `<b>اول بررسی کن:</b><p>${esc(a.diagnosticPrompt)}</p><b>بعد:</b><p>${esc(a.observationGuide)}
+ensureCurriculum\s*=|function ensureCurriculum L8857: ,contentLength:Number(source.contentLength)||0,contentFileName:String(source.contentFileName||''),importedAt:String(source.importedAt||'')};    };    function ensureCurriculum(data) {      if (!data || typeof data !== 'object') return data;       const base = curriculumDefaults(), raw = data.curriculum && typeof data.curriculum === 'object' ? data.curriculum : {}, activeScope=curriculumScopeKey(da
+ENSURE: function ensureCurriculum(data) {
+     if (!data || typeof data !== 'object') return data;
+      const base = curriculumDefaults(), raw = data.curriculum && typeof data.curriculum === 'object' ? data.curriculum : {}, activeScope=curriculumScopeKey(data), activeGrade=String(data.klass?.grade||'').trim(), activeYear=academicYearKey(data.klass?.year||''), contexts=isObj(raw.contexts)?clone(raw.contexts):{};
+      let current=raw;
+      if(raw.scopeKey&&raw.scopeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeScope]||{...base,scopeKey:activeScope}; }
+      current=curriculumContextSnapshot(current);
+      data.curriculum = {...base,...current,scopeKey:activeScope,contexts,catalog:{...base.catalog,...(current.catalog||{}),grade:activeGrade,academicYear:activeYear,source:activeGrade==='دوم'?OFFICIAL_SOURCE:'',sourceLabel:activeGrade==='دوم'?'پایگاه کتاب‌های درسی، اداره کل نظارت بر نشر و توزیع مواد آموزشی':activeGrade?`کاتالوگ رسمی پایهٔ ${activeGrade} در این مرحله وارد نشده است`:'کاتالوگ پایهٔ کلاس هنوز مشخص نشده است'},budget:{...base.budget,...(current.budget||{})},teachingProgress:{...(current.teachingProgress||{})},assets:{...(current.assets||{})}};
+    const existing = new Map((Array.isArray(current.books)?current.books:[]).map(book=>[book.id,book]));
+     const official = OFFICIAL_BOOKS.map(book=>normalizeBook(existing.get(book.id),{...book,sourceType:CURRICULUM_SOURCE.official,sourceLabel:CURRICULUM_SOURCE_LABEL.official}));

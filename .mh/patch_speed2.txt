@@ -1,0 +1,10 @@
+FAIL count=0 for:   async function classifyIntent(prompt) {
+    try {
+      if (demoMode || !useTools) return;
+FAIL count=0 for:     const cached = routeCache.get(prompt);
+    if (cached) return cached;
+    try {
+      const {response,data}=await fe
+FAIL count=0 for:     const waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? PANEL_FETCH_TIMEOUT_MS : timeoutMs;
+FAIL count=0 for: if(intentOf(prompt)==='STUDENT'&&inquiry.status==='insufficient_evidence'&&!promptHasConcreteEvidence(prompt))
+BAD=4

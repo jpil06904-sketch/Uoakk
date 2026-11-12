@@ -1,0 +1,152 @@
+Tue Nov 10 12:02:50 UTC 2026
+=== LS recent
+total 15664
+-rw-rw-rw-  1 codespace codespace      43 12:02:50 resume5.txt
+drwxrwxrwx+ 3 codespace codespace   12288 12:02:50 .
+-rw-rw-rw-  1 codespace codespace    3002 11:53:42 chat_t2.txt
+-rw-rw-rw-  1 codespace codespace    1725 11:52:19 chat_t1.txt
+-rw-rw-rw-  1 codespace codespace    3772 11:51:43 chat_t0.txt
+-rw-rw-rw-  1 codespace codespace       5 11:48:30 ai11_log.txt
+-rw-rw-rw-  1 codespace codespace   11179 11:48:30 ai11.txt
+-rw-rw-rw-  1 codespace codespace       5 11:47:53 ai10_log.txt
+-rw-rw-rw-  1 codespace codespace    9291 11:47:53 ai10.txt
+-rw-rw-rw-  1 codespace codespace    1409 11:47:08 resume4.txt
+-rw-rw-rw-  1 codespace codespace       5 11:32:26 ai9_log.txt
+-rw-rw-rw-  1 codespace codespace   11043 11:32:26 ai9.txt
+-rw-rw-rw-  1 codespace codespace     927 11:29:46 ai9.py
+-rw-rw-rw-  1 codespace codespace       5 11:28:52 ai8_log.txt
+-rw-rw-rw-  1 codespace codespace   13999 11:28:52 ai8.txt
+-rw-rw-rw-  1 codespace codespace    1099 11:21:21 ai8.py
+-rw-rw-rw-  1 codespace codespace       5 11:20:14 ai7_log.txt
+-rw-rw-rw-  1 codespace codespace   12619 11:20:14 ai7.txt
+-rw-rw-rw-  1 codespace codespace     821 11:20:13 ai7.py
+-rw-rw-rw-  1 codespace codespace     322 11:20:13 ls10.txt
+-rw-rw-rw-  1 codespace codespace       5 11:18:03 ai6_log.txt
+-rw-rw-rw-  1 codespace codespace    5373 11:18:03 ai6.txt
+-rw-rw-rw-  1 codespace codespace     961 11:17:26 ai6.py
+-rw-rw-rw-  1 codespace codespace     553 11:16:51 ls9.txt
+-rw-rw-rw-  1 codespace codespace    2213 11:16:31 demo2_head.txt
+-rw-rw-rw-  1 codespace codespace    6628 11:09:46 r5.txt
+-rw-rw-rw-  1 codespace codespace   14159 11:07:33 ai5.txt
+-rw-rw-rw-  1 codespace codespace    9109 11:06:42 ai4.txt
+-rw-rw-rw-  1 codespace codespace    7244 11:05:30 r4.txt
+=== md5
+0b40689d4d3e7566819236ee45d20df0  /workspaces/Uoakk/mehryar-v4-final (10).html
+f08e92fecaecaaafff389b3234cce1cf  /workspaces/Uoakk/index.html
+0b40689d4d3e7566819236ee45d20df0  /workspaces/Uoakk/mehryar-v4-final (10).html
+89096129599b2e24e2ce4bf81d571373  /workspaces/Uoakk/mehryar-v4-final-fixed.html
+0b40689d4d3e7566819236ee45d20df0  /workspaces/Uoakk/mehryar-v4-final (10).html
+0b40689d4d3e7566819236ee45d20df0  .mh/backup-original.html
+89096129599b2e24e2ce4bf81d571373  /workspaces/Uoakk/mehryar-v4-final-fixed.html
+=== ai12_log
+head: cannot open 'ai12_log.txt' for reading: No such file or directory
+
+=== chat_t*
+--- chat_t0.txt
+=== smoke.cjs
+// Runtime smoke test for mehryar HTML: loads the app in jsdom (network blocked),
+// visits every route, and reports uncaught errors / console.error per route.
+const fs = require('fs');
+const path = require('path');
+const { JSDOM, VirtualConsole } = require('/workspaces/Uoakk/.mh/env/node_modules/jsdom');
+
+const FILE = process.argv[2] || '/workspaces/Uoakk/mehryar-v4-final (10).html';
+const html = fs.readFileSync(FILE, 'utf8');
+const errors = [];
+let currentRoute = '(boot)';
+const vc = new VirtualConsole();
+vc.on('jsdomError', e => errors.push({ route: currentRoute, type: 'jsdomError', msg: String(e && (e.detail && e.detail.stack || e.stack || e.message) || e).slice(0, 700) }));
+vc.on('error', (...a) => errors.push({ route: currentRoute, type: 'console.error', msg: a.map(x => (x && x.stack) || String(x)).join(' ').slice(0, 700) }));
+
+const seed = process.argv[3] === 'seed';
+const dom = new JSDOM(html, {
+  url: 'https://mehryar.local/index.html',
+  runScripts: 'dangerously',
+  pretendToBeVisual: true,
+  virtualConsole: vc,
+  beforeParse(w) {
+    const blocked = [];
+    w.__blocked = blocked;
+    w.fetch = (u) => { blocked.push(String(u)); return Promise.reject(new TypeError('network blocked in test')); };
+    w.matchMedia = q => ({ matches: false, media: q, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {}, onchange: null, dispatchEvent() { return false; } });
+    w.IntersectionObserver = class { observe() {} unobserve() {} disconnect() {} takeRecords() { return []; } };
+    w.ResizeObserver = class { observe() {} unobserve() {} disconnect() {} };
+    w.scrollTo = () => {}; w.Element.prototype.scrollIntoView = function () {}; w.Element.prototype.scrollTo = function () {};
+    w.print = () => {};
+    w.HTMLCanvasElement.prototype.getContext = () => null;
+    w.URL.createObjectURL = () => 'blob:test'; w.URL.revokeObjectURL = () => {};
+    w.navigator.vibrate = () => true;
+    if (seed) {
+      // Use the app's own demo loader after boot instead of fabricating storage.
+    }
+  }
+});
+const w = dom.window;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+(async () => {
+  await new Promise(r => { if (w.document.readyState === 'complete') r(); else w.addEventListener('load', r); });
+  await sleep(400);
+  const report = { file: path.basename(FILE), bootErrors: errors.length, routes: [] };
+  if (seed) {
+    currentRoute = '(loadSample)';
+    try {
+      const fn = w.eval('typeof loadSample==="function"?load
+--- chat_t1.txt
+7926:      } else { try { localStorage.removeItem(CODE_SLOT); } catch (_) {} }
+7933:      try { localStorage.removeItem(CODE_SLOT); } catch (_) {} try { sessionStorage.removeItem(KEY_SLOT); } catch (_) { ui.toast('حذف رمز ذخیره‌شده ممکن نشد. این برگه را ببند.'); }
+8065:     try { localStorage.removeItem(CODE_SLOT); } catch (_) {} try { sessionStorage.removeItem(KEY_SLOT); } catch (_) { ui.toast('برای حذف کامل رمز، این برگه را هم ببند.'); }
+8089:sessionStorage.getItem(KEY_SLOT) || ''; } catch (_) {} if (!key) { try { key = localStorage.getItem(CODE_SLOT) || ''; } catch (_) {} }
+3527:ROUTES.unshift(...[['pulse',renderPulse],['pulse/quick',()=>renderQuick()],['pulse/sessions',renderSessions],['pulse/radar',renderRadar],['pulse/paths',renderPaths],['pulse/tomorrow',renderTomorrow],['pulse/week',r
+4048:ROUTES.unshift([/^#\/guide\/([^/]+)$/,m=>{let key='home';try{key=decodeURIComponent(m[1]);}catch(e){}renderInlineGuide(key);}]);
+4082:ROUTES.unshift([/^#\/pro$/,renderProPage],[/^#\/about$/,renderAboutPage]);
+4144:ROUTES.unshift([/^#\/pulse\/overview\/(roster|seen|unseen|needs)$/,m=>pdOverview(m[1])],[/^#\/pulse\/grades$/,pdGradesPage]);
+4147:ROUTES.unshift([/^#\/pulse$/,()=>renderPulse()],[/^#\/pulse\/week$/,()=>renderWeek()],[/^#\/pulse\/activities$/,()=>renderActivities()],[/^#\/pulse\/followups$/,()=>renderFollowups()]);
+5475:    ROUTES.unshift(
+8040:  ROUTES.unshift([/^#\/pulse\/assistant-preview$/,()=>MehryarTools.viewOutput()],[/^#\/pulse\/assistant$/,render],[/^#\/settings\/ai$/,() => { location.replace(routePath); }]);
+8507:  ROUTES.unshift([/^#\/pulse\/color\/(red|yellow|green|gray)$/, match => renderTopicColorList(match[1])]);
+
+--- chat_t2.txt
+ 6628 r5.txt
+14159 ai5.txt
+12619 ai7.txt
+33406 total
+=== r5 head
+=== root
+total 9700
+drwxrwxrwx+   9 codespace root         4096 Nov  9 18:24 .
+drwxr-xrwx+   5 codespace root         4096 Nov  8 16:40 ..
+drwxrwxrwx+   8 codespace root         4096 Nov  9 18:17 .git
+-rw-rw-rw-    1 codespace root          253 Nov  8 16:40 .gitignore
+drwxrwxrwx+   3 codespace codespace   12288 Nov 10 11:09 .mh
+-rw-rw-rw-    1 codespace root        13953 Nov  8 16:40 App.tsx
+-rw-rw-rw-    1 codespace root          553 Nov  8 16:40 README.md
+drwxrwxrwx+   2 codespace root         4096 Nov  8 16:40 components
+-rw-rw-rw-    1 codespace root         7305 Nov  8 16:40 constants.tsx
+drwxrwxrwx+   3 codespace codespace    4096 Nov  8 16:41 dist
+-rw-rw-rw-    1 codespace root         1055 Nov  8 16:40 index.html
+-rw-rw-rw-    1 codespace root          349 Nov  8 16:40 index.tsx
+-rw-rw-rw-    1 codespace codespace 4850421 Nov  9 18:24 mehryar-v4-final (10).html
+-rw-rw-rw-    1 codespace codespace 4851698 Nov  9 18:24 mehryar-v4-final-fixed.html
+-rw-rw-rw-    1 codespace root          228 Nov  8 16:40 metadata.json
+drwxrwxrwx+ 137 codespace codespace    4096 Nov  8 16:40 node_modules
+-rw-rw-rw-    1 codespace codespace  109579 Nov  8 16:40 package-lock.json
+-rw-rw-rw-    1 codespace root          840 Nov  8 16:40 package.json
+-rw-rw-rw-    1 codespace root           79 Nov  8 16:40 postcss.config.js
+drwxrwxrwx+   2 codespace root         4096 Nov  8 16:40 services
+drwxrwxrwx+   4 codespace root         4096 Nov  8 16:40 src
+-rw-rw-rw-    1 codespace root          459 Nov  8 16:40 tailwind.config.js
+-rw-rw-rw-    1 codespace root          628 Nov  8 16:40 tsconfig.json
+-rw-rw-rw-    1 codespace root          212 Nov  8 16:40 tsconfig.node.json
+-rw-rw-rw-    1 codespace root          669 Nov  8 16:40 vite.config.ts
+=== server code?
+/opt/conda/pkgs/urllib3-2.8.0-py314h06a4308_1/lib/python3.14/site-packages/urllib3/contrib/emscripten/emscripten_fetch_worker.js
+/opt/conda/pkgs/pip-26.2.2-pyh0d26453_0/site-packages/pip/_vendor/urllib3/contrib/emscripten/emscripten_fetch_worker.js
+/opt/conda/lib/python3.14/site-packages/urllib3/contrib/emscripten/emscripten_fetch_worker.js
+/opt/conda/lib/python3.14/site-packages/pip/_vendor/urllib3/contrib/emscripten/emscripten_fetch_worker.js
+/home/codespace/.cache/copilot/pkg/linux-x64/1.0.108/voice-installer.worker.js
+/home/codespace/.cache/copilot/pkg/linux-x64/1.0.108/voice-engine.worker.js
+/home/codespace/.cache/copilot/pkg/linux-x64/1.0.107/voice-insta
+--- chat_t3.txt
+head: cannot open 'chat_t3.txt' for reading: No such file or directory
+

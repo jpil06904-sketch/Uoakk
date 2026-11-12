@@ -1,0 +1,1 @@
+5715:students.map(s=>({id:s.id,no:s.no,name:s.name,grade:pdStudentGrade(state,s.id),enrolledOn:state.learning.studentMeta[s.id]?.enrolledOn,archived:!!state.learning.studentMeta[s.id]?.archived

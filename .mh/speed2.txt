@@ -1,0 +1,31 @@
+م گرفته‌اند به مبحث‌شان وصل کن و آن مبحث را برای بازآموزی هفتهٔ بعد پیشنهاد بده؛ نمره به‌تنهایی رنگ یادگیری نیست.
+سازوکارهای گفتگومحور (همگی با دادهٔ صریح معلم یا ثبت‌شده؛ بدون حدس و بدون ثبت خودکار):
+۱) از درددل به برنامه: وقتی معلم بعد از زنگ می‌گوید چه گذشت و کدام بچه‌ها مبحث را نفهمیدند، همان را به یک بستهٔ پیش‌نویس تبدیل کن (تجربهٔ تدریس، مشاهدهٔ همان نام‌هایی که خودش گفته و مهارت روشن دارد، برنامهٔ فردا) و بگو فردا اول ۱۰ دقیقه مرور پیش‌نیاز و پیگیری همان بچه‌ها باشد. ثبت فقط با تأیید؛ نتیجه نساز.
+۲) قانون ۳۰ درصد: تصمیم ادامه یا توقف را از نسبت اعلام‌شدهٔ معلم یا مشاهده‌های ثبت‌شده بگیر. اگر کمتر از حدود یک‌چهارم کلاس گیر دارند، بودجهٔ کل کلاس را عقب نینداز و یک کاربرگ جبرانی ۵ دقیقه‌ای برای همان چند نفر پیشنهاد بده. اگر بیش از حدود یک‌سوم گیر دارند، ترمز را بکش: جلسهٔ بعد را برای تدریس مجدد با روشی ساده‌تر پیشنهاد بده و جابه‌جایی مبحث جدید را فقط با پیش‌نمایش و تأیید بگو. بین این دو، خودت قضاوت کن و بگو این آستانه‌ها پیشنهاد است، نه قانون آموزشی. این تصمیم برچسب ضعف قطعی دانش‌آموز نیست.
+۳) پیش‌بینی گیر کردن: قبل از رسیدن به مبحث سنگین، از سابقهٔ ثبت‌شدهٔ همان مهارت یا پیش‌نیازش چند دانش‌آموز قرمز یا زرد را بشمار و فقط بگو «به‌نظر می‌رسد چند نفر ممکن است گیر کنند»؛ اسم‌ها فقط اگر معلم پرسید یا خواست. ۱۰ دقیقه پیش‌نیاز یا کار با همین چند نفر را در برنامه پیشنهاد بده؛ این پیش‌بینی قطعی نیست.
+۴) الگوهای اتلاف وقت: فقط اگر همان علت دست‌کم سه بار در گزارش‌ها یا گفتگو تکرار شده، آن را به‌صورت «فرضیه» بگو و یک تغییر کوچک در چیدمان همان روز پیشنهاد بده (مثلاً فعالیت عملی کوتاه اول زنگ).
+۵) همیار: وقتی یکی مبحث را خوب فهمیده، دیگری جا مانده و وقت کم است، یک «مأموریت همیار» داوطلبانهٔ کوتاه در بخش تمرین پیشنهاد بده؛ بدون برچسب‌زدن جلوی کلاس.
+۶) پیام خانواده: برای دانش‌آموز جامانده یک برنامهٔ جبرانی خانگی سه‌روزه و یک پیام محترمانه برای والدین بنویس (بدون تشخیص، برچسب و مقایسه)، آماده برای کپی. ارسال خودکار نداری؛ برای چاپ یا پیام از پیش‌نمایش برنامه استفاده کن.
+۷) مرور امتحان: برنامهٔ مرور را بر اساس مشاهده‌ها، پیگیری‌ها و گزارش‌های ثبت‌شدهٔ ماه‌های قبل بچین: بیشتر وقت برای مباحثی که بارها قرمز یا زرد بوده‌اند، کمتر برای مباحث پایدار. اگر داده کم است، تقسیم را برابر و صادقانه «بدون سابقهٔ کافی» اعلام کن.`;
+      for(let round=0;round<(tomorrowBudgetMode?8:MAX_TOOL_ROUNDS);round++) {
+      signal.throwIfAborted();
+          const send=async()=>fetchModelWithRetry(model,{systemInstruction:{parts:[{text:system+(annualBudgetMode?'':useTools&&!ideaMode&&!isClarificationPrompt(fallbackPrompt)?toolRules+(tomorrowBudgetMode?'':COLOR_MAP_RULES)+(tomorrowBudgetMode?'':budgetGuardRules):'')+(useTools&&!annualBudgetMode&&!ideaMode&&!learnMode&&!aggregateOnly&&!isClarificationPrompt(fallbackPrompt)?teacherTypeRules:'')+(!annualBudgetMode&&!ideaMode&&!learnMode&&!aggregateOnly&&isFollowUpPlanPrompt(fallbackPrompt)?followUpPlanRules:'')+(programMode?programThreadRules:'')+ideaModeRules+learnModeRules+tomorrowBudgetRules+(tomorrowBudgetMode?budgetYearAssumptionRules:'')+clarificationModeRules}]},contents,
+            ...(allowToolCalls?{tools:[{functionDeclarations:annualBudgetMode?[ANNUAL_BUDGET_FUNCTION_DECLARATION]:MehryarTools.declarations}]}:{}),
+              ...(tomorrowBudgetMode?{toolConfig:{functionCallingConfig:{mode:tomorrowBudgetRead?'AUTO':'ANY',...(tomorrowBudgetRead?{}:{allowedFunctionNames:['get_budget_and_progress']})}}}:annualBudgetMode?{toolConfig:{functionCallingConfig:{mode:'ANY',allowedFunctionNames:['save_annual_budget']}}}:{}),
+             generationConfig:{temperature:annualBudgetMode?0:tomorrowBudgetMode?0.4:ideaMode?0.95:0.45,maxOutputTokens:annualBudgetMode?32768:ideaMode?8192:learnMode?6144:isTomorrowPrompt(fallbackPrompt)?2048:3072,...(annualBudgetMode?{thinkingConfig:{thinkingBudget:0}}:ideaMode?{thinkingConfig:{thinkingBudget:3072}}:learnMode?{thinkingConfig:{thinkingBudget:1024}}:isTomorrowPrompt(fallbackPrompt)?{thinkingConfig:{thinkingBudget:768}}:!allowToolCalls&&!programMode&&!thinkingTrimBroken&&normKey(fallbackPrompt).length<=24?{thinkingConfig:{thinkingBudget:model===LIGHT_MODEL?512:1024}}:{})}},signal,annualBudgetMode?120000:ideaMode?90000:MODEL_FETCH_TIMEOUT_MS,annualBudgetMode||ideaMode?1:MAX_MODEL_RETRIES);
+       let response,data;
+       try {
+         ({response,data}=await send());
+        } catch (error) {
+          if(model!==FALLBACK_MODEL&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL});
+            if(model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});
+            if (!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&model===HEAVY_MODEL&&fallbackPrompt&&/سهمیه|سقف روزانه|موقتاً متوقف|quota|rate limit/i.test(error.message||'')) return workerFallback(fallbackPrompt,signal);
+          throw error;
+        }
+        if(!response.ok) {
+        const reason=(data.error?.details||[]).map(d=>d.reason||'').join(' ');
+        if([401,403].includes(response.status)||/API_KEY_INVALID|API_KEY_EXPIRED/.test(reason))verified=false;
+        const toolSchemaError=response.status===400&&/function_declarations|parameters|toolConfig|function_calling|schema/i.test(data.error?.message||'');
+        if(toolSchemaError)throw new Error('ساختار درخواست ابزارها توسط سرویس پذیرفته نشد (HTTP 400). این خطا از طرح ابزار است، نه لزوماً رمز یا سهمیه. هیچ تغییری ثبت نشده است.');
+          if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&response.status===400&&model===HEAVY_MODEL&&fallbackPrompt)return workerFallback(fallbackPrompt,signal);
+             if(response.status===429){const seconds=retrySeconds(response,data),rate=rateState();rate.backoffUntilByModel[model]=Date.now()+seconds*1000;rate.kindByModel=rate.kindByModel||{};rate.kindByModel[model]=quotaKind(data);rate.secondsByModel=rate.secondsByModel||{};rate.secondsByModel[model]=seconds;rate.rawByModel=rate.rawByModel||{};rate.rawByModel[model]=response.status+': '+String(data.error?.

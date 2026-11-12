@@ -1,0 +1,33 @@
+#### intentOf\( count=7
+@4309071: ).replace(/s$/,'')) : 0; |     const fromMessage = Number((data.error?.message || '').match(/retry in\s+([\d.]+)s/i)?.[1]); |     return clamp(Math.ceil(header || fromDetail || fromMessage || 30), 5, 300); |   } |   const intentCache = new Map(); |   function intentOf(prompt) { return intentCache.get(normKey(prompt)) || ''; } |   const INTENT_SYSTEM_PROMPT = 'تو مسیریاب پیام‌های یک معلم دبستان در دستیار آموزشی هستی. فقط یک برچسب بنویس، بدون هیچ کلمهٔ اضافه. 
+
+@4337780: nths)||[])for(const sub of m.subjects||[])if(sub&&sub.subjectTitle)names.add(String(sub.subjectTitle));}}catch(_){} |     return [...names].some(name=>{const n=normKey(name);return n&&q.includes(n);}); |   } |   function rawTomorrowPrompt(prompt) { |     if(intentOf(prompt)==='NEXT'&&!isClarificationPrompt(prompt))return true; |     const q=normKey(prompt); |     return !isClarificationPrompt(prompt)&&(NEXT_DAY_TRIGGERS.some(trigger=>q.includes(trigger))||is
+
+@4339064: er.some(m=>m.role==='model'))return false; |       const users=earlier.filter(m=>m.role==='user').slice(-6), carried=earlier.slice(-8).some(m=>m.role==='model'&&m.kind==='followup'); |       const focus=carried||users.some(m=>{const t=normKey(m.text),it=intentOf(m.text);return t.length>=20&&!NEXT_DAY_TRIGGERS.some(x=>t.includes(x))&&!/بودجه/.test(t)&&(['STUDENT','IDEA','LEARN'].includes(it)||FOCUS_PROBLEM.test(t));}); |       if(!focus)return false; |   
+
+@4339619: normKey(m.text)).join(' ')); |       return named.every(n=>before.includes(n)); |     } catch (_) { return false; } |   } |   function isFollowUpPlanPrompt(prompt) { |     if(isClarificationPrompt(prompt))return false; |     const q=normKey(prompt); |     return (intentOf(prompt)==='NEXT'||NEXT_DAY_TRIGGERS.some(trigger=>q.includes(trigger)))&&focusedFollowUp(prompt); |   } |   function isTomorrowPrompt(prompt) { return rawTomorrowPrompt(prompt)&&!isFollowUpPlanPr
+
+@4369081: Evidence}\n\n۲) دانش‌آموزان نیازمند توجه\n${studentText}\n\n۳) فعالیت ۳۵ دقیقه‌ای و معیار سنجش\n${activity}\n\n۴) رویکرد جایگزین\n${alternative}`; |   } |   function isLearnPrompt(prompt) { |     if(isClarificationPrompt(prompt))return false; |     const it=intentOf(prompt); |     if(it==='LEARN')return true; |     if(it)return false; |     if(NEXT_DAY_TRIGGERS.some(trigger=>normKey(prompt).includes(trigger)))return false; |     return /(یادم\s*بده|بهم\s*یاد\s*ب
+
+@4369541: *بده|از\s*صفر|یعنی\s*چی|چی\s*(?:ه|هست|هستش|ست)(?![\u0600-\u06FF]))/.test(normKey(prompt)); |   } |   function isInstructionalIdeaPrompt(prompt) { |     if(isLearnPrompt(prompt)||isFollowUpPlanPrompt(prompt)||classProblemThread(prompt))return false; |     if(intentOf(prompt)==='IDEA'&&!isClarificationPrompt(prompt))return true; |     if(isClarificationPrompt(prompt))return false; |     const q=normKey(prompt); |     return /(طراح.?ایده|ایده.?(?:درسی|آموزشی|کلاس
+
+@4373312:     return 'بودجه‌بندی‌ات رو پیست کن تا طبق همون ایده بدم.'; |        } |      } |      const lesson=MehryarTools.read({section:'lessonContext',limit:40}); |     const inquiry=buildTeachingInquiry(lesson,prompt), intent=classWidePromptIntent(prompt); |     if(intentOf(prompt)==='STUDENT'&&inquiry.status==='insufficient_evidence'&&!promptHasConcreteEvidence(prompt))return 'برای ساختن آزمایش تشخیصی، گزارش «ضعیف است» کافی نیست. لطفاً یک نمونهٔ قابل مشاهده بده
+
+#### function isTransientModelFailure count=1
+@4304651: function isTransientModelFailure(error) { |     return error?.code === 'MODEL_TIMEOUT' || error?.code === 'MODEL_NETWORK' || error?.code === 'MODEL_UNAVAILABLE' || error?.code === 'MODEL_RATE_LIMIT' || error instanceof TypeError; |   } |   async function fetchJsonWithTimeout(url, options, signal, timeoutMs) { |     const controller = new AbortController(); |     let timedOut = false; |     const forwardAbort = () => controller.abort(); |     if (signal.aborted) controller.abort(); else signal.addEventListener
+
+#### async function workerFallback count=1
+@4380123: async function workerFallback(prompt, signal) { |     try { |       const compactClassData = compactClassSnapshot(), classIdentity = compactClassIdentity(); |       const workerPrompt = 'شناسنامه کلاس:\n'+JSON.stringify(classIdentity)+'\n\nاطلاعات کلاس و دانش‌آموزان:\n'+JSON.stringify(compactClassData)+'\
+
+#### WORKER_FALLBACK_ENABLED\s*= count=1
+@4260341: so Gemini stays the only analysis path. |     const WORKER_FALLBACK_ENABLED = false; |    const HISTORY_KEY = 'mehryar_assistant_v1', 
+
+#### ping_heavy
+gemini-3.8-flash #0 st=503 8947ms { "error": { "code": 503, "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.", "statu
+gemini-3.8-flash #1 st=504 80148ms error code: 504 
+gemini-3-pro-preview #0 st=404 720ms { "error": { "code": 404, "message": "This model models/gemini-3-pro-preview is no longer available. Please update your code to use models/gemini-3.1-pro-previe
+gemini-3-pro-preview #1 st=404 453ms { "error": { "code": 404, "message": "This model models/gemini-3-pro-preview is no longer available. Please update your code to use models/gemini-3.1-pro-previe
+cfg #0 st=200 207ms
+cfg #1 st=200 695ms
+cfg #2 st=200 109ms
+DONE

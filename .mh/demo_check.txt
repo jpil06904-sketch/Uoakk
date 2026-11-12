@@ -1,0 +1,10 @@
+1955:function loadSample() {
+3510:loadSample=function(){if(demoMode){location.hash='#/pulse';return;}if(dirty&&!flushSave()){ui.toast('ابتدا پشتیبان بگیرید؛ ورود به نمونه تا رفع خطای ذخیره انجام نشد.');return;}clearTimeout(saveTimer2);saveEpoch++;realSnapshot=state;demoMode=true;state=sampleState();quickDraft=null;quickKey='';planDraft=null;di
+3713:loadSample=function(){if(!demoMode)storageRuntime.realDirty=dirty;enterDemoBeforeStorage();$('#save-ind')?.classList.remove('show');queueMicrotask(renderStorageNotice);};
+8058:loadSample = function() {
+3510:demoMode=true;state=sampleState();quickDraft=null;quickKey='';planDraft=null;dirty=false;location.hash='#/pulse';applyTheme();schedul
+3511:function exitDemo(){if(!demoMode)return;clearTimeout(saveTimer2);saveEpoch++;state=realSnapshot;realSnapshot=null;demoMode=false;quickDraft=null;quickKey='';planDraft=null;dirty=false;applyTheme();location.hash='#/hom
+3714:const exitDemoBeforeStorage=exitDemo;
+3715:exitDemo=function(){if(!demoMode)return;exitDemoBeforeStorage();dirty=storageRuntime.realDirty;queueMicrotask(renderS
+8062:exitDemo = function() {
+DONE

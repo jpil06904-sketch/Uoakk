@@ -1,0 +1,26 @@
+### const progressPreview\s*= count=0
+### const curriculumBook\s*= count=1
+-- line 8902: const curriculumBook = id => ensureCurriculum(state).curriculum.books.find(book=>book.id===id);
+  const curriculumNodes = book => flattenNodes(book?.nodes || []);
+  const currentProgress = id => ensureCurriculum(state).curriculum.teachingProgress[id] || {currentNodeId:'',statuses:{},exceptions:[],up
+### const activeCurriculumBooks\s*= count=1
+-- line 8900: const activeCurriculumBooks = () => activeCurriculumBooksFor(state);
+   const activeCurriculumBudgetEntries = () => { const ids=new Set(activeCurriculumBooks().map(book=>book.id)); return ensureCurriculum(state).curriculum.budget.entries.filter(entry=>ids.has(entry.bookId)); };
+   const curriculumBook = id => ensureCurriculum(state).curriculum.books.find(book=>book.id===id);
+  const curriculumNode
+### function renderBudget\(\) count=1
+-- line 9402: function renderBudget() {
+     ensureCurriculum(state); const activeBooks=activeCurriculumBooks(), c=state.curriculum, activeIds=new Set(activeBooks.map(book=>book.id)), existing=c.budget.entries.filter(entry=>activeIds.has(entry.bookId));
+      const scopeKey=state.curriculum.scopeKey||curriculumScopeKey(state);if(budgetEditor.scopeKey!==scopeKey){budgetEditor.scopeKey=scopeKey;budgetEditor.entries=clone(existing);budgetEditor.schoolDays=clone(c.budget.schoolDays);budgetEditor.holidays=clone(c.budget.holidays);budgetEditor.newBookId=activeBooks.find(book=>curriculumNodes(book).length)?.id||activeBooks[0]?.id||'';budgetEditor.preview=null;}else{if(!budgetEditor.entries)budgetEditor.entries=clone(existing);if(!budgetEditor.schoolDays)budgetEditor.schoolDays=clone(c.budget.schoolDays);if(!budgetEditor.holidays)budgetEditor.holidays=clone(c.budget.holidays);if(!budgetEditor.newBookId)budgetEditor.newBookId=activeBooks.find(book=>curriculumNodes(book).length)?.id||activeBooks[0]?.id||'';}
+    const book=curriculumBook(budgetEditor.newBookId), nodes=curriculumNodes(book), validation=budgetEntryValidation(budgetEditor.entries), range=weekRange();
+      const entryRows=budgetEditor.entries.map((entry,index)=>{const selectedBook=curriculumBook(entry.bookId), selectedNodes=curriculumNodes(selectedBook),nodeOptions=`<option value="" ${!entry.nodeId?'selected':''}>کل کتاب</option>`+selectedNodes.map(node=>`<option value="${esc(node.id)}" ${node.id===entry.nodeId?'selected':''}>${esc(nod
+### curriculum-empty count=5
+-- line 9389: .join('')}${nodes.length>preview.length?`<li class="sub">و ${fa(nodes.length-preview.length)} مورد دیگر…</li>`:''}</ul></details>`:hasText?'<p class="curriculum-empty">متن واردشده قابل بازیابی است؛ فهرست ساختاری کتاب هنوز وارد نشده است.</p>':'<p class="curriculum-empty">فهرست و محتوای قابل بازیابی هنوز وارد نشده است. عنوان کتاب به‌تنهایی محتوای کتاب نیست.</p>'}<input type="file" accept=".json,.txt
+-- line 9389: …</li>`:''}</ul></details>`:hasText?'<p class="curriculum-empty">متن واردشده قابل بازیابی است؛ فهرست ساختاری کتاب هنوز وارد نشده است.</p>':'<p class="curriculum-empty">فهرست و محتوای قابل بازیابی هنوز وارد نشده است. عنوان کتاب به‌تنهایی محتوای کتاب نیست.</p>'}<input type="file" accept=".json,.txt,.md,.csv,text/plain,application/json,text/csv" data-curriculum-file="${esc(book.id)}"><button type="bu
+-- line 9466: tion="${esc(node.id)}" ${progressEditor.exceptions.includes(node.id)?'checked':''}>${esc(node.title)}</label>`).join('')}</div></details>`:'<p class="curriculum-empty">برای این کتاب ساختار واقعی وارد نشده است؛ وضعیت تدریس بدون فهرست قابل حدس نیست.</p>'}<div class="pulse-actions">${ui.btnTinted('پیش‌نمایش محدوده',()=>{progressEditor.preview=progressPreview(bookId,progressEditor.selectedNodeId||prog
+-- line 9473: })}${ui.btnPlain('بودجه‌بندی',()=>location.hash='#/curriculum/budget',{sm:true})}</div></div>`)}<section class="week-plan-list">${cards||'<div class="curriculum-empty">برای این هفته ردیف بودجه‌بندیِ تطبیق‌پذیر وجود ندارد.</div>'}</section>${unscheduled.length?ui.card(`<h2>کتاب‌های دارای فهرست اما بدون زمان‌بندی</h2><ul class="curriculum-node-list">${unscheduled.map(book=>`<li><b>${esc(book.title)}
+### bookProgressSummary\( count=3
+-- line 9376: /section><section class="curriculum-book-grid">${activeBooks.map(book=>{const p=bookProgressSummary(book);return `<article class="curriculum-book-card"><div class="book-card-head"><div><span class="bo
+-- line 9465: onst nodes=curriculumNodes(selected), progress=currentProgress(bookId), summary=bookProgressSummary(selected);
+    mount({title:'جایگاه واقعی تدریس',backHref:'#/curriculum',content:`${curriculumNav('c
+-- line 9469: weekProgressLabel = entry => { const book=curriculumBook(entry.bookId), summary=bookProgressSummary(book), status=summary.statuses?.[entry.nodeId]||''; if(status==='taught')return ['تدریس‌شده','green'

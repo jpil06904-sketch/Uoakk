@@ -1,0 +1,42 @@
+    title: 'خانه', large: true, back: false, help: 'home',
+    content: `<div class="hero">${heroBg()}<div class="hero-body"><h2>سلام ${esc(teacherName() || 'آموزگار عزیز')}</h2>${(className() || k.school) ? `<p>${esc([className(), k.school].filter(Boolean).join(' · '))}</p>` : '<p>برای شروع، اطلاعات کلاس را وارد کنید</p>'}<div class="hero-count">${icon('people', 'warn-ico')} ${plural(n, 'دانش‌آموز')}</div></div>${ui.progressRing(pct, 76, 7)}</div>
+      ${!n ? ui.emptyState({ illu: 'classroom', title: 'هنوز دانش‌آموزی ثبت نشده', text: 'لیست اسامی را بچسبانید تا همهٔ ابزارها آماده شوند.', action: `<a class="btn btn-primary" href="#/students/import">${icon('upload')} وارد کردن دانش‌آموزان</a>` }) : nextBanner}
+      ${ui.card(`<div class="card-title">${ui.tile('sparkles', 'green', 32)}مسیر آماده‌سازی</div>${ui.stepperPath(steps, cur)}${cur > -1 ? `<a class="btn btn-primary btn-block" href="${steps[cur].href}">ادامه: ${steps[cur].title} ${icon('arrowLeft')}</a>` : `<div class="center"><b style="color:var(--primary)">آماده‌اید!</b><a class="btn btn-primary btn-block mt8" href="#/outputs">رفتن به ابزارها ${icon('arrowLeft')}</a></div>`}`)}
+      ${ui.card(`<div class="card-title">${ui.tile('calendar', 'orange', 32)}برنامهٔ امروز<span class="sub" style="margin-right:auto">روز ${fa(day)} از ۷</span></div><div class="chips scroll mb12">${range(1, 7).map(d => ui.chip(`روز ${fa(d)}`, { active: d === day, onClick: () => setState({ ui: { planDay: d } }), sm: false })).join('')}</div>${plan.tasks.map(t => `<div class="task ${t.done ? 'done' : ''}"><span class="ccheck ${t.done ? 'on' : ''}" role="checkbox" aria-checked="${t.done}" tabindex="0" data-click="${h(() => { t.done = !t.done; setState({}); })}">${icon('check
+      <div class="shortcut-grid">${shortcuts.map(([k2, t, s, ic, g, href]) => `<a class="shortcut" href="${href}">${ui.tile(ic, g, 40)}<div><b>${t}</b><div class="sub">${s}</div></div></a>`).join('')}</div>
+      ${warnings.length ? ui.card(`<div class="card-title">${ui.tile('bell', 'orange', 32)}هشدارها</div>` + ui.list(warnings.map(w => ui.row({ icon: w.icon, gradient: w.g, title: esc(w.t), href: w.href })), 'mb8') ) : ''}`
+  });
+}
+let returnToAssistant = false;
+function renderClass() {
+  const k = state.klass;
+  const upd = (patch) => setState({ klass: patch }, { silent: true }) || refreshPreview();
+  const refreshPreview = () => { const p = $('#class-preview'); if (p) p.innerHTML = classPreviewHtml(); };
+  const classPreviewHtml = () => `<b>${esc(state.klass.school || 'نام مدرسه')}</b>${esc(className() || 'نام کلاس')} · ${esc(state.klass.year || '')}<br>آموزگار: ${esc(teacherName() || '…')}${state.klass.phone ? ` · ${esc(state.klass.phone)}` : ''}`;
+  mount({
+    title: 'اطلاعات کلاس', help: 'class', backHref: returnToAssistant ? '#/pulse/assistant' : '#/home',
+    content: `${ui.card(`
+      ${ui.field('پیشوند', ui.segmented([['خانم', 'خانم'], ['آقای', 'آقای'], ['', '—']], k.teacherPrefix, v => { setState({ klass: { teacherPrefix: v } }); }))}
+      ${ui.field('نام و نام خانوادگی آموزگار', ui.input({ id: 'f-teacher', value: k.teacher, placeholder: 'مثلاً مریم رضوانی', onInput: v => upd({ teacher: v }) }))}
+      ${ui.field('نام مدرسه', ui.input({ id: 'f-school', value: k.school, placeholder: 'مثلاً دبستان شهید بهشتی', onInput: v => upd({ school: v }) }))}
+      ${ui.field('پایه', ui.select({ id: 'f-grade', value: k.grade, options: [['', 'انتخاب کنید']].concat(GRADES.map(g => [g, g])), onChange: v => { const patch = { grade: v }; if (!k.className || GRADES.includes(k.className)) patch.className = v; setState({ klass: patch }); } }))}
+      ${ui.field('نام کلاس', ui.input({ id: 'f-class', value: k.className, placeholder: k.grade ? `پیش‌فرض: ${k.grade}` : 'مثلاً دوم الف', onInput: v => upd({ className: v }) }))}
+      ${ui.field('سال تحصیلی', ui.input({ id: 'f-year', value: k.year, placeholder: currentYearLabel(), onInput: v => upd({ year: v }) }))}
+      ${ui.field('تلفن آموزگار (اختیاری)', ui.input({ id: 'f-phone', value: k.phone, type: 'tel', ltr: true, inputmode: 'tel', placeholder: '0912…', onInput: v => upd({ phone: v }) }))}
+      ${ui.field('نام مدیر (اختیاری)', ui.input({ id: 'f-principal', value: k.principal, onInput: v => upd({ principal: v }) }))}`)}
+      ${ui.card(`<div class="card-title">پیش‌نمایش سربرگ</div><div class="class-preview" id="class-preview">${classPreviewHtml()}</div>`)}
+      ${ui.btnPrimary(returnToAssistant ? 'ذخیره و بازگشت به چت‌بات' : 'ذخیره و ادامه ← دانش‌آموزان', () => { if(returnToAssistant && (!String(state.klass.teacher || '').trim() || !String(state.klass.school || '').trim() || !GRADES.includes(state.klass.grade))){ui.toast('نام معلم، مدرسه و پایه را تکمیل کن.');return;} setState({ progress: { classDone: true } }, { silent: true }); if(!flushSave())return; ui.toast('اطلاعات کلاس ذخیره شد', { icon: 'check' }); location.hash = returnToAssistant ? '#/pulse/assi
+  });
+}
+
+/* ============================================================
+   JS — Pages: دانش‌آموزان
+   ============================================================ */
+let studentsQ = ''; let studentsEdit = false;
+function renderStudents() {
+  const n = state.students.length;
+  const qn = normKey(studentsQ);
+  const shown = activeStudents().filter(s => !studentsQ || normKey(s.name).includes(qn) || String(s.no) === en(studentsQ));
+  const addSheet = () => ui.actionSheet({ title: 'افزودن دانش‌آموز', actions: [{ label: 'افزودن یک نفر', onClick: addOne }, { label: 'چسباندن لیست', onClick: () => location.hash = '#/students/import' }] });
+  const addOne = () => {
+7622:روشن نیست گزارش مال کدام کلاس است یک سؤال کوتاه بپرس («الف یا ب؟») و هر کلاس را کاملاً جدا نگه دار؛ دادهٔ یک کلاس را به کلاس دیگر تعمیم نده.

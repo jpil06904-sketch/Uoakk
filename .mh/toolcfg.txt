@@ -1,0 +1,4 @@
+7645:              ...(tomorrowBudgetMode?{toolConfig:{functionCallingConfig:{mode:tomorrowBudgetRead?'AUTO':'ANY',...(tomorrowBudgetRead?{}:{allowedFunctionNames:['get_budget_and_progress']})}}}:annualBudgetMode?{toolConfig:{functionCallingConfig:{mode:'ANY',allowedFunctionNames:['save_annual_budget']}}}:{}),
+7660:        const toolSchemaError=response.status===400&&/function_declarations|parameters|toolConfig|function_calling|schema/i.test(data.error?.message||'');
+7641:      for(let round=0;round<(tomorrowBudgetMode?8:MAX_TOOL_ROUNDS);round++) {
+7673:      const calls=(content?.parts||[]).filter(p=>p.functionCall);

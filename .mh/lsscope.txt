@@ -1,0 +1,14 @@
+-rw-rw-rw- 1 codespace codespace  5355 13:17 ctx13.txt
+-rw-rw-rw- 1 codespace codespace  7325 13:18 ctx14.txt
+-rw-rw-rw- 1 codespace codespace  7254 15:49 scope_src.txt
+-rw-rw-rw- 1 codespace codespace  4780 13:09 scope_test.cjs
+-rw-rw-rw- 1 codespace codespace   980 13:09 scope_test.txt
+-rw-rw-rw- 1 codespace codespace  4780 15:49 scope_test_copy.txt
+-rw-rw-rw- 1 codespace codespace     7 13:09 scope_test_log.txt
+-rw-rw-rw- 1 codespace codespace 17518 15:49 state_now.txt
+ 7254 scope_src.txt
+ 4780 scope_test.cjs
+  980 scope_test.txt
+ 5355 ctx13.txt
+ 7325 ctx14.txt
+25694 total

@@ -1,0 +1,45 @@
+== setItem calls
+      1 localStorage.setItem(CACHE_KEY,
+      1 localStorage.setItem(CODE_SLOT,
+      1 localStorage.setItem(HIDE_KEY,
+      1 localStorage.setItem(HISTORY_KEY,
+      1 localStorage.setItem(RATE_KEY,
+      3 localStorage.setItem(STORAGE_KEY+'_before_import',
+      3 localStorage.setItem(STORAGE_KEY+'_before_learning',
+     10 localStorage.setItem(STORAGE_KEY,
+      1 localStorage.setItem(STUDENT_DOSSIER_KEY,
+      2 localStorage.setItem(indexKey,
+      1 localStorage.setItem(k,
+      2 localStorage.setItem(key,
+      1 localStorage.setItem(probe,
+== KEY consts
+== STORAGE_KEY
+1804:STORAGE_KEY = 'mehryar_v6'
+== MehryarTools writes to state?
+5582:MehryarTools = (() => {
+0
+    195 state.learning
+     91 state.klass
+     75 state.students
+     55 state.curriculum
+     26 state.lists
+     23 state.ui
+     16 state.progress
+     15 state.messages
+     12 state.meeting
+      8 state.fields
+      7 state.plan
+      4 state.outputSettings
+      1 state.assistantUndo
+== chat history save
+6515:   const HISTORY_KEY = 'mehryar_assistant_v1', KEY_SLOT = 'mehryar_assistant_session_key', CODE_SLOT = 'mehryar_ai_code';
+7468:      const raw = localStorage.getItem(HISTORY_KEY);
+7491:      if (localStorage.getItem(HISTORY_KEY) !== lastStored) {
+7494:      localStorage.setItem(HISTORY_KEY,snapshot); lastStored = snapshot; lastSnapshot = snapshot;
+8031:      try { if (!demoMode) localStorage.removeItem(HISTORY_KEY); } catch (_) { ui.toast('پاک کردن حافظه ممکن نشد؛ پیام‌ها حذف نشدند.'); return; }
+8078:    if (e.key !== HISTORY_KEY || demoMode) return;
+== validateImport
+3389:function validateImport(d){assertSafeTree(d);if(!isObj(d)||!Array.isArray(d.students)||(d.version!==undefined&&(!Number.isInteger(d.version)||d.version<1||d.version>6)))throw Error('نسخه یا ساختار نامعتبر');const ids=new Set();for(const s of d.students){if(!s||typeof s.id!=='string'||!/^[\w-]+$/.test(s.id)||ids.has(s.id)||typeof s.name!=='string'||!s.name.trim())throw Error('شناسهٔ تکراری یا دانش‌آموز نامعتبر');ids.add(s.id);}if(d.learning){const l=d.learning;if(l.schemaVersion!==undefined&&l.schemaVersion!==1)throw E
+== replaceState
+1915:function replaceState(newState) { state = migrate(newState); dirty = true; persist(); scheduleRender(); }
+DONE

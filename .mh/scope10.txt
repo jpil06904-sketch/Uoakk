@@ -1,0 +1,71 @@
+===  curriculumScopeKey\s*= 4531606
+ || '').replace(/[۰-۹]/g,d=>FA_DIGITS.indexOf(d)).replace(/[–—]/g,'-').replace(/\s+/g,'');
+   const curriculumScopeKey = data => { const k=data?.klass||{}; const parts=['school','teacher','className','grade','year'].map(name=>normKey(String(k[name]||''))); return parts.some(Boolean)?parts.join('|'):'unassigned'; };
+   const curriculumContextSnapshot = value => { const out=clone(value||{}); delete out.contexts; return out; };
+   const classScopedKeys = ['klass','classContexts','fields','students','lists','meeting','plan7','messages','outputSettings','progress','learning','curriculum'];
+   const classScopeSnapshot = data => { const out={}; for(const key of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };
+   function ensureClassScope(data) {
+     if(!data||typeof data!=='object')return data;
+     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),c
+
+===  const classScopedKeys 4531938
+ulumContextSnapshot = value => { const out=clone(value||{}); delete out.contexts; return out; };
+   const classScopedKeys = ['klass','classContexts','fields','students','lists','meeting','plan7','messages','outputSettings','progress','learning','curriculum'];
+   const classScopeSnapshot = data => { const out={}; for(const key of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };
+   function ensureClassScope(data) {
+     if(!data||typeof data!=='object')return data;
+     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');
+     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}
+     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}
+     // اگر اطلاعات کلاس قبلی ناقص بوده (راه‌ا
+
+===  classScopeSnapshot\s*= 4532107
+'lists','meeting','plan7','messages','outputSettings','progress','learning','curriculum'];
+   const classScopeSnapshot = data => { const out={}; for(const key of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };
+   function ensureClassScope(data) {
+     if(!data||typeof data!=='object')return data;
+     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');
+     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}
+     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}
+     // اگر اطلاعات کلاس قبلی ناقص بوده (راه‌اندازی اول یا نمونه)، همان کلاس در حال تکمیل است: داده‌ها حفظ و فقط کلید به‌روز شود.
+     const prevParts=currentKey.split('|'),prevIncomplete=currentKey==='unassigned'||
+
+=== ensureClassScope full
+function ensureClassScope(data) {
+     if(!data||typeof data!=='object')return data;
+     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');
+     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}
+     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}
+     // اگر اطلاعات کلاس قبلی ناقص بوده (راه‌اندازی اول یا نمونه)، همان کلاس در حال تکمیل است: داده‌ها حفظ و فقط کلید به‌روز شود.
+     const prevParts=currentKey.split('|'),prevIncomplete=currentKey==='unassigned'||(prevParts.length===5&&prevParts.slice(0,4).some(part=>!part));
+     if(prevIncomplete&&!contexts[activeKey]){if(isObj(data.curriculum)&&data.curriculum.scopeKey===currentKey)data.curriculum.scopeKey=activeKey;data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}
+     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;
+     const target=contexts[activeKey];
+     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}
+     else if(currentKey!=='unassigned'){
+       const blank=migrate({klass:clone(data.klass)});
+       for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(blank,key))data[key]=clone(blank[key]);
+     }
+     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;
+   }
+    const curriculumDefaults = () => ({
+      schemaVersion: CURRICULUM_VERSION,
+      scopeKey:'',
+      contexts:{},
+      catalog: { grade:'', academicYear:'', source:'', sourceLabel:'کاتالوگ پایهٔ کلاس هنوز مشخص نشده است' },
+     books: OFFICIAL_BOOKS.map(book => ({...book,sourceType:CURRICULUM_SOURCE.official,sourceLabel:CURRICULUM_SOURCE_LABEL.official,nodes:[],contentStatus:'metadata_only',contentRef:null,contentExcerpt:'',contentLength:0,contentFileName:'',importedAt:''})),
+      budget: { version:0, history:[], schoolDays:[6,0,1,2,3], weekStart:6, holidays:[], entries:[], source:'', sourceText:'', importedAt:'', approvedAt:'', pending:null, draft:null },
+    teachingProgress: {},
+    assets: {}
+  });
+  const normalizeNode = (node, bookId, index, parentId='') => {
+    if (!node || typeof node !== 'object') return null;
+    const title = String(node.title || node.
+=== callers
+4532326 "= data => { const out={}; for(const key of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };\n   function ensureClassScope(data) {\n     if(!data||typeof data!=='object')return data;\n     const contexts=isObj(data.classContexts"
+4609310 'lum(migrateBeforeCurriculum(saved));\n  const flushBeforeCurriculum = flushSave;\n  flushSave = function() { ensureCurriculum(state); preserveDirectBudgetVersion(); return flushBeforeCurriculum(); };\n  ensureClassScope(state);\n  const flushBeforeClassScope = flushSave;\n  flushSave = function() { ensureClassScope(state); '
+4609405 'unction() { ensureCurriculum(state); preserveDirectBudgetVersion(); return flushBeforeCurriculum(); };\n  ensureClassScope(state);\n  const flushBeforeClassScope = flushSave;\n  flushSave = function() { ensureClassScope(state); return flushBeforeClassScope(); };\n  const replaceBeforeCurriculum = replaceState;\n   replaceSt'
+4610078 "f asset.text==='string') putAsset(asset); });\n     if (ok) curriculumBudgetBaseline=curriculumBudgetSnapshot();\n     return ok;\n   };\n   const migrateBeforeClassScope = migrate;\n   migrate = saved => ensureClassScope(migrateBeforeClassScope(saved));\n   const persistBeforeClassScope = persist;\n   persist = (...args) => "
+4610200 'n ok;\n   };\n   const migrateBeforeClassScope = migrate;\n   migrate = saved => ensureClassScope(migrateBeforeClassScope(saved));\n   const persistBeforeClassScope = persist;\n   persist = (...args) => { ensureClassScope(state); return persistBeforeClassScope(...args); };\n   const setStateBeforeClassScope = setState;\n   se'
+4610409 'ssScope(state); return persistBeforeClassScope(...args); };\n   const setStateBeforeClassScope = setState;\n   setState = function(patch, opts = {}) { const result=setStateBeforeClassScope(patch,opts); ensureClassScope(state); return result; };\n   const replaceBeforeClassScope = replaceState;\n   replaceState = function(d'
+4610583 'reClassScope(patch,opts); ensureClassScope(state); return result; };\n   const replaceBeforeClassScope = replaceState;\n   replaceState = function(data) { const ok=replaceBeforeClassScope(data); if(ok) ensureClassScope(state); return ok; };\n  const exportBeforeCurriculum = exportJSON;\n  exportJSON = async function() {\n  '

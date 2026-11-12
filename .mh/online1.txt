@@ -1,0 +1,4 @@
+cfg http=200 dns=0.029811 connect=0.035662 tls=0.058639 ttfb=0.904388 total=0.904435
+cfg http=200 dns=0.000968 connect=0.006659 tls=0.032579 ttfb=0.646916 total=0.646959
+cfg http=200 dns=0.000919 connect=0.006668 tls=0.029645 ttfb=0.453967 total=0.454018
+{"banners":{},"popup":null}

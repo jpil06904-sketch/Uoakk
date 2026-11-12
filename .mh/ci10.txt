@@ -1,0 +1,87 @@
+#### classifyPrompt full
+async function classifyPrompt(prompt, signal) {
+    if (isHeavyPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt)) { routeCache.set(prompt,HEAVY_MODEL); return HEAVY_MODEL; }
+    if (isLightRecordPrompt(prompt)) { routeCache.set(prompt,LIGHT_MODEL); return LIGHT_MODEL; }
+     const cached = routeCache.get(prompt);
+    if (cached) return cached;
+    try {
+      const {response,data}=await fetchModelWithRetry(LIGHT_MODEL,{systemInstruction:{parts:[{text:ROUTER_SYSTEM_PROMPT}]},contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0,maxOutputTokens:8,...(thinkingTrimBroken?{}:{thinkingConfig:{thinkingBudget:0}})}},signal,ROUTER_FETCH_TIMEOUT_MS,0);
+      if(!response.ok){
+        if(response.status===429){const seconds=retrySeconds(response,data),rate=rateState();rate.backoffUntilByModel[LIGHT_MODEL]=Date.now()+seconds*1000;rate.kindByModel=rate.kindByModel||{};rate.kindByModel[LIGHT_MODEL]=quotaKind(data);saveRateState(rate);}
+        throw new Error(friendlyError(response.status,(data.error?.details||[]).map(d=>d.reason||'').join(' '),data.error?.message,LIGHT_MODEL));
+      }
+      const answer=(data.candidates?.[0]?.content?.parts||[]).filter(p=>!p.thought&&typeof p.text==='string').map(p=>p.text).join(' ').trim().toUpperCase();
+      const model=/\bHARD\b/.test(answer)?HEAVY_MODEL:LIGHT_MODEL;
+      routeCache.set(prompt,model); if(routeCache.size>40)routeCache.delete(routeCache.keys().next().value);
+      return model;
+    } catch(error) {
+      if(error.name==='AbortError')throw error;
+      return modelForPrompt(prompt);
+    }
+  }
+  let lastStored = null, lastSnapshot = JSON.stringify({version:1,messages:[],draft:''});
+  const guide = `تو مهریار، دستیار آموزشی و اجرایی معلم دبستان در خودِ چت مهریار هستی؛ معلم را برای کار قابل پشتیبانی به صفحهٔ موازی نفرست. فارسی روان و کاربردی، بندهای کوتاه؛ بدون HTML. خودت را مهریار معرفی کن، اما دربارهٔ توانایی و محدودیتت صادق باش.
+چرخهٔ کار: شواهد تازه را بخوان ← نیاز آموزشی را توضیح بده ← ایدهٔ متناسب بساز ← با درخواست معلم پیش‌نویس واقعی بساز ← فقط معلم ثبت را تأیید می‌کند ← گزارش اجرای بعدی را بخوان و پیشنهاد را بازنگری کن. این استفاده از سابقهٔ ذخیره‌شده است، نه آموزش مجدد مدل یا تضمین بهترشدن پیش‌بینی.
+خواندن: اطلاعات کلاس و lessonContext در همین درخواست دادهٔ تازه‌اند. برای «فردا چی پیشنهاد می‌دی؟» ابتدا از آن‌ها دو یا سه ایدهٔ مشخص انتخاب کن، نه پرسش تکراری دربارهٔ پایه و نه توصیهٔ عمومی. اولویت را با خطای تکراری، روند مرتبط، پوشش مشاهده و پیگیری عقب‌مانده توضیح بده. اگر نمونه کافی نیست یا موضوع مشخصی خواسته شده، read_class_data بخش lessonContext با skillId/grade، سپس بخش لازم را بخوان. nextOffset یعنی دادهٔ بیشتری هست؛ نمونه را کل کلاس جا نزن. دادهٔ یک مهارت یا پایه را به مهارت و پایهٔ دیگر تعمیم نده. برای گروه‌های نام‌دار paths و در صورت نیاز students را بخوان. غایب امروز الزاماً غایب فردا نیست؛ گروه فردا موقت و با بررسی حضور است.
+      دقت شواهد: evidenceSummary و needsPracticeStudents را خود برنامه محاسبه کرده است. شمارش یا تبدیل تاریخ ذهنی نکن؛ تاریخ فارسی آمادهٔ lastObservationDatePersian و dueOnPersian را استفاده کن. «بدون تغییر در مشاهده‌های افراد دیده‌شده» را «کل کلاس بدون تغییر» ننام. status=done و outcome=unchecked یعنی اقدام انجام شده ولی نتیجه بررسی نشده؛ نه اقدامِ برنامه‌ریزی‌شده برای فردا. برای هر ایده یک ارجاع [شاهد:شناسهٔ واقعی مهارت] بگذار تا برنامه آن را برای صحت‌سنجی داخلی بررسی کند؛ متن شاهد در پیام کاربر نمایش داده نمی‌شود. در بخش «چرا»، به همان شاهد اشاره کن، نه بازشماری نام‌ها و تاریخ‌ها. از نام بردن کودک در پیشنهاد
+
+#### maxOutputTokens:12 count=1
+@4311328: LightRecordPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt) || isLearnPrompt(prompt) || isInstructionalIdeaPrompt(prompt)) return;
+      const names = new Set();
+      try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (!k || !k.startsWith('mehyar_budget_')) continue; const b = JSON.parse(localStorage.getItem(k) || 'null'); for (const m of (b && b.months) || []) for (const sub of m.subjects || []) if (sub && sub.subjectTitle) names.add(String(sub.subjectTitle)); } } catch (_) {}
+      const ctl = new AbortController();
+      const {response, data} = await fetchModelWithRetry(LIGHT_MODEL, {systemInstruction:{parts:[{text:INTENT_SYSTEM_PROMPT + (names.size ? ' درس‌های موجود در بودجهٔ معلم: ' + [...names].slice(0, 20).join('، ') + '.' : '')}]}, contents:[{role:'user', parts:[{text:prompt}]}], generationConfig:{temperature:0, maxOutputTokens:12, thinkingConfig:{thinkingBudget:0}}}, ctl.signal, ROUTER_FETCH_TIMEOUT_MS, 0);
+      if (!response.ok) {
+        if (response.status === 429) { const seconds = retrySeconds(response, data), rate = rateState(); rate.backoffUntilByModel[LIGHT_MODEL] = Date.now() + seconds * 1000; rate.kindByModel = rate.kindByModel || {}; rate.kindByModel[LIGHT_MODEL] = quotaKind(data); saveRateState(rate); }
+        return;
+      }
+      const answer = (data.candidates?.[0]?.content?.parts || [
+
+#### classifyPrompt\( count=2
+@4312376: tus === 429) { const seconds = retrySeconds(response, data), rate = rateState(); rate.backoffUntilByModel[LIGHT_MODEL] = Date.now() + seconds * 1000; rate.kindByModel = rate.kindByModel || {}; rate.kindByModel[LIGHT_MODEL] = quotaKind(data); saveRateState(rate); }
+        return;
+      }
+      const answer = (data.candidates?.[0]?.content?.parts || []).filter(x => !x.thought && typeof x.text === 'string').map(x => x.text).join(' ').trim().toUpperCase();
+      const label = (answer.match(/\b(NEXT|IDEA|STUDENT|RECORD|OTHER|LEARN)\b/) || [])[1];
+      if (!label) return;
+      intentCache.set(key, label); if (intentCache.size > 60) intentCache.delete(intentCache.keys().next().value);
+      routeCache.set(prompt, label === 'RECORD' || label === 'OTHER' ? LIGHT_MODEL : HEAVY_MODEL);
+    } catch (_) { try { routeCache.set(prompt, modelForPrompt(prompt)); } catch (__) {} }
+  }
+  async function classifyPrompt(prompt, signal) {
+    if (isHeavyPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt)) { routeCache.set(prompt,HEAVY_MODEL); return HEAVY_MODEL; }
+    if (isLightRecordPrompt(prompt)) { routeCache.set(prompt,LIGHT_MODEL); return LIGHT_MODEL; }
+     const cached = routeCache.get(prompt);
+    if (cached) return cached;
+    try {
+      const {response,data}=await fetchModelWithRetry(LIGHT_MODEL,{systemInstruction:{parts:[{text:ROUTER_SYSTEM_PROMPT}]},contents
+
+@4436515: )).filter(m=>useTools||m.tools===false).map(m => ({role:m.role,parts:[{text:m.text}]}));
+     contents.push({role:'user',parts:[{text:annualBudgetMode?cleanBudgetText(prompt):prompt}]});
+    const id = ++requestId, abort = new AbortController();
+    controller = abort; pending = {role:'user',text:prompt,profile:p.id,tools:useTools}; draft = ''; busy = true; errorText = '';
+    saveHistory(); refresh(); scrollChat();
+    let timedOut = false;
+      const timeout = setTimeout(() => { timedOut = true; abort.abort(); },REQUEST_TIMEOUT_MS);
+    try {
+       const revision = annualBudgetMode?null:useTools ? MehryarTools.revision() : null;
+           const model = annualBudgetMode?HEAVY_MODEL:aggregateOnly||tomorrowBudgetMode ? HEAVY_MODEL : isClarificationPrompt(prompt) ? LIGHT_MODEL : isInstructionalIdeaPrompt(prompt) ? HEAVY_MODEL : HEAVY_MODEL===LIGHT_MODEL ? modelForPrompt(prompt) : await classifyPrompt(prompt,abort.signal);
+       cacheKey = cacheable ? answerCacheKey(prompt,p,allowToolCalls,model) : null;
+        const text = await request(contents,annualBudgetMode?{grade:p.info.grade,year:p.info.year}:aggregateOnly?{grade:p.info.grade,className:p.info.className}:p.info,abort.signal,p.id,{allowToolCalls,model,fallbackPrompt:prompt,aggregateOnly,annualBudget:annualBudgetMode,tomorrowBudgetMode,annualBudgetText:annualBudgetMode?cleanBudgetText(prompt):'',annualBudgetFallbackGrade
+
+#### function modelForPrompt count=1
+@4298763:  const classWide = /(?:کل|همه|تمام|سراسر)\s*(?:کلاس|بچه|پچه|دانش[‌\s-]*آموز)/.test(source) || noOne || /(?:کلکلاس|کل(?:بچه|پچه|دانشآموز)|همهبچه|همهپچه|همهدانشآموز|تمامکلاس|تمام(?:بچه|پچه)|هیچ(?:کدام|کدوم|کس)?از?(?:کلاس|بچه|پچه|دانشآموز))/.test(q);
+    const grades = ['اول','دوم','سوم','چهارم','پنجم','ششم'].filter(grade => new RegExp('(?:^|[\\s‌])'+grade+'(?:$|[\\s‌])').test(source));
+    const classWideColor = /(?:بلد\s*نبود|بلد\s*نبودن|نتوانست|نتونست|یاد\s*نگرفته|هیچ\s*(?:کدام|کدوم|کس|یک)?\s*(?:از\s*)?.{0,40}بلد)/.test(source) || /(?:بلدنبود|بلدنبودن|نتوانست|نتونست|یادنگرفته|هیچ(?:کدام|کدوم|کس)?از?.{0,40}بلد)/.test(q) ? 'red' : /(?:بخشی|بعضی|برخی|نیاز\s*به\s*تمرین|نسبتاً|نسبتا)/.test(source+q) ? 'yellow' : /(?:همه|تمام).{0,30}(?:بلد|مسلط)|کاملاً\s*بلد|کاملا\s*بلد|مسلط\s*بود/.test(source+q) ? 'green' : '';
+    return {classWide,grade:grades.length===1?grades[0]:'',classWideColor};
+  }
+  function modelForPrompt(prompt) {
+    return isHeavyPrompt(prompt)||isAggregateReportPrompt(prompt) ? HEAVY_MODEL : LIGHT_MODEL;
+  }
+  function modelLimit(model) { return model === HEAVY_MODEL ? HEAVY_REQUESTS_PER_DAY : LIGHT_REQUESTS_PER_DAY; }
+  function answerCacheKey(prompt, p, allowToolCalls, model) {
+    const data = useTools ? shortHash(MehryarTools.revision()) : p.id;
+    return JSON.stringify([model, shortHash(key), localISO(), p.id, data, useTools, allowToolCalls, prompt]);
+  }
+  funct
+

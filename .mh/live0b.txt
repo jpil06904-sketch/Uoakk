@@ -1,0 +1,62 @@
+script start 1308446
+<script>
+'use strict';
+/* ============================================================
+   JS — Utils
+   ============================================================ */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const FA_DIGITS = '۰۱۲۳۴۵۶۷۸۹';
+const fa = s => String(s == null ? '' : s).replace(/\d/g, d => FA_DIGITS[d]);
+const en = s => String(s == null ? '' : s).replace(/[۰-۹]/g, d => FA_DIGITS.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+const uid = () => Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-4);
+const clone = o => JSON.parse(JSON.stringify(o));
+const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+const chunk = (arr, n) => { const out = []; for (let i = 0; i < arr.length; i += n) out.push(arr.slice(i, i + n)); return out; };
+const range = (a, b) => { const o = []; for (let i = a; i <= b; i++) o.push(i); return o; };
+const plural = (n, w) => `${fa(n)} ${w}`;
+const isObj = v => v && typeof v === 'object' && !Array.isArray(v);
+function deepMerge(target, patch) {
+  for (const k of Object.keys(patch)) {
+    if (['__proto__','constructor','prototype'].includes(k)) continue;
+    const v = patch[k];
+    if (isObj(v) && isObj(target[k])) deepMerge(target[k], v);
+    else target[k] = isObj(v) ? deepMerge({}, v) : v;
+  }
+  return target;
+}
+function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+function normalizeName(s) {
+  return String(s || '').replace(/[يى]/g, 'ی').replace(/ك/g, 'ک').replace(/\u200c+$/g, '').replace(/^\u200c+/g, '').replace(/\s+/g, ' ').trim();
+}
+function normKey(s) { return normalizeName(s).replace(/[\s\u200c]/g, ''); }
+function copyText(text) {
+  const done = () => ui.toast('کپی شد', { icon: 'check' });
+  const fallback = () => {
+    const ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0'; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) { ui.toast('کپی انجام نشد'); }
+    ta.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+}
+function shareText(text, title) {
+  if (navigator.share) navigator.share({ ti
+=====ACT fn
+st));
+          if (med > 2500) verdict = 'نتیجه: مسیر اینترنت تا سرور کند است (اینترنت، فیلترشکن یا Cloudflare). مشکل از سرور یا مدل نیست.';
+          else if (d.list_st !== 200 || d.list_ms > 2000) verdict = 'نتیجه: ارتباط سرور پنل با گوگل کند یا مشکل‌دار است.';
+          else if (d.strong_ms > 20000) verdict = 'نتیجه: مدل قوی حتی برای جواب کوتاه کند است؛ کندی از فکر کردن مدل است.';
+          else verdict = 'نتیجه: اینترنت و سرور سالم‌اند. اگر جواب‌ها کند هستند، علتش طولانی بودن جواب و فکر کردن مدل است.';
+        }
+        lines.push(verdict); show();
+      } finally { btn.disabled = false; }
+    }
+    async function activateCode(code) {
+      const P = window.__mehryarPanel;
+      if (!P) return {ok:false,msg:'اتصال به پنل در این نسخه روشن نیست.'};
+      const c = new AbortController(), t = setTimeout(() => c.abort(), 15000);
+      try {
+        const r = await fetch(P.base+'/api.php?a=act',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({c:code,id:P.id}),signal:c.signal,cache:'no-store'});
+        const d = await r.json().catch(() => ({}));
+        if (d 

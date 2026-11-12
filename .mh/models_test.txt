@@ -1,0 +1,69 @@
+== gemini-3-flash-preview
+HTTP 200 total=1.592470
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "Hi",
+            "thoughtSignature": "EmUKYwFpFH0TixqACLi536ApHzoO9ph55CoL4D8MySCbwUOJfyaYlO0xoKSNR7alMNqfTfKUNVxibyVrZ+xKc4OV00TXxqFOJHpwG11VK6MPnWMo+oasP6P+QXrew/Co16XsgX6q7g=="
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageM
+== gemini-2.5-flash
+HTTP 404 total=0.716272
+{
+  "error": {
+    "code": 404,
+    "message": "This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://aistudio.google.com/docs/get-started).",
+    "status": "NOT_FOUND"
+  }
+}
+
+== gemini-flash-latest
+HTTP 503 total=10.031167
+{
+  "error": {
+    "code": 503,
+    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+    "status": "UNAVAILABLE"
+  }
+}
+
+== gemini-2.0-flash
+HTTP 404 total=0.997233
+{
+  "error": {
+    "code": 404,
+    "message": "This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://aistudio.google.com/docs/get-started).",
+    "status": "NOT_FOUND"
+  }
+}
+
+== gemini-2.5-flash-lite
+HTTP 404 total=0.511624
+{
+  "error": {
+    "code": 404,
+    "message": "This model models/gemini-2.5-flash-lite is no longer available to new users. Please update your code to use models/gemini-3.5-flash-lite for the latest features and improvements. We recommend you to use the Interactions API (https://aistudio.google.com/docs/get-started).",
+    "status": "NOT_FOUND"
+  }
+}
+
+== gemini-3.8-flash
+HTTP 503 total=4.958513
+{
+  "error": {
+    "code": 503,
+    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+    "status": "UNAVAILABLE"
+  }
+}
+

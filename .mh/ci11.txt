@@ -1,0 +1,37 @@
+#### intent fn
+بارهٔ ضعف، مشکل یا رفتار یک دانش‌آموز یا کلاس و راه‌حل آن می‌پرسد. RECORD = ثبت، اصلاح، حضور و غیاب، نمره، مشاهده یا گزارش‌گیری از داده‌های کلاس. OTHER = هر چیز دیگر مثل سلام یا سؤال عمومی.';
+  async function classifyIntent(prompt) {
+    try {
+      if (demoMode || !useTools) return;
+      const key = normKey(prompt);
+      if (intentCache.has(key) || prompt.length > 400) return;
+      if (isAnnualBudgetPrompt(prompt) || isClarificationPrompt(prompt) || isLightRecordPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt) || isLearnPrompt(prompt) || isInstructionalIdeaPrompt(prompt)) return;
+      const names = new Set();
+      try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (!k || !k.startsWith('mehyar_budget_')) continue; const b = JSON.parse(localStorage.getItem(k) || 'null'); for (const m of (b && b.months) || []) for (const sub of m.subjects || []) if (sub && sub.subjectTitle) names.add(String(sub.subjectTitle)); } } catch (_) {}
+      const ctl = new AbortController();
+      const {response, data} = await fetchModelWithRetry(LIGHT_MODEL, {systemInstruction:{parts:[{text:INTENT_SYSTEM_PROMPT + (names.size ? ' درس‌های موجود در بودجهٔ معلم: ' + [...names].slice(0, 20).join('، ') + '.' : '')}]}, contents:[{role:'user', parts:[{text:prompt}]}], generationConfig:{temperature:0, maxOutputTokens:12, thinkingConfig:{thinkingBudget:0}}}, ctl.signal, ROUTER_FETCH_TIMEOUT_MS, 0);
+      if (!response.ok) {
+        if (response.status === 429) { const seconds = retrySeconds(response, data), rate = rateState(); rate.backoffUntilByModel[LIGHT_MODEL] = Date.now() + seconds * 1000; ra
+
+NAME=classifyIntent
+@4310177: ر هم توضیح می‌خواهد هم ایده، LEARN بزن؛ IDEA فقط وقتی صریحاً بازی یا ایدهٔ تازه می‌خواهد و خود مفهوم را می‌داند. NEXT = می‌خواهد بداند در یک روز (امروز، فردا، پس‌فردا یا بدون روز) یا یک درس چه مبحثی را تدریس کند، ادامه بدهد یا چه کاری بکند، طبق بودجه‌بندی درسی؛ مثل «امروز»، «ریاضی چکار کنم»، «بعدش؟»، «حالا چی درس بدم». IDEA = ایدهٔ خلاقانه، بازی یا فعالیت کلاسی تازه می‌خواهد. STUDENT = دربارهٔ ضعف، مشکل یا رفتار یک دانش‌آموز یا کلاس و راه‌حل آن می‌پرسد. RECORD = ثبت، اصلاح، حضور و غیاب، نمره، مشاهده یا گزارش‌گیری از داده‌های کلاس. OTHER = هر چیز دیگر مثل سلام یا سؤال عمومی.';
+  async function classifyIntent(prompt) {
+    try {
+      if (demoMode || !useTools) return;
+      const key = normKey(prompt);
+      if (intentCache.has(key) || prompt.length > 400) return;
+      if (isAnnualBudgetPrompt(prompt) || isClarificationPrompt(prompt) || isLightRecordPrompt(prompt) || isAggregateReportPro
+
+@4424814: onsole.error(error); busy = false; intentChecking = false; errorText = 'خطای داخلی برنامه هنگام ارسال: ' + String(error && error.message || error).slice(0, 200) + ' . چیزی ثبت نشد و متن سؤالت حفظ شده است؛ دوباره بفرست.'; try { refresh(); } catch (_) {} }
+  }
+  async function runInner() {
+    if (busy || intentChecking || !draft.trim()) return;
+    clearInterval(quotaTimer); quotaTimer = null;
+    const p = profile(), prompt = draft.trim();
+    if (isGreetingOnly(prompt) && !pendingAnnualBudget) { postBudgetExchange(prompt, p, greetingReply(p)); return; }
+    intentChecking = true; try { await classifyIntent(prompt); } finally { intentChecking = false; }
+    if (busy) return;
+       const annualBudgetMode=isAnnualBudgetPrompt(prompt)&&!isBudgetQuestionPrompt(prompt);
+      const tomorrowBudgetMode=!annualBudgetMode&&isTomorrowPrompt(prompt);let tomorrowDraftNotice='';
+      const previous
+

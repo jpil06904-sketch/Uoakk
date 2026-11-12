@@ -1,0 +1,84 @@
+#### async function fetchModelWithRetry count=1
+@4305911: async function fetchModelWithRetry(model, body, signal, timeoutMs, retries = MAX_MODEL_RETRIES) {
+    await reserveRequestSlot(signal, model);
+    if (isActCode(key) && !window.__mehryarPanel) { const e = new Error('اتصال به پنل در این نسخه روشن نیست.'); e.code = 'MODEL_NETWORK'; throw e; }
+    const viaPanel = isActCode(key);
+    const url = viaPanel ? window.__mehryarPanel.base+'/api.php?a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent';
+    const makeOptions = () => viaPanel ? {method:'POST',headers:{'Content-Type':'text/plain'},body:key+'|'+window.__mehryarPanel.id+'\n'+JSON.stringify(body)} : {method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(body)};
+    let options = makeOptions();
+    const waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? PANEL_FETCH_TIMEOUT_MS : timeoutMs;
+    if (viaPanel) retries = Math.min(retries, model === HEAVY_MODEL ? 0 : 1);
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      if (attempt) await waitAbortable(MODEL_RETRY_DELAY_MS * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 400), signal);
+      try {
+        let result = await fetchJsonWithTimeout(url, options, signal, waitMs);
+        if (result.response.status === 400 && body.generationConfig && body.generationConfig.thinkingConfig && /think/i.test(JSON.stringify(result.data || {}))) {
+          thinkingTrimBroken = true; delete body.generationConfig.thinkingConfig; options = makeOptions();
+          result = await fetchJsonWithTimeout(url, options, signal, waitMs);
+        }
+        if (RETRYABLE_MODEL_STATUSES.has(result.response.status) && attempt < retries && !(viaPanel && result.response.status === 504)) continue;
+        return 
+
+#### function fetchJsonWithTimeout|async function fetchJsonWithTimeout count=1
+@4304885: async function fetchJsonWithTimeout(url, options, signal, timeoutMs) {
+    const controller = new AbortController();
+    let timedOut = false;
+    const forwardAbort = () => controller.abort();
+    if (signal.aborted) controller.abort(); else signal.addEventListener('abort', forwardAbort, {once:true});
+    const timer = setTimeout(() => { timedOut = true; controller.abort(); }, timeoutMs);
+    try {
+      const response = await fetch(url, {...options, signal:controller.signal});
+      const data = await response.json().catch(error => { if (error instanceof SyntaxError) return {}; throw error; });
+      return {response,data};
+    } catch (error) {
+      if (timedOut && !signal.aborted) {
+        const timeoutError = new Error('پاسخ سرویس مدل دیر رسید؛ اطلاعات ابزارها تغییر نکرده است. دوباره تلاش کن.');
+        timeoutError.code = 'MODEL_TIMEOUT';
+        throw timeoutError;
+      }
+      throw error;
+    } finally {
+      clearTimeout(timer);
+      signal.removeEventListener('abort', forwardAbort);
+    }
+  }
+  async function fetchModelWithRetry(model, body, signal, timeoutMs, retries = MAX_MODEL_RETRIES) {
+    await reserveRequestSlot(signal, model);
+    if (isActCode(key) && !wind
+
+#### intentCache\.get count=1
+@4309097: details || []).find(x => typeof x.retryDelay === 'string')?.retryDelay;
+    const fromDetail = detail ? Number(String(detail).replace(/s$/,'')) : 0;
+    const fromMessage = Number((data.error?.message || '').match(/retry in\s+([\d.]+)s/i)?.[1]);
+    return clamp(Math.ceil(header || fromDetail || fromMessage || 30), 5, 300);
+  }
+  const intentCache = new Map();
+  function intentOf(prompt) { return intentCache.get(normKey(prompt)) || ''; }
+  const INTENT_SYSTEM_PROMPT = 'تو مسیریاب پیام‌های یک معلم دبستان در دستیار آموزشی هستی. فقط یک برچسب بنویس، بدون هیچ کلمهٔ اضافه. معلم ممکن است هر طوری و حتی خیلی کوتاه بنویسد؛ منظورش را بفهم، نه کلمه‌ها را. برچسب‌ها: LEARN = خود معلم می‌خواهد مطلبی را بفه
+
+#### MIN_REQUEST_GAP\b count=4
+@4265111: hryar_assistant_answer_cache_v1', RATE_KEY = 'mehryar_assistant_rate_v1';
+    const MAX_MODEL_RETRIES = 3, MODEL_RETRY_DELAY_MS = 1000, MODEL_FETCH_TIMEOUT_MS = 30000, RESPONSE_BODY_TIMEOUT_MS = 30000;
+    const RETRYABLE_MODEL_STATUSES = new Set([408,500,502,503,504,520,522,524]);
+     const PANEL_MIN_REQUEST_GAP = 400, PANEL_MAX_REQUESTS_PER_MINUTE = 30, PANEL_FETCH_TIMEOUT_MS = 40000; let heavyDownUntil = 0; let thinkingTrimBroken = false;
+     const MIN_REQUEST_GAP = 4500, MAX_REQUESTS_PER_MINUTE = 6, HEAVY_REQUESTS_PER_DAY = 50, LIGHT_REQUESTS_PER_DAY = 1500, MAX_TOOL_ROUNDS = 3, MAX_BUDG
+
+@4265269:  = 30000, RESPONSE_BODY_TIMEOUT_MS = 30000;
+    const RETRYABLE_MODEL_STATUSES = new Set([408,500,502,503,504,520,522,524]);
+     const PANEL_MIN_REQUEST_GAP = 400, PANEL_MAX_REQUESTS_PER_MINUTE = 30, PANEL_FETCH_TIMEOUT_MS = 40000; let heavyDownUntil = 0; let thinkingTrimBroken = false;
+     const MIN_REQUEST_GAP = 4500, MAX_REQUESTS_PER_MINUTE = 6, HEAVY_REQUESTS_PER_DAY = 50, LIGHT_REQUESTS_PER_DAY = 1500, MAX_TOOL_ROUNDS = 3, MAX_BUDGET_IMPORT_CHARS = 1000000, REQUEST_TIMEOUT_MS = 300000, LIGHT_FETCH_TIMEOUT_MS = 30000, HEAVY_FETCH_TIMEOUT_MS = 30000, ROUTER_FETCH_TIMEOUT_MS = 8000;
+   con
+
+@4302410: odel===HEAVY_MODEL?'تحلیلی':'سریع')+'، سقف روزانهٔ برنامه رسید. اطلاعات محلی و ثبت گزارش‌ها فعال‌اند.'); error.code='MODEL_RATE_LIMIT'; throw error; }
+    const panelMode = isActCode(key), maxPerMinute = panelMode ? PANEL_MAX_REQUESTS_PER_MINUTE : MAX_REQUESTS_PER_MINUTE, minGap = panelMode ? PANEL_MIN_REQUEST_GAP : MIN_REQUEST_GAP;
+    const oldest = rate.minute[0] || 0, minuteWait = oldest + 60000 - now;
+    if (rate.minute.length >= maxPerMinute && minuteWait > 0) { await waitAbortable(minuteWait, signal); return reserveRequestSlot(signal, model); }
+    const last = rate.minute.at(-1) || 0,
+
+@4302428: ?'تحلیلی':'سریع')+'، سقف روزانهٔ برنامه رسید. اطلاعات محلی و ثبت گزارش‌ها فعال‌اند.'); error.code='MODEL_RATE_LIMIT'; throw error; }
+    const panelMode = isActCode(key), maxPerMinute = panelMode ? PANEL_MAX_REQUESTS_PER_MINUTE : MAX_REQUESTS_PER_MINUTE, minGap = panelMode ? PANEL_MIN_REQUEST_GAP : MIN_REQUEST_GAP;
+    const oldest = rate.minute[0] || 0, minuteWait = oldest + 60000 - now;
+    if (rate.minute.length >= maxPerMinute && minuteWait > 0) { await waitAbortable(minuteWait, signal); return reserveRequestSlot(signal, model); }
+    const last = rate.minute.at(-1) || 0, gap = last + minG
+
+#### function waitForSlot|async function throttle|PANEL_MIN_REQUEST_GAP\) count=0

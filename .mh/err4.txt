@@ -1,0 +1,90 @@
+#### function isTransientModelFailure( @ 4304616
+function isTransientModelFailure(error) {
+    return error?.code === 'MODEL_TIMEOUT' || error?.code === 'MODEL_NETWORK' || error?.code === 'MODEL_UNAVAILABLE' || error?.code === 'MODEL_RATE_LIMIT' || error instanceof TypeError;
+  }
+  async function fetchJsonWithTimeout(url, options, signal, timeoutMs) {
+    const controller = new AbortController();
+    let timedOut = false;
+    const forwardAbort = () => controller.abort();
+    if (signal.aborted) controller.abort(); else signal.addEventListener('abort', forwardAbort, {once:true});
+    const timer = setTimeout(() => { timedOut = true; controller.abort(); }, timeoutMs);
+    try {
+      const response = await fetch(url, {...options, signal:controller.signal});
+      const data = await response.json().catch(error => { if (error instanceof SyntaxError) return {}; throw error; });
+      return {response,data};
+    } catch (error) {
+      if (timedOut && !signal.aborted) {
+        const timeoutError = new Error('پاسخ سرویس مدل دیر رسید؛ اطلاعات ابزارها تغییر نکرده است. دوباره تلاش کن.');
+        timeoutError.code = 'MODEL_TIMEOUT';
+        throw timeoutError;
+      }
+      throw error;
+    } finally {
+      clearTimeout(timer);
+      signal.removeEventListener('abort', forwardAbort);
+    }
+  }
+  async function fetchModelWithRetry(model, body, signal, timeoutMs, retries = MAX_MODEL_RETRIES) {
+    await reserveRequestSlot(signal, model);
+    if (isActCode(key) && !window.__mehryarPanel) { const e = new Error('اتصال به پنل در این نسخه روشن نیست.'); e.code = 'MODEL_NETWORK'; throw e; }
+    const viaPanel = isActCode(key);
+    const url = viaPanel ? window.__mehryarPanel.base+'/api.php?a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent';
+    const makeOptions = () => viaPanel ? {method:'POST',headers:{'Content-Type':'text/plain'},body:key+'|'+window.__mehryarPanel.id+'\n'+JSON.stringify(body)} : {method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(body)};
+    let options = makeOptions();
+    const waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? PANEL_FETCH_TIMEOUT_MS : timeoutMs;
+    for (let atte
+---
+#### async function fetchJsonWithTimeout( @ 4304850
+async function fetchJsonWithTimeout(url, options, signal, timeoutMs) {
+    const controller = new AbortController();
+    let timedOut = false;
+    const forwardAbort = () => controller.abort();
+    if (signal.aborted) controller.abort(); else signal.addEventListener('abort', forwardAbort, {once:true});
+    const timer = setTimeout(() => { timedOut = true; controller.abort(); }, timeoutMs);
+    try {
+      const response = await fetch(url, {...options, signal:controller.signal});
+      const data = await response.json().catch(error => { if (error instanceof SyntaxError) return {}; throw error; });
+      return {response,data};
+    } catch (error) {
+      if (timedOut && !signal.aborted) {
+        const timeoutError = new Error('پاسخ سرویس مدل دیر رسید؛ اطلاعات ابزارها تغییر نکرده است. دوباره تلاش کن.');
+        timeoutError.code = 'MODEL_TIMEOUT';
+        throw timeoutError;
+      }
+      throw error;
+    } finally {
+      clearTimeout(timer);
+      signal.removeEventListener('abort', forwardAbort);
+    }
+  }
+  async function fetchModelWithRetry(model, body, signal, timeoutMs, retries = MAX_MODEL_RETRIES) {
+    await reserveRequestSlot(signal, model);
+    if (isActCode(key) && !window.__mehryarPanel) { const e = new Error('اتصال به پنل در این نسخه روشن نیست.'); e.code = 'MODEL_NETWORK'; throw e; }
+    const viaPanel = isActCode(key);
+    const url = viaPanel ? window.__mehryarPanel.base+'/api.php?a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent';
+    const makeOptions = () => viaPanel ? {method:'POST',headers:{'Content-Type':'text/plain'},body:key+'|'+window.__mehryarPanel.id+'\n'+JSON.stringify(body)} : {method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(body)};
+    let options = makeOptions();
+    const waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? PANEL_FETCH_TIMEOUT_MS : timeoutMs;
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      if (attempt) await waitAbortable(MODEL_RETRY_DELAY_MS * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 400), signal);
+      try {
+        let result = await fetchJsonWithTimeout(u
+---
+#### function readJsonWithTimeout( @ -1
+#### async function readJsonWithTimeout( @ -1
+@ 4429419 errorText *= *error\.message :: {errorText='پیش‌نمایش بودجهٔ سالانه باز است؛ برای ادامه، دکمهٔ تأیید یا لغو همان پیش‌نمایش را بزن.';refresh();return;} |     if (MehryarTools.proposal && isTeacherBudgetApproval(prompt)) { |       messages.push({role:'user',text:prompt,profile:p.id,tools:useTools}); |       messages=messages.slice(-200);draft='';errorText=''; |       try { |         const committed=confirm_teacher_report(),status=budgetCommitStatus(committed),text=status?status.text:'در ابزارها با موفقیت ثبت شد.'; |         if (status&&!status.success&&!status.duplicate) throw new Error(status.text); |         messages.push({role:'model',text,profile:p.id,tools:useTools});messages=messages.slice(-200); |       } catch(error) { draft=prompt;errorText=error.message; } |       saveHistory();refresh();scrollChat();return; |     } |       if(annualBudgetMode&&!annualBudgetMonthsInText(prompt).length){errorText='برای بودجهٔ سالانه، دست‌کم یک ماه از مهر تا خرداد را در متن یا جدول بیاور.';refresh();return;} |       if(annualBudgetMode&&MehryarTools.proposal){errorText='ابتدا پیش‌نویس فعلی را تأیید یا لغو کن؛ پیش‌نمایش بودجهٔ سالانه جایگزین آن نشد.';refresh();return;} |       if(annualBudgetMode&&!key){openKey(true);return;} |       if(annualBudgetMod
+---
+@ 4431596 errorText *= *error\.message :: sh();return;} |        messages.push({role:'user',text:prompt,profile:p.id,tools:useTools});messages=messages.slice(-200);draft='';errorText=''; |        try { |          const prepared=prepareLocalBudgetPreview(prompt); |          if(!prepared||prepared.status!=='awaiting_teacher_confirmation')throw new Error('پیش‌نمایش بودجه‌بندی آماده نشد؛ هیچ داده‌ای ذخیره نشده است.'); |          const summary=MehryarTools.proposal?.items?.find(item=>item.title==='بودجه‌بندی آموزشی')?.detail||'پیش‌نویس کامل در ابزار بودجه‌بندی آماده شد.'; |          messages.push({role:'model',text:summary+'\n\n'+BUDGET_READONLY_NOTICE,profile:p.id,tools:useTools});messages=messages.slice(-200); |        } catch(error) { draft=prompt;errorText=error.message; } |        saveHistory();refresh();scrollChat();return; |      } |       const local = annualBudgetMode?null:MehryarTools.localAnswer(prompt); |       if (local) { messages.push({role:'user',text:prompt,profile:p.id,tools:true},{role:'model',text:local,profile:p.id,tools:true}); messages=messages.slice(-200); draft=''; errorText=''; saveHistory(); refresh(); scrollChat(); return; } |        if (!p.ready&&!annualBudgetMode) { errorText = 'اول اطلاعات اولیهٔ معلم و کلاس را وارد کن.'
+---
+@ 4460270 errorText *= *error\.message ::  { receipt=confirm_teacher_report(); const budgetStatus=budgetCommitStatus(receipt); if(budgetStatus&&!budgetStatus.success&&!budgetStatus.duplicate)throw new Error(budgetStatus.text); errorText=''; const unchanged=receipt.length&&receipt.every(item=>String(item.detail||'').includes('داده‌ها بدون تغییر'));recordNotice(budgetStatus?budgetStatus.text+'\n'+receipt.map(x=>x.title+' / '+x.student+' / '+displayDay(x.date)+' / '+x.detail).join('\n'):(demoMode?'فقط در نمونهٔ موقت اعمال شد:':unchanged?'درخواست تکراری بود؛ داده‌ها بدون تغییر ماندند:':'در ابزارها با موفقیت ثبت شد:')+'\n'+receipt.map(x=>x.title+' / '+x.student+' / '+displayDay(x.date)+' / '+x.detail).join('\n')); } |       catch(error) { errorText=error.message; } |        refresh(); scrollChat(); |      }); |      get('ai-dismiss-report')?.addEventListener('click',() => { if(busy)return; MehryarTools.dismiss(); recordNotice('پیشنهاد لغو شد؛ هیچ تغییری ثبت نشد.'); refresh(); }); |     get('ai-undo-report')?.addEventListener('click',() => { |       if(busy || !window.confirm('آخرین ثبت چت‌بات واگرد شود؟ در صورت تغییر بعدی داده‌ها، واگرد برای حفاظت از آن تغییرات متوقف می‌شود.'))return; |       try { MehryarTools.undo(); receipt=[]; errorText=
+---
+@ 4460835 errorText *= *error\.message :: قیت ثبت شد:')+'\n'+receipt.map(x=>x.title+' / '+x.student+' / '+displayDay(x.date)+' / '+x.detail).join('\n')); } |       catch(error) { errorText=error.message; } |        refresh(); scrollChat(); |      }); |      get('ai-dismiss-report')?.addEventListener('click',() => { if(busy)return; MehryarTools.dismiss(); recordNotice('پیشنهاد لغو شد؛ هیچ تغییری ثبت نشد.'); refresh(); }); |     get('ai-undo-report')?.addEventListener('click',() => { |       if(busy || !window.confirm('آخرین ثبت چت‌بات واگرد شود؟ در صورت تغییر بعدی داده‌ها، واگرد برای حفاظت از آن تغییرات متوقف می‌شود.'))return; |       try { MehryarTools.undo(); receipt=[]; errorText=''; recordNotice('آخرین ثبت چت‌بات واگرد شد.'); } catch(error) { errorText=error.message; } |       refresh(); |     }); |     get('ai-open-output')?.addEventListener('click',()=>{location.hash='#/pulse/assistant-preview';}); |     get('ai-stop')?.addEventListener('click',() => controller?.abort()); |     get('ai-retry')?.addEventListener('click',() => { if (quotaTimer || /Gemini|سهمیه/.test(errorText)) clearLocalBackoff(); void run(); }); |       get('ai-save-annual-budget')?.addEventListener('click',saveAnnualBudgetPreview); |       get('ai-cancel-annual-budget')?.addEve
+---
+@ 4429419 errorText=error :: {errorText='پیش‌نمایش بودجهٔ سالانه باز است؛ برای ادامه، دکمهٔ تأیید یا لغو همان پیش‌نمایش را بزن.';refresh();return;} |     if (MehryarTools.proposal && isTeacherBudgetApproval(prompt)) { |       messages.push({role:'user',text:prompt,profile:p.id,tools:useTools}); |       messages=messages.slice(-200);draft='';errorText=''; |       try { |         const committed=confirm_teacher_report(),status=budgetCommitStatus(committed),text=status?status.text:'در ابزارها با موفقیت ثبت شد.'; |         if (status&&!status.success&&!status.duplicate) throw new Error(status.text); |         messages.push({role:'model',text,profile:p.id,tools:useTools});messages=messages.slice(-200); |       } catch(error) { draft=prompt;errorText=error.message; } |       saveHistory();refresh();scrollChat();return; |     } |       if(annualBudgetMode&&!annualBudgetMonthsInText(prompt).length){errorText='برای بودجهٔ سالانه، دست‌کم یک ماه از مهر تا خرداد را در متن یا جدول بیاور.';refresh();return;} |       if(annualBudgetMode&&MehryarTools.proposal){errorText='ابتدا پیش‌نویس فعلی را تأیید یا لغو کن؛ پیش‌نمایش بودجهٔ سالانه جایگزین آن نشد.';refresh();return;} |       if(annualBudgetMode&&!key){openKey(true);return;} |       if(annualBudgetMod
+---
+@ 4431596 errorText=error :: sh();return;} |        messages.push({role:'user',text:prompt,profile:p.id,tools:useTools});messages=messages.slice(-200);draft='';errorText=''; |        try { |          const prepared=prepareLocalBudgetPreview(prompt); |          if(!prepared||prepared.status!=='awaiting_teacher_confirmation')throw new Error('پیش‌نمایش بودجه‌بندی آماده نشد؛ هیچ داده‌ای ذخیره نشده است.'); |          const summary=MehryarTools.proposal?.items?.find(item=>item.title==='بودجه‌بندی آموزشی')?.detail||'پیش‌نویس کامل در ابزار بودجه‌بندی آماده شد.'; |          messages.push({role:'model',text:summary+'\n\n'+BUDGET_READONLY_NOTICE,profile:p.id,tools:useTools});messages=messages.slice(-200); |        } catch(error) { draft=prompt;errorText=error.message; } |        saveHistory();refresh();scrollChat();return; |      } |       const local = annualBudgetMode?null:MehryarTools.localAnswer(prompt); |       if (local) { messages.push({role:'user',text:prompt,profile:p.id,tools:true},{role:'model',text:local,profile:p.id,tools:true}); messages=messages.slice(-200); draft=''; errorText=''; saveHistory(); refresh(); scrollChat(); return; } |        if (!p.ready&&!annualBudgetMode) { errorText = 'اول اطلاعات اولیهٔ معلم و کلاس را وارد کن.'
+---
+@ 4460270 errorText=error ::  { receipt=confirm_teacher_report(); const budgetStatus=budgetCommitStatus(receipt); if(budgetStatus&&!budgetStatus.success&&!budgetStatus.duplicate)throw new Error(budgetStatus.text); errorText=''; const unchanged=receipt.length&&receipt.every(item=>String(item.detail||'').includes('داده‌ها بدون تغییر'));recordNotice(budgetStatus?budgetStatus.text+'\n'+receipt.map(x=>x.title+' / '+x.student+' / '+displayDay(x.date)+' / '+x.detail).join('\n'):(demoMode?'فقط در نمونهٔ موقت اعمال شد:':unchanged?'درخواست تکراری بود؛ داده‌ها بدون تغییر ماندند:':'در ابزارها با موفقیت ثبت شد:')+'\n'+receipt.map(x=>x.title+' / '+x.student+' / '+displayDay(x.date)+' / '+x.detail).join('\n')); } |       catch(error) { errorText=error.message; } |        refresh(); scrollChat(); |      }); |      get('ai-dismiss-report')?.addEventListener('click',() => { if(busy)return; MehryarTools.dismiss(); recordNotice('پیشنهاد لغو شد؛ هیچ تغییری ثبت نشد.'); refresh(); }); |     get('ai-undo-report')?.addEventListener('click',() => { |       if(busy || !window.confirm('آخرین ثبت چت‌بات واگرد شود؟ در صورت تغییر بعدی داده‌ها، واگرد برای حفاظت از آن تغییرات متوقف می‌شود.'))return; |       try { MehryarTools.undo(); receipt=[]; errorText=
+---
+@ 4460835 errorText=error :: قیت ثبت شد:')+'\n'+receipt.map(x=>x.title+' / '+x.student+' / '+displayDay(x.date)+' / '+x.detail).join('\n')); } |       catch(error) { errorText=error.message; } |        refresh(); scrollChat(); |      }); |      get('ai-dismiss-report')?.addEventListener('click',() => { if(busy)return; MehryarTools.dismiss(); recordNotice('پیشنهاد لغو شد؛ هیچ تغییری ثبت نشد.'); refresh(); }); |     get('ai-undo-report')?.addEventListener('click',() => { |       if(busy || !window.confirm('آخرین ثبت چت‌بات واگرد شود؟ در صورت تغییر بعدی داده‌ها، واگرد برای حفاظت از آن تغییرات متوقف می‌شود.'))return; |       try { MehryarTools.undo(); receipt=[]; errorText=''; recordNotice('آخرین ثبت چت‌بات واگرد شد.'); } catch(error) { errorText=error.message; } |       refresh(); |     }); |     get('ai-open-output')?.addEventListener('click',()=>{location.hash='#/pulse/assistant-preview';}); |     get('ai-stop')?.addEventListener('click',() => controller?.abort()); |     get('ai-retry')?.addEventListener('click',() => { if (quotaTimer || /Gemini|سهمیه/.test(errorText)) clearLocalBackoff(); void run(); }); |       get('ai-save-annual-budget')?.addEventListener('click',saveAnnualBudgetPreview); |       get('ai-cancel-annual-budget')?.addEve
+---

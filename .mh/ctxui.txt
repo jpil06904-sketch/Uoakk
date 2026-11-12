@@ -1,0 +1,136 @@
+1330694 " {\n    version: 6,\n    klass: { teacherPrefix: '', teacher: '', school: '', grade: '', className: '', year: currentYearLabel(), phone: '', principal: '' },\n    classContexts: {}, classScopeKey: '', classScopeKlass: null,\n    fields: DEFAULT_FIELDS(),\n    students: [],\n    lists: DEFAULT_LISTS(),\n    meeting: { date: ''"
+
+4531972 "igned'; };\n   const curriculumContextSnapshot = value => { const out=clone(value||{}); delete out.contexts; return out; };\n   const classScopedKeys = ['klass','classContexts','fields','students','lists','meeting','plan7','messages','outputSettings','progress','learning','curriculum'];\n   const classScopeSnapshot = data"
+
+4532284 "t = data => { const out={}; for(const key of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };\n   function ensureClassScope(data) {\n     if(!data||typeof data!=='object')return data;\n     const contexts=isObj(data.classContex"
+
+4532433 "delete out.classContexts; return out; };\n   function ensureClassScope(data) {\n     if(!data||typeof data!=='object')return data;\n     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');\n     if(!currentKey){data.classContexts=conte"
+
+4532453 "exts; return out; };\n   function ensureClassScope(data) {\n     if(!data||typeof data!=='object')return data;\n     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');\n     if(!currentKey){data.classContexts=contexts;data.classScopeK"
+
+4532574 "ontexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');\n     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}\n     if(currentKey===activeKey){data.classContexts=cont"
+
+4532716 '!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}\n     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}\n     // اگر اطلاعات کلاس قبلی ناقص بوده (راه\u200cاندازی اول یا نمونه)، همان کلاس در حال '
+
+4533222 '!part));\n     if(prevIncomplete&&!contexts[activeKey]){if(isObj(data.curriculum)&&data.curriculum.scopeKey===currentKey)data.curriculum.scopeKey=activeKey;data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}\n     const snapshot=classScopeSnapshot(data);snapshot.k'
+
+4533556 "a.classScopeKlass||data.klass);contexts[currentKey]=snapshot;\n     const target=contexts[activeKey];\n     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}\n     else if(currentKey!=='unassigned'){\n       const blank=migrate({klass:clone(data.k"
+
+4533775 "arget[key]);}\n     else if(currentKey!=='unassigned'){\n       const blank=migrate({klass:clone(data.klass)});\n       for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(blank,key))data[key]=clone(blank[key]);\n     }\n     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classConte"
+
+4533925 "if(key!=='classContexts'&&Object.hasOwn(blank,key))data[key]=clone(blank[key]);\n     }\n     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;\n   }\n    const curriculumDefaults = () => ({\n      schem"
+
+=== loadSample / exitDemo
+## function loadSample 1336190
+function loadSample() {
+  const names = ['علی احمدی', 'زهرا کریمی', 'امیر محمدی', 'نرگس رضایی', 'طاها موسوی', 'پارسا نادری', 'فاطمه حسینی', 'محمدرضا صادقی', 'یاسمن جعفری', 'سیده فاطمه‌زهرا موسوی‌نژاد', 'آرمین کاظمی', 'ریحانه قاسمی'];
+  const phones = ['09121234567', '09351112233', '09122223344', '', '09193334455', '09124445566', '', '09135556677', '09126667788', '09127778899', '', '09128889900'];
+  const dads = ['09121110000', '', '09122220000', '09123330000', '', '09124440000', '09125550000', '', '', '09127770000', '09128880000', ''];
+  const students = names.map((n, i) => ({ id: uid(), no: i + 1, name: n, data: { mom: phones[i], dad: dads[i], emergency: i % 4 === 0 ? '09130000' + (10 + i) : '', health: i === 3 ? 'آلرژی به بادام‌زمینی' : '', note: i === 9 ? 'سرویس دارد' : '' }, shortage: {}, assess: emptyAssess() }));
+  const items = DEFAULT_LISTS().firstDayItems;
+  const mark = (idx, has, miss) => { items.forEach(it => students[idx].shortage[it] = 'has'); (miss || []).forEach(it => students[idx].shortage[it] = 'missing'); };
+  mark(0, true, []); mark(1, true, ['دفتر املا', 'عکس']); mark(2, true, ['فرم اطلاعات']); mark(4, true, ['پوشه‌کار', 'کتاب‌ها', 'عکس']); mark(6, true, []); mark(9, true, ['فرم اطلاعات', 'دفتر ریاضی']);
+  students[0].assess = { fa: 3, math: 2, reading: 3, dictation: 2, attention: 3 };
+  students[1].assess = { fa: 1, math: 2, reading: 1, dictation: 0, attention: 2 };
+  students[2].assess = { fa: 2, math: 3, reading: 2, dictation: 2, attention: 1 };
+  stud
+
+## loadSample\s*= 1597462
+loadSample=function(){if(demoMode){location.hash='#/pulse';return;}if(dirty&&!flushSave()){ui.toast('ابتدا پشتیبان بگیرید؛ ورود به نمونه تا رفع خطای ذخیره انجام نشد.');return;}clearTimeout(saveTimer2);saveEpoch++;realSnapshot=state;demoMode=true;state=sampleState();quickDraft=null;quickKey='';planDraft=null;dirty=false;location.hash='#/pulse';applyTheme();scheduleRender();};
+function exitDemo(){if(!demoMode)return;clearTimeout(saveTimer2);saveEpoch++;state=realSnapshot;realSnapshot=null;demoMode=false;quickDraft=null;quickKey='';planDraft=null;dirty=false;applyTheme();location.hash='#/home';scheduleRender();}
+const SHARE_INTRO='مهریار ابزارهای آفلاین کلاس و یک چت‌بات آنلاین اختیاری برای معلم‌ها دارد. اسامی کلاس رو یک‌بار وارد می‌کنی، برگه‌ها رو آماده می‌کنی و با چند ثبت کوتاه، نیازهای یادگیری و پیگیری‌های بچه‌ها رو می‌بینی. برای آموزش دوباره و کار گروه‌ها هم فعالیت آماده داره. شاید برای کلاست مفید باشه.\nبرای استفادهٔ همکارت، فایل اصلی HTML برنامه را هم بفرست.\nخودِ ابزار را بفرست، نه اطلاعات کلاست را.';
+copyText=async function(text){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);ui.toast('کپی شد');return;}}catch(e){}const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;top:0;left:0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}ta.remove();if(ok){ui.toast('کپی شد');return;}const sh=ui.sheet({title:'کپی دستی',body:note('مرورگر کپی خودکار را نپذیرفت. م
+
+## loadSample\s*= 1635987
+loadSample=function(){if(!demoMode)storageRuntime.realDirty=dirty;enterDemoBeforeStorage();$('#save-ind')?.classList.remove('show');queueMicrotask(renderStorageNotice);};
+const exitDemoBeforeStorage=exitDemo;
+exitDemo=function(){if(!demoMode)return;exitDemoBeforeStorage();dirty=storageRuntime.realDirty;queueMicrotask(renderStorageNotice);};
+const mountBeforeStorage=mount;
+mount=function(options){mountBeforeStorage(options);queueMicrotask(renderStorageNotice);};
+const dataBeforeStorage=renderData;
+renderData=function(){dataBeforeStorage();const root=$('#content');
+  // Replace the legacy second storage warning with one concise controller.
+  root.querySelectorAll('.banner').forEach(el=>{if(/ذخیره‌سازی محلی در این مرورگر/.test(el.textContent))el.remove();});
+  const saveButtons=[...root.querySelectorAll('button')].filter(el=>el.textContent.trim()==='ذخیرهٔ دستی');
+  saveButtons.forEach(el=>{el.removeAttribute('data-click');el.addEventListener('click',async()=>{if(demoMode){ui.toast('نمونه فقط موقت است.');return;}if(storageRuntime.mode==='persistent'){flushSave();if(storageRuntime.mode!=='persistent')openStorageHelp();}else openStorageHelp();});});
+  const fallback=document.createElement('div');fallback.className='backup-fallback';fallback.innerHTML=ui.btnTinted('راهنمای ذخیره و پشتیبان متنی',openStorageHelp,{block:true});root.append(fallback);queueMicrotask(renderStorageNotice);
+};
+
+
+/* Only the first slide changes in this visual prototype. Later slides and
+   storage safeguards
+
+## loadSample\s*= 4464391
+loadSample = function() {
+    if (!demoMode) { cancelRequest(); saveHistory(); demoSnapshot = {messages,draft,historyWarning,historyBlocked,lastStored,lastSnapshot}; messages = []; draft = ''; errorText = ''; historyWarning = ''; historyBlocked = false; }
+    return previousDemo();
+  };
+  exitDemo = function() {
+    if (demoMode) { cancelRequest(); if (demoSnapshot) { ({messages,draft,historyWarning,historyBlocked,lastStored,lastSnapshot} = demoSnapshot); demoSnapshot = null; } errorText = ''; }
+    return previousExitDemo();
+  };
+  window.addEventListener('mehryar:reset',() => {
+     cancelRequest(); clearTimeout(saveTimer); messages = []; draft = ''; errorText = ''; historyWarning = ''; historyBlocked = false; key = ''; verified = false;
+    lastStored = null; lastSnapshot = JSON.stringify({version:1,messages:[],draft:''});
+    clearAnswerCache();
+    useTools=false; try {sessionStorage.removeItem('mehryar_tools_consent');} catch (_) {}
+     try { localStorage.removeItem(CODE_SLOT); } catch (_) {} try { sessionStorage.removeItem(KEY_SLOT); } catch (_) { ui.toast('برای حذف کامل رمز، این برگه را هم ببند.'); }
+  });
+  window.addEventListener('hashchange',() => {
+    if (location.hash !== '#/class') { returnToAssistant = false; try { sessionStorage.removeItem('mehryar_assistant_return'); } catch (_) {} }
+    saveHistory();
+  });
+  window.addEventListener('storage',e => {
+    if (e.key !== HISTORY_KEY || demoMode) return;
+    const changed = JSON.stringify({version:1,messages:me
+
+## function exitDemo 1597840
+function exitDemo(){if(!demoMode)return;clearTimeout(saveTimer2);saveEpoch++;state=realSnapshot;realSnapshot=null;demoMode=false;quickDraft=null;quickKey='';planDraft=null;dirty=false;applyTheme();location.hash='#/home';scheduleRender();}
+const SHARE_INTRO='مهریار ابزارهای آفلاین کلاس و یک چت‌بات آنلاین اختیاری برای معلم‌ها دارد. اسامی کلاس رو یک‌بار وارد می‌کنی، برگه‌ها رو آماده می‌کنی و با چند ثبت کوتاه، نیازهای یادگیری و پیگیری‌های بچه‌ها رو می‌بینی. برای آموزش دوباره و کار گروه‌ها هم فعالیت آماده داره. شاید برای کلاست مفید باشه.\nبرای استفادهٔ همکارت، فایل اصلی HTML برنامه را هم بفرست.\nخودِ ابزار را بفرست، نه اطلاعات کلاست را.';
+copyText=async function(text){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);ui.toast('کپی شد');return;}}catch(e){}const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;top:0;left:0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}ta.remove();if(ok){ui.toast('کپی شد');return;}const sh=ui.sheet({title:'کپی دستی',body:note('مرورگر کپی خودکار را نپذیرفت. متن را انتخاب و کپی کنید.')+ui.textarea({id:'manual-copy',value:text,style:'min-height:200px'}),footer:ui.btnTinted('انتخاب متن',()=>$('#manual-copy').select())});};
+async function shareIntro(){try{if(navigator.share){await navigator.share({title:'مهریار',text:SHARE_INTRO});return;}}catch(e){if(e.name==='AbortError')return;}await copyText(SHARE_INTRO);}
+function renderShare(){
+
+## exitDemo\s*= 1636196
+exitDemo=function(){if(!demoMode)return;exitDemoBeforeStorage();dirty=storageRuntime.realDirty;queueMicrotask(renderStorageNotice);};
+const mountBeforeStorage=mount;
+mount=function(options){mountBeforeStorage(options);queueMicrotask(renderStorageNotice);};
+const dataBeforeStorage=renderData;
+renderData=function(){dataBeforeStorage();const root=$('#content');
+  // Replace the legacy second storage warning with one concise controller.
+  root.querySelectorAll('.banner').forEach(el=>{if(/ذخیره‌سازی محلی در این مرورگر/.test(el.textContent))el.remove();});
+  const saveButtons=[...root.querySelectorAll('button')].filter(el=>el.textContent.trim()==='ذخیرهٔ دستی');
+  saveButtons.forEach(el=>{el.removeAttribute('data-click');el.addEventListener('click',async()=>{if(demoMode){ui.toast('نمونه فقط موقت است.');return;}if(storageRuntime.mode==='persistent'){flushSave();if(storageRuntime.mode!=='persistent')openStorageHelp();}else openStorageHelp();});});
+  const fallback=document.createElement('div');fallback.className='backup-fallback';fallback.innerHTML=ui.btnTinted('راهنمای ذخیره و پشتیبان متنی',openStorageHelp,{block:true});root.append(fallback);queueMicrotask(renderStorageNotice);
+};
+
+
+/* Only the first slide changes in this visual prototype. Later slides and
+   storage safeguards are kept exactly as in the delivered revision. */
+const textWelcomeBeforePhoto=renderWelcome;
+renderWelcome=function(){
+  if(introIndex!==0){textWelcomeBeforePhoto();return;}
+  mount({title:'مهریار',back:fals
+
+## exitDemo\s*= 4464681
+exitDemo = function() {
+    if (demoMode) { cancelRequest(); if (demoSnapshot) { ({messages,draft,historyWarning,historyBlocked,lastStored,lastSnapshot} = demoSnapshot); demoSnapshot = null; } errorText = ''; }
+    return previousExitDemo();
+  };
+  window.addEventListener('mehryar:reset',() => {
+     cancelRequest(); clearTimeout(saveTimer); messages = []; draft = ''; errorText = ''; historyWarning = ''; historyBlocked = false; key = ''; verified = false;
+    lastStored = null; lastSnapshot = JSON.stringify({version:1,messages:[],draft:''});
+    clearAnswerCache();
+    useTools=false; try {sessionStorage.removeItem('mehryar_tools_consent');} catch (_) {}
+     try { localStorage.removeItem(CODE_SLOT); } catch (_) {} try { sessionStorage.removeItem(KEY_SLOT); } catch (_) { ui.toast('برای حذف کامل رمز، این برگه را هم ببند.'); }
+  });
+  window.addEventListener('hashchange',() => {
+    if (location.hash !== '#/class') { returnToAssistant = false; try { sessionStorage.removeItem('mehryar_assistant_return'); } catch (_) {} }
+    saveHistory();
+  });
+  window.addEventListener('storage',e => {
+    if (e.key !== HISTORY_KEY || demoMode) return;
+    const changed = JSON.stringify({version:1,messages:messages.slice(-200),draft:pending?.text || draft}) !== lastSnapshot;
+    if (e.newValue && (busy || changed)) { historyBlocked = true; historyWarning = 'چت در برگهٔ دیگری تغییر کرده است؛ برای دیدن نسخهٔ تازه، صفحه را دوباره باز کن.'; paintStorage(); return; }
+    cancelRequest(); readHistor
+

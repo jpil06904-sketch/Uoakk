@@ -1,0 +1,13 @@
+### <textarea id=\"ai-[^\"]+\" 1
+  @4455860 <textarea id="ai-message"
+### get\('ai-form'\)[^;]{0,250} 1
+  @4458512 get('ai-form').addEventListener('submit',e => { e.preventDefault()
+### ai-form[^;]{0,40}onsubmit[^;]{0,200} 0
+### https://[a-z0-9.\-]+\.(?:ir|com|net|org|xyz|site|online|app|dev|io)[^'\"\s]{0,30} 10
+  @3190422 https://eitaa.com/mlmpro\n@mlmpro
+  @3190481 https://eitaa.com/mlmpro
+  @3190533 https://eitaa.com/mlmpro/281
+  @3986341 https://eitaa.com/mlmpro/88
+  @3986814 https://billowing-feather-ba20.ssioojiu63.workers.dev/panel
+  @4260164 https://red-heart-c9c0.ssioojiu63.workers.dev/
+  @4306307 https://generativelanguage.googleapis.com/v1beta/models/

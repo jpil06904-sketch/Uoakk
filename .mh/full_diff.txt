@@ -1,0 +1,134 @@
+15863c15863
+<       const HEAVY_MODEL = 'gemini-3.8-flash', LIGHT_MODEL = 'gemini-3-flash-preview', FALLBACK_MODEL = LIGHT_MODEL, WORKER_FALLBACK_URL = 'https://red-heart-c9c0.ssioojiu63.workers.dev/'
+---
+>       const LIGHT_MODEL = 'gemini-3-flash-preview', HEAVY_MODEL = LIGHT_MODEL, FALLBACK_MODEL = LIGHT_MODEL, WORKER_FALLBACK_URL = 'https://red-heart-c9c0.ssioojiu63.workers.dev/'
+15983c15983
+<     const MAX_MODEL_RETRIES = 3, MODEL_RETRY_DELAY_MS = 2000, MODEL_FETCH_TIMEOUT_MS = 30000, RESPONSE_BODY_TIMEOUT_MS = 30000
+---
+>     const MAX_MODEL_RETRIES = 3, MODEL_RETRY_DELAY_MS = 1000, MODEL_FETCH_TIMEOUT_MS = 30000, RESPONSE_BODY_TIMEOUT_MS = 30000
+15985c15985
+<     const RETRYABLE_MODEL_STATUSES = new Set([408,500,502,503,504])
+---
+>     const RETRYABLE_MODEL_STATUSES = new Set([408,500,502,503,504,520,522,524])
+15987c15987,15988
+<      const PANEL_MIN_REQUEST_GAP = 400, PANEL_MAX_REQUESTS_PER_MINUTE = 30, PANEL_FETCH_TIMEOUT_MS = 80000
+---
+>      const PANEL_MIN_REQUEST_GAP = 0, PANEL_MAX_REQUESTS_PER_MINUTE = 100000, PANEL_FETCH_TIMEOUT_MS = 40000
+>  let heavyDownUntil = 0
+15990c15991
+<      const MIN_REQUEST_GAP = 4500, MAX_REQUESTS_PER_MINUTE = 6, HEAVY_REQUESTS_PER_DAY = 50, LIGHT_REQUESTS_PER_DAY = 1500, MAX_TOOL_ROUNDS = 3, MAX_BUDGET_IMPORT_CHARS = 1000000, REQUEST_TIMEOUT_MS = 300000, LIGHT_FETCH_TIMEOUT_MS = 30000, HEAVY_FETCH_TIMEOUT_MS = 30000, ROUTER_FETCH_TIMEOUT_MS = 30000
+---
+>      const MIN_REQUEST_GAP = 0, MAX_REQUESTS_PER_MINUTE = 100000, HEAVY_REQUESTS_PER_DAY = 1000000, LIGHT_REQUESTS_PER_DAY = 1000000, MAX_TOOL_ROUNDS = 3, MAX_BUDGET_IMPORT_CHARS = 1000000, REQUEST_TIMEOUT_MS = 300000, LIGHT_FETCH_TIMEOUT_MS = 30000, HEAVY_FETCH_TIMEOUT_MS = 30000, ROUTER_FETCH_TIMEOUT_MS = 8000
+16775c16776,16778
+<     const waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? PANEL_FETCH_TIMEOUT_MS : timeoutMs
+---
+>     const waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? (model === HEAVY_MODEL ? 20000 : PANEL_FETCH_TIMEOUT_MS) : timeoutMs
+> 
+>     if (viaPanel) retries = Math.min(retries, model === HEAVY_MODEL ? 0 : 1)
+16844a16848,16849
+>   const NETWORK_INTENT_CLASSIFIER = false
+> 
+16847c16852
+<       if (demoMode || !useTools) return
+---
+>       if (!NETWORK_INTENT_CLASSIFIER || demoMode || !useTools) return
+16889c16894,16895
+<     } catch (_) {}
+---
+>     } catch (_) { try { routeCache.set(prompt, modelForPrompt(prompt))
+>  } catch (__) {} }
+16901a16908,16909
+>     if (!NETWORK_INTENT_CLASSIFIER) return modelForPrompt(prompt)
+> 
+17546a17555,17556
+>     if(!useTools&&!isInstructionalIdeaPrompt(prompt)&&!isTomorrowPrompt(prompt))return ''
+> 
+17577c17587
+<     if(intentOf(prompt)==='STUDENT'&&inquiry.status==='insufficient_evidence'&&!promptHasConcreteEvidence(prompt))return 'برای ساختن آزمایش تشخیصی، گزارش «ضعیف است» کافی نیست. لطفاً یک نمونهٔ قابل مشاهده بده: دانش‌آموز دقیقاً چه کاری را انجام نداد، خطا در کدام مرحله رخ داد و یک پاسخ یا خطای واقعی چه بود؟ بعد فقط یک مأموریت کوتاه با معیار نتیجه طراحی می‌کنم.'
+---
+>     if(intentOf(prompt)==='STUDENT'&&inquiry.status==='insufficient_evidence'&&!promptHasConcreteEvidence(prompt)&&!/(جمع|تفریق|ضرب|تقسیم|انتقال|عدد|کسر|خواندن|روخوانی|نوشتن|املا|دیکته|حرف|کلمه|جمله|نشانه|ساعت|اندازه|شکل|علوم|ریاضی|فارسی)/.test(normKey(prompt)))return 'برای ساختن آزمایش تشخیصی، گزارش «ضعیف است» کافی نیست. لطفاً یک نمونهٔ قابل مشاهده بده: دانش‌آموز دقیقاً چه کاری را انجام نداد، خطا در کدام مرحله رخ داد و یک پاسخ یا خطای واقعی چه بود؟ بعد فقط یک مأموریت کوتاه با معیار نتیجه طراحی می‌کنم.'
+17786c17796
+<     const model=options.model||LIGHT_MODEL
+---
+>     const model=options.model===HEAVY_MODEL&&!options.annualBudget&&Date.now()<heavyDownUntil?LIGHT_MODEL:(options.model||LIGHT_MODEL)
+17888c17898
+<              generationConfig:{temperature:annualBudgetMode?0:tomorrowBudgetMode?0.4:ideaMode?0.95:0.45,maxOutputTokens:annualBudgetMode?32768:ideaMode?8192:learnMode?6144:isTomorrowPrompt(fallbackPrompt)?2048:3072,...(annualBudgetMode?{thinkingConfig:{thinkingBudget:0}}:ideaMode?{thinkingConfig:{thinkingBudget:3072}}:learnMode?{thinkingConfig:{thinkingBudget:1024}}:isTomorrowPrompt(fallbackPrompt)?{thinkingConfig:{thinkingBudget:768}}:!allowToolCalls&&!programMode&&!thinkingTrimBroken&&normKey(fallbackPrompt).length<=24?{thinkingConfig:{thinkingBudget:model===LIGHT_MODEL?512:1024}}:{})}},signal,annualBudgetMode?120000:ideaMode?90000:MODEL_FETCH_TIMEOUT_MS,annualBudgetMode||ideaMode?1:MAX_MODEL_RETRIES)
+---
+>              generationConfig:{temperature:annualBudgetMode?0:tomorrowBudgetMode?0.4:ideaMode?0.95:0.45,maxOutputTokens:annualBudgetMode?32768:ideaMode?8192:learnMode?6144:isTomorrowPrompt(fallbackPrompt)?2048:3072,...(annualBudgetMode?{thinkingConfig:{thinkingBudget:0}}:ideaMode?{thinkingConfig:{thinkingBudget:1024}}:learnMode?{thinkingConfig:{thinkingBudget:512}}:isTomorrowPrompt(fallbackPrompt)?{thinkingConfig:{thinkingBudget:512}}:!programMode&&!thinkingTrimBroken?{thinkingConfig:{thinkingBudget:allowToolCalls?512:0}}:{})}},signal,annualBudgetMode?120000:ideaMode?90000:MODEL_FETCH_TIMEOUT_MS,annualBudgetMode||ideaMode?1:MAX_MODEL_RETRIES)
+17896c17906
+<           if(model!==FALLBACK_MODEL&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL})
+---
+>           if(model===HEAVY_MODEL&&isTransientModelFailure(error))heavyDownUntil=Date.now()+600000
+17898c17908,17910
+<             if(model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true})
+---
+>            if(model!==FALLBACK_MODEL&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL,triedHeavy:true})
+> 
+>             if(model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:error.code==='MODEL_RATE_LIMIT'&&Date.now()>=heavyDownUntil?HEAVY_MODEL:FALLBACK_MODEL,triedHeavy:true})
+17931a17944,17945
+>            if(model===HEAVY_MODEL&&RETRYABLE_MODEL_STATUSES.has(response.status))heavyDownUntil=Date.now()+600000
+> 
+17934c17948
+< if((RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404)&&model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode){try{return await request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true})
+---
+> if(response.status===404&&model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode&&Date.now()>=heavyDownUntil){try{return await request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true})
+18431c18445
+<       const contents = annualBudgetMode?[]:aggregateOnly ? [] : isTomorrowPrompt(prompt) ? [] : messages.slice(Math.max(start,messages.length - (isFollowUpPlanPrompt(prompt)||isProgramPrompt(prompt)?10:6))).filter(m=>useTools||m.tools===false).map(m => ({role:m.role,parts:[{text:m.text}]}))
+---
+>       const contents = annualBudgetMode?[]:aggregateOnly ? [] : isTomorrowPrompt(prompt) ? [] : messages.slice(Math.max(start,messages.length - (isFollowUpPlanPrompt(prompt)||isProgramPrompt(prompt)?10:4))).filter(m=>useTools||m.tools===false).map(m => ({role:m.role,parts:[{text:m.text.length>1500?m.text.slice(0,1500)+' …':m.text}]}))
+20561a20576,20584
+>      // اگر اطلاعات کلاس قبلی ناقص بوده (راه‌اندازی اول یا نمونه)، همان کلاس در حال تکمیل است: داده‌ها حفظ و فقط کلید به‌روز شود.
+>      const prevParts=currentKey.split('|'),prevIncomplete=currentKey==='unassigned'||(prevParts.length===5&&prevParts.slice(0,4).some(part=>!part))
+> 
+>      if(prevIncomplete&&!contexts[activeKey]){if(isObj(data.curriculum)&&data.curriculum.scopeKey===currentKey)data.curriculum.scopeKey=activeKey
+> data.classContexts=contexts
+> data.classScopeKey=activeKey
+> data.classScopeKlass=clone(data.klass)
+> return data
+> }
+21956c21979
+<   const bookProgressSummary = book => { const nodes=curriculumNodes(book), progress=currentProgress(book.id), statuses=progress.statuses||{}, taught=nodes.filter(node=>statuses[node.id]==='taught'), active=nodes.find(node=>statuses[node.id]==='in_progress')||nodes.find(node=>node.id===progress.currentNodeId), started=nodes.some(node=>statuses[node.id]&&statuses[node.id]!=='not_started')
+---
+>   const bookProgressSummary = book => { const nodes=curriculumNodes(book), progress=currentProgress(book?.id), statuses=progress.statuses||{}, taught=nodes.filter(node=>statuses[node.id]==='taught'), active=nodes.find(node=>statuses[node.id]==='in_progress')||nodes.find(node=>node.id===progress.currentNodeId), started=nodes.some(node=>statuses[node.id]&&statuses[node.id]!=='not_started')
+22344c22367,22373
+<  const books=activeCurriculumBooks(), selected=books.find(book=>book.id===progressEditor.bookId)||books.find(book=>curriculumNodes(book).length)||books[0], bookId=selected?.id||''
+---
+>  const books=activeCurriculumBooks()
+>  if(!books.length){progressEditor.bookId=''
+> progressEditor.selectedNodeId=''
+> progressEditor.preview=null
+> mount({title:'جایگاه واقعی تدریس',backHref:'#/curriculum',content:`${curriculumNav('curriculum/progress')}${classCurriculumNotice()}<div class="curriculum-empty">هنوز کتاب فعالی برای این کلاس وجود ندارد؛ جایگاه تدریس بدون کتاب قابل ثبت نیست. ابتدا پایهٔ کلاس را مشخص کن یا از بخش «کتاب‌ها» کتاب واقعی کلاس را اضافه کن. ${link('#/curriculum/books','کتاب‌ها','book')}</div>`})
+> return
+> } const selected=books.find(book=>book.id===progressEditor.bookId)||books.find(book=>curriculumNodes(book).length)||books[0], bookId=selected?.id||''
+22423,22424c22452,22456
+<     for(const k of keys){
+<       try{const b=JSON.parse(localStorage.getItem(k)||'null')
+---
+>     let yearAssumed=false
+> 
+>     for(const pass of [0,1,2]){
+>       for(const k of keys){
+>         try{const b=JSON.parse(localStorage.getItem(k)||'null')
+22427c22459,22461
+<         const g=F(b.grade),y=yr(b.academicYear)
+---
+>           const g=F(b.grade),y=yr(b.academicYear)
+> 
+>           if(pass<2&&wantG&&g&&g!==wantG)continue
+22429c22463
+<         if(wantG&&g&&g!==wantG)continue
+---
+>           if(pass<1&&wantY&&y&&y!==wantY)continue
+22431c22465
+<         if(wantY&&y&&y!==wantY)continue
+---
+>           if(pass===2&&k!==idx)continue
+22433c22467,22468
+<         found=b
+---
+>           found=b
+> yearAssumed=pass>0&&!!wantY&&yr(b.academicYear)!==wantY
+22435a22471,22473
+>       }
+>       if(found)break
+> 

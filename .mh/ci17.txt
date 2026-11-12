@@ -1,0 +1,24 @@
+#### after 429
+ALLBACK_MODEL});if(!options.triedHeavy&&!annualBudgetMode)return request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&fallbackPrompt)return workerFallback(fallbackPrompt,signal);const quotaError=new Error('سهمیه یا سرعت مجاز مدل '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+' پر شده است. طبق پاسخ سرویس، '+fa(seconds)+' ثانیه صبر کن؛ ثبت اطلاعات محلی همچنان فعال است.');quotaError.code='MODEL_RATE_LIMIT';throw quotaError;}
+           if(model===HEAVY_MODEL&&RETRYABLE_MODEL_STATUSES.has(response.status))heavyDownUntil=Date.now()+600000;
+           if((RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404)&&model!==FALLBACK_MODEL&&!options.triedHeavy)return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL,triedHeavy:true});let altNote='';if(response.status===404&&model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode&&Date.now()>=heavyDownUntil){try{return await request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});}catch(altError){if(altError?.name==='AbortError')throw altError;altNote=' مدل تحلیلی را هم امتحان کردم ولی جواب نداد: '+String(altError?.message||altError).slice(0,180);}}
+            const providerError=new Error(friendlyError(response.status,reason,data.error?.message,model)+altNote);
+            if(RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404){providerError.code='MODEL_UNAVAILABLE';providerError.status=response.status;}
+            throw providerError;
+      }
+      if(data.promptFeedback?.blockReason)throw new Error('این درخواست قابل پاسخ‌گویی نیست. سؤال را آموزشی و بدون اطلاعات حساس بازنویسی کن.');
+      const candidate=data.candidates?.[0], content=candidate?.content;
+      if(candidate?.finishReason&&!['STOP','MAX_TOKENS'].includes(candidate.finishReason))throw new Error('پاسخ کامل نشد؛ هیچ تغییری ثبت نشده است.');
+      const calls=(content?.parts||[]).filter(p=>p.functionCall);
+       if(calls.length) {
+         if(annualBudgetMode&&candidate.finishReason==='MAX_TOKENS')throw new Error('خروجی ابزار کامل نشد؛ هیچ داده‌ای ذخیره نشد. ورودی را به چند بخش ماهانه تقسیم کن و هر بخش را جداگانه بفرست.');
+         if(!allowToolCalls||calls.length>(annualBudgetMode?24:4)||candidate.finishReason==='MAX_TOKENS')throw new Error('برای کم‌کردن مصرف سهمیه، این درخواست ابزار کامل یا مجاز نیست؛ سؤال یا گزارش را کوتاه‌تر و مشخص‌تر بفرست.');
+         if(tomorrowBudgetMode){const okCalls=tomorrowBudgetRead?calls.filter(p=>['get_budget_and_progress
+
+#### \.getReader\(\) count=0
+#### response\.body count=0
+#### instanceof SyntaxError count=2
+@4303533: IGHT_MODEL]||0)+' از '+fa(LIGHT_REQUESTS_PER_DAY); |   } |   async function readResponseJson(response, signal) { |     try { |       return await Promise.race([ |         response.json().catch(error=>{if(error instanceof SyntaxError)return {};throw error;}), |         waitAbortable(RESPONSE_BODY_TIMEOUT_MS,signal).then(()=>({responseBodyTimeout:true})) |       ]); |     } catch (error) { |       if (error.name === 
+
+@4305437: true; controller.abort(); }, timeoutMs); |     try { |       const response = await fetch(url, {...options, signal:controller.signal}); |       const data = await response.json().catch(error => { if (error instanceof SyntaxError) return {}; throw error; }); |       return {response,data}; |     } catch (error) { |       if (timedOut && !signal.aborted) { |         const timeoutError = new Error('پاسخ سرویس مدل 
+

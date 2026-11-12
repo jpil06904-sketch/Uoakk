@@ -1,0 +1,2 @@
+{"ok":true,"php_ms":1,"list_ms":140,"list_st":200,"fast_ms":290,"fast_st":429,"fast_th":0,"strong_ms":80003,"strong_st":0,"strong_th":0}
+GPING HTTP 200 total=81.124986

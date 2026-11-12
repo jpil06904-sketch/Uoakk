@@ -1,0 +1,20 @@
+4264947 باره تلاش کن.'}; |       } finally { clearTimeout(t); } |     } |    const CACHE_KEY = 'mehryar_assistant_answer_cache_v1', RATE_KEY = 'mehryar_assistant_rate_v1'; |     const MAX_MODEL_RETRIES = 3, MODEL_RETRY_DELAY_MS = 2000, MODEL_FETCH_TIMEOUT_MS = 30000, RESPONSE_BODY_TIMEOUT_MS = 30000; |     const RETRYABLE_MODEL_STATUSES = new Set([408,500,502,503,504]); |      const PANEL_MIN_REQU
+..
+4265495 INUTE = 6, HEAVY_REQUESTS_PER_DAY = 50, LIGHT_REQUESTS_PER_DAY = 1500, MAX_TOOL_ROUNDS = 3, MAX_BUDGET_IMPORT_CHARS = 1000000, REQUEST_TIMEOUT_MS = 300000, LIGHT_FETCH_TIMEOUT_MS = 30000, HEAVY_FETCH_TIMEOUT_MS = 30000, ROUTER_FETCH_TIMEOUT_MS = 30000; |    const HEAVY_TRIGGERS = ['ایده','راهکار','راه حل','بلخره چکار کنم','بالاخره چکار کنم','چکار کنم','چیکار کنم','چه کار کنم','چی
+..
+4306738 l.id+'\n'+JSON.stringify(body)} : {method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(body)}; |     let options = makeOptions(); |     const waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? PANEL_FETCH_TIMEOUT_MS : timeoutMs; |     for (let attempt = 0; attempt <= retries; attempt++) { |       if (attempt) await waitAbortable(M
+..
+4310064 TUDENT = دربارهٔ ضعف، مشکل یا رفتار یک دانش‌آموز یا کلاس و راه‌حل آن می‌پرسد. RECORD = ثبت، اصلاح، حضور و غیاب، نمره، مشاهده یا گزارش‌گیری از داده‌های کلاس. OTHER = هر چیز دیگر مثل سلام یا سؤال عمومی.'; |   async function classifyIntent(prompt) { |     try { |       if (demoMode || !useTools) return; |       const key = normKey(prompt); |       if (intentCache.has(key) || prompt.length >
+..
+4311284  بودجهٔ معلم: ' + [...names].slice(0, 20).join('، ') + '.' : '')}]}, contents:[{role:'user', parts:[{text:prompt}]}], generationConfig:{temperature:0, maxOutputTokens:12, thinkingConfig:{thinkingBudget:0}}}, ctl.signal, ROUTER_FETCH_TIMEOUT_MS, 0); |       if (!response.ok) { |         if (response.status === 429) { const seconds = retrySeconds(response, data), rate = rateState(); 
+..
+4312192  if (intentCache.size > 60) intentCache.delete(intentCache.keys().next().value); |       routeCache.set(prompt, label === 'RECORD' || label === 'OTHER' ? LIGHT_MODEL : HEAVY_MODEL); |     } catch (_) {} |   } |   async function classifyPrompt(prompt, signal) { |     if (isHeavyPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt)) { routeCache.set(prompt,HEAVY_MOD
+..
+4312853 mInstruction:{parts:[{text:ROUTER_SYSTEM_PROMPT}]},contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0,maxOutputTokens:8,...(thinkingTrimBroken?{}:{thinkingConfig:{thinkingBudget:0}})}},signal,ROUTER_FETCH_TIMEOUT_MS,0); |       if(!response.ok){ |         if(response.status===429){const seconds=retrySeconds(response,data),rate=rateState();rate.backoffUnt
+..
+4408912 nkingBudget:768}}:!allowToolCalls&&!programMode&&!thinkingTrimBroken&&normKey(fallbackPrompt).length<=24?{thinkingConfig:{thinkingBudget:model===LIGHT_MODEL?512:1024}}:{})}},signal,annualBudgetMode?120000:ideaMode?90000:MODEL_FETCH_TIMEOUT_MS,annualBudgetMode||ideaMode?1:MAX_MODEL_RETRIES); |        let response,data; |        try { |          ({response,data}=await send()); |         
+..
+4424159 taTimer = null; |     const p = profile(), prompt = draft.trim(); |     if (isGreetingOnly(prompt) && !pendingAnnualBudget) { postBudgetExchange(prompt, p, greetingReply(p)); return; } |     intentChecking = true; try { await classifyIntent(prompt); } finally { intentChecking = false; } |     if (busy) return; |        const annualBudgetMode=isAnnualBudgetPrompt(prompt)&&!isBudgetQuestio
+..
+4435860 de?HEAVY_MODEL:aggregateOnly||tomorrowBudgetMode ? HEAVY_MODEL : isClarificationPrompt(prompt) ? LIGHT_MODEL : isInstructionalIdeaPrompt(prompt) ? HEAVY_MODEL : HEAVY_MODEL===LIGHT_MODEL ? modelForPrompt(prompt) : await classifyPrompt(prompt,abort.signal); |        cacheKey = cacheable ? answerCacheKey(prompt,p,allowToolCalls,model) : null; |         const text = await request(cont
+..

@@ -1,0 +1,55 @@
+Tue Nov 10 12:27:19 UTC 2026
+=== chat_mock files
+-rw-rw-rw- 1 codespace codespace 7135 12:13:42 chat_mock.cjs
+-rw-rw-rw- 1 codespace codespace 2018 12:15:25 chat_mock.txt
+-rw-rw-rw- 1 codespace codespace    0 12:13:42 chat_mock_log.txt
+-rw-rw-rw- 1 codespace codespace   10 12:13:42 chat_mock_syntax.txt
+-rw-rw-rw- 1 codespace codespace  466 12:14:44 chat_wait3.txt
+-rw-rw-rw- 1 codespace codespace  388 12:19:52 chat_wait4.txt
+=== chat_mock.txt
+panel={"base":"https://billowing-feather-ba20.ssioojiu63.workers.dev/panel","hasId":true}
+storedCode=MH-FSGZ-AQSY
+assistant page: امروز کجای کلاس کمکت کنم؟متن کامل بودجه‌بندی را بفرست؛ پیش‌نمایش را می‌بینی و فقط پس از تأیید معلم ذخیره می‌شود.آمار واقعی کلاسبدون مصرف درخواست آنلاینبرای فردا چه پیشنهادی داری؟ایدهٔ تدریس از شواهد همین کلاسقدم بعدی یادگیریروند، مانع احتمالی و راه ب
+toolbar: الف · پایهٔ دومرمز وارد شده است
+--- S1 greeting (local, no network expected) (8s) msgs 0 -> 0
+  Q: سلام مهریار
+  LAST: 
+  REQS: []
+  toolbar: الف · پایهٔ دومرمز وارد شده است
+--- S1 question tools OFF (45.1s) msgs 0 -> 0
+  Q: برای تمرین جمع دو رقمی در کلاس دوم یک فعالیت گروهی کوتاه پیشنهاد بده
+  LAST: 
+  REQS: []
+  toolbar: الف · پایهٔ دومرمز وارد شده است
+tools checkbox: ai-tools-access checked=false
+tools now: true
+--- S2 question tools ON (45.1s) msgs 0 -> 0
+  Q: یک ایده برای مرور ارزش مکانی با بازی بده
+  LAST: 
+  REQS: [{"url":"https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=ai&m=gemini-3-flash-preview","method":"POST","authPart":"MH-FSGZ-AQSY|<deviceId>","hasSystem":true,"tools":0,"contents":1,"size":1218,"kind":"intent"},{"url":"https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=ai&m=gemini-3.8-flash","method":"POST","authPart":"MH-FSGZ-AQSY|<deviceId>","hasSystem":true,"tools":1,"contents":5,"size":61512,"kind":"answer"},{"url":"https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=p","method":"POST"}]
+  toolbar: الف · پایهٔ دومآمادهٔ گفت‌وگو
+history saved=1710 chars
+ACT called? false
+non-mocked hosts: none (fetch fully replaced)
+ERRS 0
+
+=== log
+=== syntax
+SYNTAX_OK
+=== md5
+f08e92fecaecaaafff389b3234cce1cf  /workspaces/Uoakk/index.html
+0b40689d4d3e7566819236ee45d20df0  /workspaces/Uoakk/mehryar-v4-final (10).html
+89096129599b2e24e2ce4bf81d571373  /workspaces/Uoakk/mehryar-v4-final-fixed.html
+-rw-rw-rw- 1 codespace root         1055 Nov  8 16:40 /workspaces/Uoakk/index.html
+-rw-rw-rw- 1 codespace codespace 4850421 Nov  9 18:24 /workspaces/Uoakk/mehryar-v4-final (10).html
+-rw-rw-rw- 1 codespace codespace 4851698 Nov  9 18:24 /workspaces/Uoakk/mehryar-v4-final-fixed.html
+codespa+     782  0.5  1.6 1929924 273780 ?      Sl   10:43   0:34 /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/node /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/out/server-main.js --log trace --force-disable-user-env --server-data-dir /home/codespace/.vscode-remote --accept-server-license-terms --host 127.0.0.1 --port 0 --connection-token-file /home/codespace/.vscode-remote/data/Machine/.connection-token-c4453f8ea430795f941c1b2ff6c9321135a74a02 --extensions-download-dir /home/codespace/.vscode-remote/extensionsCache --start-server  --enable-remote-auto-shutdown --skip-requirements-check
+codespa+     807  2.3  7.1 36313448 1165232 ?    Sl   10:43   2:27 /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/node --dns-result-order=ipv4first /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/out/bootstrap-fork --type=extensionHost --transformURIs --useHostProxy=false
+codespa+     880  0.0  0.9 18559724 151052 ?     Sl   10:44   0:05 /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/node /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/out/bootstrap-fork --type=agentHost --logsPath /home/codespace/.vscode-remote/data/logs/20261110T104346 --user-data-dir /home/codespace/.vscode-remote/data --telemetry-level all
+codespa+     893  0.0  0.3 1665520 64752 ?       Sl   10:44   0:01 /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/node /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/out/bootstrap-fork --type=fileWatcher
+codespa+    1167  0.0  0.9 1526424 153816 ?      Sl   10:44   0:01 /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/node_modules/@github/copilot-sdk-linux-x64/prebuilds/linux-x64/copilot-runtime --headless --no-auto-update --log-level info --stdio --no-auto-login
+codespa+    1852  0.1  0.5 1857240 84580 ?       Sl   10:46   0:07 /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/node /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/out/bootstrap-fork --type=ptyHost --logsPath /home/codespace/.vscode-remote/data/logs/20261110T104346
+codespa+    2764  0.2  2.3 1694684 377292 ?      Sl   10:48   0:13 /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/node /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/extensions/html-language-features/server/dist/node/htmlServerMain --node-ipc --clientProcessId=807
+codespa+    4088  0.0  0.4 1491540 66172 ?       Sl   10:50   0:00 /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/node /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/extensions/json-language-features/server/dist/node/jsonServerMain --node-ipc --clientProcessId=807
+codespa+   11267  3.5  7.7 36409004 1271568 ?    Sl   11:02   3:00 /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/node --dns-result-order=ipv4first /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/out/bootstrap-fork --type=extensionHost --transformURIs --useHostProxy=false
+codespa+   11410  0.0  0.4 1727968 70680 ?       Sl   11:02   0:01 /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/node /vscode/bin/linux-x64/c4453f8ea430795f941c1b2ff6c9321135a74a02/out/bootstrap-fork --type=fileWatcher

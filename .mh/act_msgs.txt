@@ -1,0 +1,47 @@
+6528:        if (!times.length) { lines.length = 0; lines.push('به سرور پنل وصل نشد. اینترنت یا آدرس پنل را بررسی کن.'); show(); return; }
+6561:invalid:'کد درست نیست. دوباره بررسی کن.'
+6561:used:'این کد روی گوشی دیگری فعال شده است. به مدیر بگو گوشی کد را آزاد کند.'
+6561:off:'این کد غیرفعال شده است.'
+6561:rate:'تلاش‌های ناموفق زیاد بود؛ چند دقیقه بعد دوباره امتحان کن.'
+        } else {
+          const bad = st => st !== 200 ? ' (خطا ' + fa(String(st)) + ')' : '';
+          lines.push('۲) سرور تا گوگل (فهرست مدل‌ها): ' + sec(d.list_ms) + ' ثانیه' + bad(d.list_st));
+          lines.push('۳) مدل سریع، جواب کوتاه: ' + sec(d.fast_ms) + ' ثانیه' + bad(d.fast_st));
+          lines.push('۴) مدل قوی، جواب کوتاه: ' + sec(d.strong_ms) + ' ثانیه' + (d.strong_th ? '، فکر: ' + fa(String(d.strong_th)) + ' توکن' : '') + bad(d.strong_st));
+          if (med > 2500) verdict = 'نتیجه: مسیر اینترنت تا سرور کند است (اینترنت، فیلترشکن یا Cloudflare). مشکل از سرور یا مدل نیست.';
+          else if (d.list_st !== 200 || d.list_ms > 2000) verdict = 'نتیجه: ارتباط سرور پنل با گوگل کند یا مشکل‌دار است.';
+          else if (d.strong_ms > 20000) verdict = 'نتیجه: مدل قوی حتی برای جواب کوتاه کند است؛ کندی از فکر کردن مدل است.';
+          else verdict = 'نتیجه: اینترنت و سرور سالم‌اند. اگر جواب‌ها کند هستند، علتش طولانی بودن جواب و فکر کردن مدل است.';
+        }
+        lines.push(verdict); show();
+      } finally { btn.disabled = false; }
+    }
+    async function activateCode(code) {
+      const P = window.__mehryarPanel;
+      if (!P) return {ok:false,msg:'اتصال به پنل در این نسخه روشن نیست.'};
+      const c = new AbortController(), t = setTimeout(() => c.abort(), 15000);
+      try {
+        const r = await fetch(P.base+'/api.php?a=act',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({c:code,id:P.id}),signal:c.signal,cache:'no-store'});
+        const d = await r.json().catch(() => ({}));
+        if (d && d.ok) return {ok:true};
+        const m = {invalid:'کد درست نیست. دوباره بررسی کن.',used:'این کد روی گوشی دیگری فعال شده است. به مدیر بگو گوشی کد را آزاد کند.',off:'این کد غیرفعال شده است.',rate:'تلاش‌های ناموفق زیاد بود؛ چند دقیقه بعد دوباره امتحان کن.'};
+        return {ok:false,msg:m[d && d.err] || 'فعال‌سازی ناموفق بود؛ دوباره تلاش کن.'};
+      } catch (_) {
+        return {ok:false,msg:'ارتباط با پنل برقرار نشد. اینترنت را بررسی کن و دوباره تلاش کن.'};
+      } finally { clearTimeout(t); }
+    }
+   const CACHE_KEY = 'mehryar_assistant_answer_cache_v1', RATE_KEY = 'mehryar_assistant_rate_v1';
+    const MAX_MODEL_RETRIES = 3, MODEL_RETRY_DELAY_MS = 1000, MODEL_FETCH_TIMEOUT_MS = 30000, RESPONSE_BODY_TIMEOUT_MS = 30000;
+    const RETRYABLE_MODEL_STATUSES = new Set([408,500,502,503,504,520,522,524]);
+     const PANEL_MIN_REQUEST_GAP = 0, PANEL_MAX_REQUESTS_PER_MINUTE = 100000, PANEL_FETCH_TIMEOUT_MS = 40000; let heavyDownUntil = 0; let thinkingTrimBroken = false;
+     const MIN_REQUEST_GAP = 0, MAX_REQUESTS_PER_MINUTE = 100000, HEAVY_REQUESTS_PER_DAY = 1000000, LIGHT_REQUESTS_PER_DAY = 1000000, MAX_TOOL_ROUNDS = 3, MAX_BUDGET_IMPORT_CHARS = 1000000, REQUEST_TIMEOUT_MS = 300000, LIGHT_FETCH_TIMEOUT_MS = 30000, HEAVY_FETCH_TIMEOUT_MS = 30000, ROUTER_FETCH_TIMEOUT_MS = 8000;
+   const HEAVY_TRIGGERS = ['ایده','راهکار','راه حل','بلخره چکار کنم','بالاخره چکار کنم','چکار کنم','چیکار کنم','چه کار کنم','چی کار کنم','چکار کنیم','چیکار کنیم','چه کار کنیم','چی کار کنیم','چه کنیم','چی کنیم','حالا چکار کنم','حالا چیکار کنم','حالا چه 
+   const NEXT_DAY_TRIGGERS = ['فردا','فردا صبح','برای فردا','فردا چکار کنم','فردا چیکار کنم','فردا چه کار کنم','فردا چی کار کنم','فردا چه کنم','فردا چی کنم','فردا چی بدم','فردا چه درسی بدم','فردا چه درس بدهم','درس فردا','برنامه فردا','پیشنهاد فردا'].map
+   const COLOR_MAP_RULES = '\nقانون رنگ مشاهده: وقتی معلم صریح می‌گوید دانش‌آموز بلد نیست، نمی‌تواند یا نتوانست، وضعیت قرمز (red) است نه زرد؛ زرد فقط برای ناقص، کند یا فقط با کمک؛ سبز فقط برای مستقل. عبارت «بخشی را یاد گرفت» را برای «بل�
+    const LEARN_SYSTEM = 'تو مهریار، همکار باتجربه و مربی دبستان هستی و با یک معلم هم‌کلاسی حرف می‌زنی؛ صمیمی، روشن و بی‌تعارف. لازم نیست خودت را معرفی کنی یا با سلام شروع کنی مگر معلم سلام کرده باشد. برای وضعیت دانش‌آموزان فقط از د
+    const ROUTER_SYSTEM_PROMPT = 'تو یک هوش مصنوعی تصمیم‌گیرنده هستی. درخواست کاربر را بخوان. ثبت و اصلاح داده‌های واقعی کلاس مثل مشاهده، رنگ یادگیری، حضور، غیبت، تأخیر، تکلیف، سنجش، پیگیری، افزودن یا ویرایش دانش‌آموز و گزارش امروز ک
+  const LIGHT_RECORD_TRIGGERS = ['ثبت','ذخیره','وارد','علامت','اصلاح','ویرایش','حذف','اضافه','گزارش امروز','گزارش کن','گزارش شود','مشاهده','حضور','غیبت','تاخیر','تأخیر','تکلیف','سنجش','ارزیابی','پیگیری'].map(normKey);
+  let key = '', verified = false, busy = false, controller = null, requestId = 0;
+    let messages = [], draft = '', pending = null, pendingAnnualBudget = null, errorText = '', historyWarning = '', historyBlocked = false;
+   let saveTimer, keyDialog = null, demoSnapshot = null;
+DONE

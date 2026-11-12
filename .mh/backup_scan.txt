@@ -1,0 +1,18 @@
+== backup/export
+1977:  const name = `مهریار-${className() || 'کلاس'}-${state.klass.year || ''}.json`;
+1978:  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+2615:, subtitle: `مهریار-${esc(className() || 'کلاس')}-${esc(state.klass.year || '')}.json`, onClick: exportJSON }) + ui.row({ icon: 'upload', gradient: 'blue', title: 'بارگذاری فایل', subtitle: 'انتخاب فایل JSO
+2616:      <input type="file" id="file-in" class="file-input" accept="application/json,.json" data-change="${h(onFile)}">
+3529:nst a=document.createElement('a'),url=URL.createObjectURL(new Blob([raw],{type:'application/json'}));a.href=url;a.download='mehryar-recovery.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);}catch(e){ui.
+3656:  const blob=new Blob([text],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+6986:arPanel.id+'\n'+JSON.stringify(body)} : {method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(body)};
+7550:it fetchWithTimeout(WORKER_FALLBACK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:workerPrompt})},signal,HEAVY_FETCH_TIMEOUT_MS);
+8182:onse = await fetch(DAILY_MESSAGE_WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:dailyMessagePrompt(data)}),signal:controller.signal});
+9398:حتوای کتاب نیست.</p>'}<input type="file" accept=".json,.txt,.md,.csv,text/plain,application/json,text/csv" data-curriculum-file="${esc(book.id)}"><button type="button" class="btn btn-tinted btn-sm" data-curriculum-ta
+9416:.importText=v;}})}<input type="file" id="budget-import-file" accept=".json,.csv,application/json,text/csv"><div class="pulse-actions">${ui.btnTinted('پیش‌نمایش ورود',()=>{const parsed=parseBudgetText(document.getElem
+9452:t.getElementById('budget-import-file');if(file)file.accept='.json,.csv,.txt,.md,application/json,text/csv,text/plain';
+== localStorage keys (setItem literals)
+== key constants
+== indexedDB
+2
+DONE

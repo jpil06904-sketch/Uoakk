@@ -1,0 +1,42 @@
+total 4968
+drwxrwxrwx+ 3 codespace codespace    4096 Nov  9 12:39 .
+drwxrwxrwx+ 9 codespace root         4096 Nov  9 03:20 ..
+-rw-rw-rw-  1 codespace codespace    2810 Nov  9 03:24 api.txt
+-rw-rw-rw-  1 codespace codespace    1604 Nov  9 12:31 bug.txt
+-rw-rw-rw-  1 codespace codespace    1751 Nov  9 12:32 bug2.txt
+-rw-rw-rw-  1 codespace codespace       0 Nov  9 12:32 bug2_err.txt
+drwxrwxrwx+ 3 codespace codespace    4096 Nov  9 03:24 env
+-rw-rw-rw-  1 codespace codespace   12446 Nov  9 03:20 functions.txt
+-rw-rw-rw-  1 codespace codespace       0 Nov  9 12:39 ls_now.txt
+-rw-rw-rw-  1 codespace codespace    2099 Nov  9 03:20 map.py
+-rw-rw-rw-  1 codespace codespace    6799 Nov  9 03:20 map.txt
+-rw-rw-rw-  1 codespace codespace      79 Nov  9 03:20 map_log.txt
+-rw-rw-rw-  1 codespace codespace       7 Nov  9 03:24 npm_install.txt
+-rw-rw-rw-  1 codespace codespace       7 Nov  9 03:21 npmcheck.txt
+-rw-rw-rw-  1 codespace codespace    1237 Nov  9 03:20 script_00.js
+-rw-rw-rw-  1 codespace codespace   18156 Nov  9 03:20 script_01.js
+-rw-rw-rw-  1 codespace codespace     647 Nov  9 03:20 script_02.js
+-rw-rw-rw-  1 codespace codespace 2898353 Nov  9 03:20 script_03.js
+-rw-rw-rw-  1 codespace codespace    1404 Nov  9 03:20 script_04.js
+-rw-rw-rw-  1 codespace codespace  115732 Nov  9 03:20 script_05.js
+-rw-rw-rw-  1 codespace codespace  267861 Nov  9 03:20 script_06.js
+-rw-rw-rw-  1 codespace codespace   11462 Nov  9 03:20 script_07.js
+-rw-rw-rw-  1 codespace codespace   16721 Nov  9 03:20 script_08.js
+-rw-rw-rw-  1 codespace codespace   18407 Nov  9 03:20 script_09.js
+-rw-rw-rw-  1 codespace codespace   19829 Nov  9 03:20 script_10.js
+-rw-rw-rw-  1 codespace codespace  163698 Nov  9 03:20 script_11.js
+-rw-rw-rw-  1 codespace codespace   16851 Nov  9 03:20 script_12.js
+-rw-rw-rw-  1 codespace codespace    6478 Nov  9 03:21 sections.txt
+-rw-rw-rw-  1 codespace codespace    4913 Nov  9 03:24 smoke.cjs
+-rw-rw-rw-  1 codespace codespace   11434 Nov  9 03:25 smoke_empty.json
+-rw-rw-rw-  1 codespace codespace      26 Nov  9 03:25 smoke_run1.txt
+-rw-rw-rw-  1 codespace codespace      41 Nov  9 12:34 smoke_run2.txt
+-rw-rw-rw-  1 codespace codespace   10677 Nov  9 12:34 smoke_seed.json
+-rw-rw-rw-  1 codespace codespace     229 Nov  9 03:26 status.txt
+-rw-rw-rw-  1 codespace codespace 1375119 Nov  9 03:20 stripped.html
+-rw-rw-rw-  1 codespace codespace     955 Nov  9 03:29 summary.py
+-rw-rw-rw-  1 codespace codespace    2946 Nov  9 03:30 summary.txt
+-rw-rw-rw-  1 codespace codespace    1225 Nov  9 03:30 summary1.txt
+-rw-rw-rw-  1 codespace codespace       0 Nov  9 03:30 summary_err.txt
+nohup: ignoring input
+routes 68 errors 0

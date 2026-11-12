@@ -1,0 +1,8 @@
+gemini-3.8-flash #0 st=503 8947ms { "error": { "code": 503, "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.", "statu
+gemini-3.8-flash #1 st=504 80148ms error code: 504 
+gemini-3-pro-preview #0 st=404 720ms { "error": { "code": 404, "message": "This model models/gemini-3-pro-preview is no longer available. Please update your code to use models/gemini-3.1-pro-previe
+gemini-3-pro-preview #1 st=404 453ms { "error": { "code": 404, "message": "This model models/gemini-3-pro-preview is no longer available. Please update your code to use models/gemini-3.1-pro-previe
+cfg #0 st=200 207ms
+cfg #1 st=200 695ms
+cfg #2 st=200 109ms
+DONE

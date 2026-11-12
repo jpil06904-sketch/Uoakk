@@ -1,0 +1,111 @@
+214:/* ============================================================
+244:/* ============================================================
+268:/* ============================================================
+313:/* ============================================================
+644:/* Revision 2: preserve Mehryar components; fix mobile overflow and sticky layers. */
+664:/* Calm visual revision: original green identity, fewer competing actions. */
+677:/* Storage notice: ordinary document flow, no fixed overlay and no yellow bar. */
+718:/* Compatibility fix: reserve 3:2 space with classic percentage padding.
+729:/* Use native disclosure for the introduction: no overlay, viewport-height
+802:/* Compact layout: reduce whitespace and image footprint, not font scaling.
+1632:/* ============================================================
+1714:/* ============================================================
+1788:/* ============================================================
+1801:/* ============================================================
+1984:/* ============================================================
+2050:/* ============================================================
+2178:/* ============================================================
+2216:/* ============================================================
+2269:/* ============================================================
+2286:/* ============================================================
+2371:/* ============================================================
+2469:/* ============================================================
+2503:/* ============================================================
+2645:/* ============================================================
+2743:/* ============================================================
+2778:/* ============================================================
+3158:/* ============================================================
+3212:/* ============================================================
+3265:/* ============================================================
+3320:/* ============================================================
+3763:/* Third illustrated introduction: isolated examples, never writes class data. */
+3841:/* Public invitation: fixed text only. Never reads student/class data.
+3987:/* ===== Optional remote panel: banners, popup, anonymous counters. Empty PANEL_URL = fully off. ===== */
+4051:/* Keyboard support for segmented controls: arrows move focus; Enter/Space
+4095:// Correct existing grade filters: a mixed-grade session must not leak another
+4883:    // batch: whole-class monthly parent report
+4905:    // smart triage: who needs attention (absence + red skills + homework)
+5110:    /* feature 4: decline alert */
+5139:    /* feature 1: action inbox */
+5189:    /* feature 3: next-session plan */
+5245:    /* feature 5: visual report card */
+5299:    /* feature 6: parent message templates */
+5345:    /* feature 7: weekly digest */
+5388:    /* feature 2: bulk observe (injected into quick session) */
+8218:/* Topic-aware learning status: skillId remains the stored compatibility key. */
+9584:/* Budget radar: calm pacing notes at the end of the class pulse. Read-only; changes nothing. */
+=== ROUTE ADDITIONS
+3527:ROUTES.unshift(...[['pulse',renderPulse],['pulse/quick',()=>renderQuick()],['pulse/sessions',renderSessions],['pulse/radar',renderRadar],['pulse/paths',ren
+4048:ROUTES.unshift([/^#\/guide\/([^/]+)$/,m=>{let key='home';try{key=decodeURIComponent(m[1]);}catch(e){}renderInlineGuide(key);}]);
+4082:ROUTES.unshift([/^#\/pro$/,renderProPage],[/^#\/about$/,renderAboutPage]);
+4144:ROUTES.unshift([/^#\/pulse\/overview\/(roster|seen|unseen|needs)$/,m=>pdOverview(m[1])],[/^#\/pulse\/grades$/,pdGradesPage]);
+4147:ROUTES.unshift([/^#\/pulse$/,()=>renderPulse()],[/^#\/pulse\/week$/,()=>renderWeek()],[/^#\/pulse\/activities$/,()=>renderActivities()],[/^#\/pulse\/follow
+5475:ROUTES.unshift(
+8040:ROUTES.unshift([/^#\/pulse\/assistant-preview$/,()=>MehryarTools.viewOutput()],[/^#\/pulse\/assistant$/,render],[/^#\/settings\/ai$/,() => { location.repla
+8507:ROUTES.unshift([/^#\/pulse\/color\/(red|yellow|green|gray)$/, match => renderTopicColorList(match[1])]);
+8665:ROUTES.unshift([/^#\/pulse\/missions$/,renderMissions]);
+8681:ROUTES.unshift([/^#\/pulse\/tomorrow$/,()=>renderTomorrow()]);
+8760:ROUTES.unshift([/^#\/pulse\/missions$/,renderMissionDesk]);
+9573:ROUTES.unshift([/^#\/curriculum$/,renderCurriculumHome],[/^#\/curriculum\/books$/,renderBooks],[/^#\/curriculum\/budget$/,renderBudget],[/^#\/curriculum\/p
+=== OVERRIDES (name=function / const old)
+1559:const previous=state.learning.missions.filter
+2480:const prev = state.students
+3217:const old = document.getElementById
+3395:const old=localStorage.getItem
+3400:const oldTargets=getTargetStudents
+3403:const oldMount=mount
+3414:const oldActiveTab=activeTab
+3447:const originalHome=renderHome
+3453:const prev=clone
+3525:const oldSettings=renderSettings
+3526:const oldHelp=renderHelp
+3528:const oldData=renderData
+3543:const oldRenderStudents=renderStudents
+3545:const oldRenderStudent=renderStudent
+3548:const oldUpdateStudent=updateStudent
+3559:const oldPlanText=planText
+3560:const oldPreviewLearning=previewLearningPages
+3562:const originalUiField=ui.field
+3694:const previous=localStorage.getItem
+3701:const originalToastForStorage=ui.toast
+4021:const prev=renderHome
+5784:const old=outputConfig
+5807:const old=action
+5903:const old=outputConfig
+6172:const previous=l.attendanceDays
+6236:const previous=clone
+6300:const prev=known.filter
+6821:const preview=pendingAnnualBudget
+6822:let previousBudget=null
+6911:const oldest = rate.minute
+7354:const previous=plans
+7786:const previousProposal=MehryarTools.proposal
+7806:const previous=latestBudgetMessageFor
+7808:const previousIdentity=budgetHistoryIdentity
+8038:const previousActiveTab = activeTab
+8041:const previousSettings = renderSettings
+8047:const previousTools = pdToolLinks
+8049:const previousReplace = replaceState
+8051:const previousDemo = loadSample
+8195:const previousRenderPulse = typeof
+8663:const oldToolLinks=pdToolLinks
+8745:const oldStudentRender=renderStudentLearning
+8756:const oldQuickRender=renderQuick
+8758:const oldTomorrowRender=renderTomorrow
+8761:const oldLinks=pdToolLinks
+9002:let previous=Array.from
+9275:const previous=draft
+9293:const previewData=budgetDraftPreviewData
+9574:const oldLinks=pdToolLinks
+9575:const oldClass=renderClass
+9769:const previousRenderPulse = renderPulse

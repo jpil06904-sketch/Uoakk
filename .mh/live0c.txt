@@ -1,0 +1,23 @@
+iMjIi4sL0ceJs7MotqNPVSMD0rZcGf2oDfQ628OSoDFeBavgOpqaqUosoKvq5hAuhwcwYZ0PFBW0CQN4QdLxkZG1wmrkq6Vksm55LnOMUcVJVvhj2HNKS4DbIvWwtmFieYMbdZz2Atm3WULgRkZF1e6zxGXZaBPZjOTkSrLlHP/WMjIyAlAXX/9k=";
+const homeBeforeMahdaviBanner=renderHome;
+renderHome=function(){
+ homeBeforeMahdaviBanner();
+ const root=document.getElementById('content');if(!root)return;
+ root.querySelector('#dashboard-mahdavi-banner')?.remove();
+ const banner=document.createElement('section');banner.id='dashboard-mahdavi-banner';banner.className='dashboard-mahdavi-banner';banner.setAttribute('aria-label','عهد مهدوی');
+ banner.innerHTML=`<a class="dashboard-gift-link dashboard-mahdavi-link" href="https://eitaa.com/mlmpro/88" target="_blank" rel="noopener noreferrer" aria-label="عهد مهدوی؛ مشاهده در ایتا، در صفحهٔ جدید"><span class="dashboard-gift-image"><img src="${DASHBOARD_MAHDAVI_BANNER}" width="1800" height="600" alt="عهد مهدوی؛ امتحانش کن" decoding="sync"></span></a>`;
+ root.insertBefore(banner,root.firstChild);
+};
+
+
+/* ===== Optional remote panel: banners, popup, anonymous counters. Empty PANEL_URL = fully off. ===== */
+const APP_VERSION='4.1',PANEL_URL='https://billowing-feather-ba20.ssioojiu63.workers.dev/panel';
+(()=>{
+ if(!PANEL_URL)return;
+ const OFF='mehryar_stats_off',DID='mehryar_did',base=(()=>{try{return new URL(PANEL_URL,location.href).href.replace(/\/+$/,'');}catch(_){return PANEL_URL.replace(/\/+$/,'');}})(),viewed=new Set();
+ const ls=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);v===null?localStorage.removeItem(k):localStorage.setItem(k,v);}catch(_){}return null;};
+ let id=ls(DID);if(!id){id=Array.from(crypto.getRandomValues(new Uint8Array(12)),b=>b.toString(16).padStart(2,'0')).join('');ls(DID,id);}
+ const Q='mehryar_q',qget=()=>{try{return JSON.parse(ls(Q)||'{}')||{};}catch(_){return {};}};let sending=false;const setPS=s=>ls('mehryar_ps',JSON.stringify({s,t:Date.now()}));
+ const flush=()=>{if(sending||!navigator.onLine)return;const q=qget();if(!Object.keys(q).length)return;sending=true;fetch(base+'/api.php?a=p',{method:'POST',body:JSON.stringify({id,v:APP_VERSION,ev:q}),keepalive:true,headers:{'Content-Type':'text/plain'}}).then(r=>r.text()).then(t=>{if(t==='1'){const cur=qget();for(const k in q){cur[k]=(cur[k]||0)-q[k];if(cur[k]<=0)delete cur[k];}ls(Q,JSON.stringify(cur));setPS('ok');}else setPS(t.trim().startsWith('<')?'blocked':'server');}).catch(()=>{setPS('network');}).finally(()=>{sending=false;});};
+ const beacon=e=>{if(ls(OFF)==='1')return;const q=qget();q[e]=Math.min((q[e]||0)+1,500);ls(Q,JSON.stringify(q));flush();};
+ window.__mehryarStat=beacon;window.__mehryarPanel={base,id};window.addEventListener('online',fl

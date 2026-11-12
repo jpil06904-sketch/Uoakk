@@ -1,0 +1,28 @@
+async function classifyIntent(prompt) {
+    try {
+      if (demoMode || !useTools) return;
+      const key = normKey(prompt);
+      if (intentCache.has(key) || prompt.length > 400) return;
+      if (isAnnualBudgetPrompt(prompt) || isClarificationPrompt(prompt) || isLightRecordPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt) || isLearnPrompt(prompt) || isInstructionalIdeaPrompt(prompt)) return;
+      const names = new Set();
+      try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (!k || !k.startsWith('mehyar_budget_')) continue; const b = JSON.parse(localStorage.getItem(k) || 'null'); for (const m of (b && b.months) || []) for (const sub of m.subjects || []) if (sub && sub.subjectTitle) names.add(String(sub.subjectTitle)); } } catch (_) {}
+      const ctl = new AbortController();
+      const {response, data} = await fetchModelWithRetry(LIGHT_MODEL, {systemInstruction:{parts:[{text:INTENT_SYSTEM_PROMPT + (names.size ? ' درس‌های موجود در بودجهٔ معلم: ' + [...names].slice(0, 20).join('، ') + '.' : '')}]}, contents:[{role:'user', parts:[{text:prompt}]}], generationConfig:{temperature:0, maxOutputTokens:12, thinkingConfig:{thinkingBudget:0}}}, ctl.signal, ROUTER_FETCH_TIMEOUT_MS, 0);
+      if (!response.ok) {
+        if (response.status === 429) { const seconds = retrySeconds(response, data), rate = rateState(); rate.backoffUntilByModel[LIGHT_MODEL] = Date.now() + seconds * 1000; rate.kindByModel = rate.kindByModel || {}; rate.kindByModel[LIGHT_MODEL] = quotaKind(data); saveRateState(rate); }
+        return;
+      }
+      const answer = (data.candidates?.[0]?.content?.parts || []).filter(x => !x.thought && typeof x.text === 'string').map(x => x.text).join(' ').trim().toUpperCase();
+      const label = (answer.match(/\b(NEXT|IDEA|STUDENT|RECORD|OTHER|LEARN)\b/) || [])[1];
+      if (!label) return;
+      intentCache.set(key, label); if (intentCache.size > 60) intentCache.delete(intentCache.keys().next().value);
+      routeCache.set(prompt, label === 'RECORD' || label === 'OTHER' ? LIGHT_MODEL : HEAVY_MODEL);
+    } catch (_) {}
+  }
+  async function classifyPrompt(prompt, signal) {
+    if (isHeavyPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt)) { routeCache.set(prompt,HEAVY_MODEL); return HEAVY_MODEL; }
+    if (isLightRecordPrompt(prompt)) { routeCache.set(prompt,LIGHT_MODEL); return LIGHT_MODEL; }
+     const cached = routeCache.get(prompt);
+    if (cached) return cached;
+    try {
+      const {response,data}=await fetchModelWithRetry(LIGHT_MODEL,{systemInstruction:{pa

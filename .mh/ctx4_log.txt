@@ -1,0 +1,6 @@
+done
+texts_done.txt
+texts_empty.txt
+texts_empty_log.txt
+texts_seed.txt
+texts_seed_log.txt

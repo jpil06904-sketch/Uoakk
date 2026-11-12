@@ -1,0 +1,63 @@
+#### friendlyError @ 4377055
+function friendlyError(code, reason, providerMessage, model) {
+    const source = String(reason || '')+' '+String(providerMessage || '');
+    const detail = String(providerMessage || reason || '').replace(/\s+/g,' ').trim().slice(0,240);
+    const modelLabel = model === HEAVY_MODEL ? 'مدل تحلیلی Gemini' : 'مدل سریع Gemini';
+    if (/API_KEY_INVALID|API_KEY_EXPIRED/.test(source) || code === 401) return 'رمز پذیرفته نشد یا منقضی شده است. از دکمهٔ «رمز» آن را اصلاح کن.';
+    if (code === 403) return 'اجازهٔ دسترسی داده نشد. اعتبار و مجوز رمز یا محدودیت منطقه را بررسی کن.';
+    if (code === 429) return 'سهمیه یا سقف درخواست‌ها پر شده است. کمی بعد دوباره امتحان کن.';
+    if (code === 404) return `${modelLabel} در این API پیدا نشد.${detail ? ' جزئیات: '+detail : ''}`;
+    if (code === 400) return `درخواست ${modelLabel} پذیرفته نشد.${detail ? ' جزئیات: '+detail : ' بدنهٔ درخواست یا رمز را بررسی کن.'}`;
+    if (code >= 500) return `${modelLabel} خطای موقت ${code} داد.${detail ? ' جزئیات: '+detail : ' کمی بعد دوباره امتحان کن.'}`;
+    if (detail) return `${modelLabel} پاسخ معتبر نداد. جزئیات: ${detail}`;
+    return 'پاسخ معتبری دریافت نشد. دوباره تلاش کن.';
+  }
+  function compactClassIdentity() {
+    const today = localISO(), sessions = state.learning.sessions.filter(s => s.date <= today).sort((a,b) => a.date.localeCompare(b.date) || (a.sequence||0)-(b.sequence||0)), latest = sessions.at(-1);
+    const currentSkill = latest?.skillLabel || state.learning.skills.find(s => s.subject === (latest?.subject || filter.subject))?.label || '';
+    return {پایه:state.klass.grade || 'ثبت نشده',کلاس:state.klass.className || 'ثبت نشده',درس:latest?.subject || filter.subject || 'ثبت نشده',موضوع_درس:latest?.lessonTitle || 'ثبت نشده',مهارت:currentSkill || 'ثبت نشده',فهرست_کتاب‌ها:Array.isArray(state.lists.books) ? state.lists.books.slice(0,12) : []};
+  }
+  function compactClassSnapshot() {
+    const today = localISO(), attendance = state.learning.attendanceDays || {};
+    return state.students.filter(s => !state.learning.studentMeta[s.id]?.archived).map(s => {
+      const observations = getDirectObservations(state,{studentId:s.id,to:today}), latest = new Map();
+      for (const item of observations) latest.set(item.skillId,item);
+      const issues = [...latest.values()].filter(item => item.status !== 'green').slice(-6).map(item => `${item.subject} / ${item.skillLabel}: ${STATUS_TEXT[item.status]}${item.errors?.length ? '؛ '+item.errors.slice(0,3).join('، ') : ''}`);
+      const absentCount = Object.values(attendance).filter(day => day?.[s.id] === 'absent').length;
+      const not
+
+#### err *=== *'used' count 0
+
+#### \.err\b count 2
+@ 3993144 :: ;font:inherit;cursor:pointer'; |   bt.onclick=async()=>{show('در حال آزمایش…');try{const rr=await fetch(base+'/api.php?a=diag',{cache:'no-store'});const tx=await rr.text();let j=null;try{j=JSON.parse(tx);}catch(_){} |    show(j&&j.ok?'✅ پنل وصل است (PHP '+j.php+')':j?'⚠️ پنل جواب داد ولی مشکل دارد: '+(j.err||(!j.sqlite?'SQLite فعال نیست':!j.data_writable?'پوشهٔ data قابل نوشتن نیست':'نامشخص')):tx.trim().startsWith('<')?'❌ هاست درخواست را بسته است (بررسی امنیتی یا صفحهٔ خطا)':'❌ جواب نامعتبر: '+tx.slice(0,60));} |    catch(e){const mixed=location.protocol==='https:'&&base.startsWith('http:');let reach=false;try{await fetch(base+'/api.php?a=diag',{mode:'no-cors',cache:'no-store'});reach=true;}catch(
+---
+@ 4264576 :: (d && d.ok) return {ok:true}; |         const m = {invalid:'کد درست نیست. دوباره بررسی کن.',used:'این کد روی گوشی دیگری فعال شده است. به مدیر بگو گوشی کد را آزاد کند.',off:'این کد غیرفعال شده است.',rate:'تلاش‌های ناموفق زیاد بود؛ چند دقیقه بعد دوباره امتحان کن.'}; |         return {ok:false,msg:m[d && d.err] || 'فعال‌سازی ناموفق بود؛ دوباره تلاش کن.'}; |       } catch (_) { |         return {ok:false,msg:'ارتباط با پنل برقرار نشد. اینترنت را بررسی کن و دوباره تلاش کن.'}; |       } finally { clearTimeout(t); } |     } |    const CACHE_KEY = 'mehryar_assistant_answer_cache_v1', RATE_KEY = 'mehryar_assistant_rate_v1'; |     const MAX_MODEL_RETRIES = 3, MODEL_RETRY_DELAY_MS = 2000, MODEL_FETCH_TIMEOUT_MS = 3000
+---
+
+#### d\.err|data\.err\b|data\?\.err\b count 14
+@ 1525684 :: );} |       for(const [skillId,record] of latest){const skill={id:skillId,label:record.skillLabel,subject:record.subject},topic=[record.subject,record.skillLabel].filter(Boolean).join(' / ');if(record.status==='red'){red.add(skillId);addDossierValue(d.activeIssues,topic+'؛ نیازمند آموزش دوباره'+(record.errors?.length?'؛ '+record.errors.slice(0,3).join('، '):''));}else if(record.status==='yellow'){yellow.add(skillId);addDossierValue(d.activeIssues,topic+'؛ نیازمند تمرین');}else if(record.status==='green'){green.add(skillId);resolveDossierTopic(d,skill,topic+'؛ حل‌شده در آخرین مشاهده');addDossierValue(d.strengths,topic+'؛ یادگیری ثبت‌شده');}} |       for(const followup of (learning.followups||[]).
+---
+@ 1525711 :: d,record] of latest){const skill={id:skillId,label:record.skillLabel,subject:record.subject},topic=[record.subject,record.skillLabel].filter(Boolean).join(' / ');if(record.status==='red'){red.add(skillId);addDossierValue(d.activeIssues,topic+'؛ نیازمند آموزش دوباره'+(record.errors?.length?'؛ '+record.errors.slice(0,3).join('، '):''));}else if(record.status==='yellow'){yellow.add(skillId);addDossierValue(d.activeIssues,topic+'؛ نیازمند تمرین');}else if(record.status==='green'){green.add(skillId);resolveDossierTopic(d,skill,topic+'؛ حل‌شده در آخرین مشاهده');addDossierValue(d.strengths,topic+'؛ یادگیری ثبت‌شده');}} |       for(const followup of (learning.followups||[]).filter(x=>x.studentId===st.
+---
+@ 4262526 :: y: key + '|' + P.id + '\n{}', signal: ctl.signal, cache: 'no-store' }); d = await r.json().catch(() => ({})); } catch (_) { d = {}; } finally { clearTimeout(timer); } |         lines.pop(); |         let verdict; |         if (!d || !d.ok) { |           lines.push('۲) آزمایش سرور تا گوگل جواب نداد' + (d && d.error && d.error.message ? ': ' + d.error.message : '.')); |           verdict = med > 2500 ? 'نتیجه: مسیر اینترنت تا سرور کند است.' : 'نتیجه: سرور پنل جواب سالم نداد؛ پنل و کلیدها را بررسی کن.'; |         } else { |           const bad = st => st !== 200 ? ' (خطا ' + fa(String(st)) + ')' : ''; |           lines.push('۲) سرور تا گوگل (فهرست مدل‌ها): ' + sec(d.list_ms) + ' ثانیه' + bad(d.list_st)); |      
+---
+@ 4262537 :: ' + P.id + '\n{}', signal: ctl.signal, cache: 'no-store' }); d = await r.json().catch(() => ({})); } catch (_) { d = {}; } finally { clearTimeout(timer); } |         lines.pop(); |         let verdict; |         if (!d || !d.ok) { |           lines.push('۲) آزمایش سرور تا گوگل جواب نداد' + (d && d.error && d.error.message ? ': ' + d.error.message : '.')); |           verdict = med > 2500 ? 'نتیجه: مسیر اینترنت تا سرور کند است.' : 'نتیجه: سرور پنل جواب سالم نداد؛ پنل و کلیدها را بررسی کن.'; |         } else { |           const bad = st => st !== 200 ? ' (خطا ' + fa(String(st)) + ')' : ''; |           lines.push('۲) سرور تا گوگل (فهرست مدل‌ها): ' + sec(d.list_ms) + ' ثانیه' + bad(d.list_st)); |           lines.
+---
+
+#### 'used' count 0
+
+#### \binvalid\b' count 7
+@ 1626063 :: Storage.getItem(STORAGE_KEY);} |   catch(e){state=migrate({});markStorageMode('temporary','unavailable');return;} |   if(raw){ |     storageRuntime.raw=raw; |     let saved; |     try{saved=JSON.parse(raw);validateImport(saved);state=migrate(saved);} |     catch(e){state=migrate({});markStorageMode('recovery','invalid');return;} |     // Readable class stays available even if writing the migration fails. |     storageRuntime.migrationPending=!saved.learning; |     if(storageRuntime.migrationPending){ |       try{localStorage.setItem(STORAGE_KEY+'_before_learning',raw);localStorage.setItem(STORAGE_KEY,JSON.stringify(state));storageRuntime.migrationPending=false;storageRuntime.raw=JSON.stringify(state);markStorag
+---
+@ 3430632 :: padStart(2,'0')); | } | function parsePersianDate(value){ |  let v=persianDigitsToLatin(value);if(!v)return {kind:'empty',iso:''}; |  if(/^\d{8}$/.test(v))v=v.slice(0,4)+'/'+v.slice(4,6)+'/'+v.slice(6); |  const match=/^(\d{4})\s*[\/\.\-]\s*(\d{1,2})\s*[\/\.\-]\s*(\d{1,2})$/.exec(v); |  if(!match)return {kind:'invalid',iso:''}; |  const [jy,jm,jd]=match.slice(1).map(Number); |  if(jy<1000||jy>1600||jm<1||jm>12||jd<1||jd>(jm<=6?31:30))return {kind:'invalid',iso:''}; |  const target=jy*10000+jm*100+jd; |  let lo=Math.floor(Date.UTC(jy+621,0,1)/86400000),hi=Math.floor(Date.UTC(jy+622,5,1)/86400000); |  while(lo<=hi){ |   const middle=Math.floor((lo+hi)/2),p=persianPartsFromDay(middle),key=p.year*10000+p.month*100+p.da
+---
+@ 3430768 :: $/.test(v))v=v.slice(0,4)+'/'+v.slice(4,6)+'/'+v.slice(6); |  const match=/^(\d{4})\s*[\/\.\-]\s*(\d{1,2})\s*[\/\.\-]\s*(\d{1,2})$/.exec(v); |  if(!match)return {kind:'invalid',iso:''}; |  const [jy,jm,jd]=match.slice(1).map(Number); |  if(jy<1000||jy>1600||jm<1||jm>12||jd<1||jd>(jm<=6?31:30))return {kind:'invalid',iso:''}; |  const target=jy*10000+jm*100+jd; |  let lo=Math.floor(Date.UTC(jy+621,0,1)/86400000),hi=Math.floor(Date.UTC(jy+622,5,1)/86400000); |  while(lo<=hi){ |   const middle=Math.floor((lo+hi)/2),p=persianPartsFromDay(middle),key=p.year*10000+p.month*100+p.day; |   if(key===target)return {kind:'valid',iso:new Date(middle*86400000).toISOString().slice(0,10)}; |   if(key<target)lo=middle+1;else hi=
+---
+@ 3431196 :: 622,5,1)/86400000); |  while(lo<=hi){ |   const middle=Math.floor((lo+hi)/2),p=persianPartsFromDay(middle),key=p.year*10000+p.month*100+p.day; |   if(key===target)return {kind:'valid',iso:new Date(middle*86400000).toISOString().slice(0,10)}; |   if(key<target)lo=middle+1;else hi=middle-1; |  } |  return {kind:'invalid',iso:''}; | } | function validatePersianDateInput(el,report=false){ |  const parsed=parsePersianDate(el.value),ok=parsed.kind==='valid'||(parsed.kind==='empty'&&el.dataset.dateOptional==='1'); |  const message=ok?'':parsed.kind==='empty'?'تاریخ شمسی را وارد کن.':'تاریخ شمسی معتبر نیست؛ مثل ۱۴۰۵/۰۶/۱۶ بنویس.'; |  el.setCustomValidity(message);el.setAttribute('aria-invalid',String(!ok)); |  const error=
+---
+
+#### verified *= *true count 2
+@ 4434161 :: candidateKey); |       if (value) { cacheKey = candidateKey; cached = value; break; } |     } |     if (cached) { |       messages.push({role:'user',text:prompt,profile:p.id,tools:useTools},{role:'model',text:cached,profile:p.id,tools:useTools}); |       messages=messages.slice(-200); draft=''; errorText=''; verified=true; saveHistory(); refresh(); scrollChat(); return; |     } |     if (!key) { const offline=offlineAssistantResponse(prompt); if(offline){recordOfflineAssistantReply(prompt,p,offline);return;} openKey(true); return; } |     if (!navigator.onLine) { const offline=offlineAssistantResponse(prompt); if(offline){recordOfflineAssistantReply(prompt,p,offline);return;} errorText = 'اینترنت قطع است. پ
+---
+@ 4436821 ::  !== MehryarTools.revision()) throw new Error('داده‌های کلاس در زمان پاسخ تغییر کرد؛ درخواست را با داده‌های تازه دوباره بفرست.'); |       if (id !== requestId) return; |       if (profile().id !== p.id) throw new Error('اطلاعات کلاس در این فاصله تغییر کرد؛ سؤال را با اطلاعات تازه دوباره بفرست.'); |       verified = true; |       rememberAnswer(cacheKey,text);if(window.__mehryarStat)window.__mehryarStat('ai_ok'); |       messages.push(pending,{role:'model',text:text+(tomorrowDraftNotice?'\n\n'+tomorrowDraftNotice:''),profile:p.id,tools:useTools,...(isFollowUpPlanPrompt(prompt)?{kind:'followup'}:isProgramPrompt(prompt)?{kind:'program'}:{})}); messages = messages.slice(-200); pending = null; |     } catch 
+---

@@ -1,0 +1,7 @@
+6:=== Q1 greeting  TOTAL 0.3s  firstVisible 0.3s
+11:=== Q2 list students  TOTAL 150.2s  firstVisible 0.0s
+14:   ai gemini-3-flash-preview st=- 80004ms req=1245B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=12 think={"thinkingBudget":0} FAIL=AbortError: This operation was aborted ABORTED@80000ms
+15:   ai gemini-3-flash-preview st=- ?ms req=815B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=8 think={"thinkingBudget":0}
+17:=== Q3 heavy advice  TOTAL 150.0s  firstVisible 0.0s
+20:   ai gemini-3-flash-preview st=200 2773ms req=61263B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=3 maxOut=3072 think=null usage(in/out/think)=17656/18/185 finish=STOP
+21:   ai gemini-3-flash-preview st=200 2269ms req=63082B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=5 maxOut=3072 think=null usage(in/out/think)=18168/91/ finish=STOP

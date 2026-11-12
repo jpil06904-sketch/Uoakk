@@ -1,0 +1,5 @@
+-rw-rw-rw- 1 codespace codespace 2213 Nov  9 12:56 demo2.cjs
+-rw-rw-rw- 1 codespace codespace 6390 Nov  9 18:23 scope_test2.cjs
+-rw-rw-rw- 1 codespace codespace 3959 Nov  9 18:10 scope_test2_part2.js
+-rw-rw-rw- 1 codespace codespace 4913 Nov  9 03:24 smoke.cjs
+-rw-rw-rw- 1 codespace codespace 1849 Nov  9 12:50 texts.cjs

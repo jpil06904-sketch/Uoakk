@@ -1,0 +1,43 @@
+DATE 2026-11-12T05:15:37.294Z  FILE=/workspaces/Uoakk/mehryar-v4-final-fixed.html  panel.id match=true
+tools checkbox default: ai-tools-access=false
+tools turned ON
+welcome: امروز کجای کلاس کمکت کنم؟متن کامل بودجه‌بندی را بفرست؛ پیش‌نمایش را می‌بینی و فقط پس از تأیید معلم ذخیره می‌شود.آمار واقعی کلاسبدون مصرف درخواست آنلاینبرای فردا چه پیشنهادی داری؟ایدهٔ تدریس از شواهد ه
+
+=== B1 annual budget text  TOTAL 2.0s  firstVisible 2.0s
+Q: بودجه‌بندی سالانه دروس پایه دوم ابتدایی
+
+ماه: مهر
+- ریاضی: صفحه ۲ تا ۲۱
+- فارسی (بخوانیم): درس ۱ تا ۳
+
+ماه: آبان
+- ریاضی: صفحه ۲۲ تا ۴۴
+- فارسی (بخوانیم): درس ۴ تا ۶
+
+ماه: آذر
+- ریاضی: صفحه ۴۵ تا ۶۴
+- فارسی (بخوانیم): درس ۷ تا ۹
+A[0] (ai-message assistant): مهریارپیش‌نمایش کامل آماده است؛ هنوز چیزی ذخیره نشده است. کپی پاسخ
+REQS:
+   ai gemini-3-flash-preview st=200 1889ms req=2237B keys=systemInstruction,contents,tools,toolConfig,generationConfig tools=1 cont=1 maxOut=32768 think={"thinkingBudget":0} usage(in/out/think)=601/227/ finish=STOP
+   p st=- ?ms
+
+=== B2 idea  TOTAL 0.3s  firstVisible 0.0s
+Q: ایده برای تدریس کلمات درس دو فارسی بده
+RETRY BUTTON SHOWN
+REQS:
+
+=== B3 catch-up  TOTAL 0.3s  firstVisible 0.0s
+Q: من خیلی عقبم، برای جبران چه ایده‌ای داری؟
+RETRY BUTTON SHOWN
+REQS:
+
+=== B4 greeting  TOTAL 0.3s  firstVisible 0.0s
+Q: سلام کارت چیه
+RETRY BUTTON SHOWN
+REQS:
+
+history saved=714 chars
+ERRS 0
+
+DONE

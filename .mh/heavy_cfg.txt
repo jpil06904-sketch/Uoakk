@@ -1,0 +1,14 @@
+model=gemini-3.5-flash start 10:08:18
+== budget2048_no_tools
+HTTP 200 total=14.711748
+OK finish= STOP thoughts= 917 out= 1063 calls= []
+TEXT: گریهٔ دانش‌آموز نشان‌دهندهٔ **«اضطراب ریاضی»** و **«بار شناختی بیش از حد»** است. او دچار احساس درماندگی شده چون فرآیندی که از نظر ما ساده است، در ذهن او تبدیل به یک کلاف سردرگم شده است.  در ادامه، تحلیل ریشه‌ای مشکل و یک برنامهٔ عملیاتی سه‌قدمی برای فردا آورده
+== budget2048_with_tools
+HTTP 200 total=2.901182
+OK finish= STOP thoughts= 66 out= 17 calls= ['get_student']
+TEXT: 
+== budget0
+HTTP 200 total=11.364559
+OK finish= STOP thoughts= 0 out= 2 calls= []
+TEXT: آماده
+FINISHED 10:08:47

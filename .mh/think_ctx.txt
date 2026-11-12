@@ -1,0 +1,16 @@
+--- thinking
+7040: (names.size ? ' درس‌های موجود در بودجهٔ معلم: ' + [...names].slice(0, 20).join('، ') + '.' : '')}]}, contents:[{role:'user', parts:[{text:prompt}]}], generationConfig:{temperature:0, maxOutputTokens:12, thinkingConfig:{thinkingBudget:0}}}, ctl.signal, ROUTER_FETCH_TIMEOUT_MS, 0);
+7059:lWithRetry(LIGHT_MODEL,{systemInstruction:{parts:[{text:ROUTER_SYSTEM_PROMPT}]},contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0,maxOutputTokens:8,...(thinkingTrimBroken?{}:{thinkingConfig:{thinkingBudget:0}})}},signal,ROUTER_FETCH_TIMEOUT_MS,0);
+7644:mperature:annualBudgetMode?0:tomorrowBudgetMode?0.4:ideaMode?0.95:0.45,maxOutputTokens:annualBudgetMode?32768:ideaMode?8192:learnMode?6144:isTomorrowPrompt(fallbackPrompt)?2048:3072,...(annualBudgetMode?{thinkingConfig:{thinkingBudget:0}}:ideaMode?{thinkingConfig:{thinkingBudget:1024}}:learnMode?{thinkingConfig:{thinkingBudget:512}}:isTomorrowPrompt(fallbackPrompt)?{thinkingConfig:{thinkingB
+7644:udget:512}}:!programMode&&!thinkingTrimBroken?{thinkingConfig:{thinkingBudget:allowToolCalls?512:0}}:{})}},signal,annualBudgetMode?120000:ideaMode?90000:MODEL_FETCH_TIMEOUT_MS,annualBudgetMode||ideaMode?1:MAX_MODEL_RETRIES);
+--- old models
+.mh/backup-before-extras.html:6512:LIGHT_MODEL = 'gemini-3-flash-preview', HEAVY_MODEL = LIGHT_MODEL, FALLBACK_MODEL = LIGHT_MODEL
+--- maxOutput
+7040:ice(0, 20).join('، ') + '.' : '')}]}, contents:[{role:'user', parts:[{text:prompt}]}], generationConfig:{temperature:0, maxOutputTokens:12, thinkingConfig:{thinkingBudget:0}}}, ctl.signal, ROUTER_FETCH_TIMEOUT_MS, 0);
+7059:on:{parts:[{text:ROUTER_SYSTEM_PROMPT}]},contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0,maxOutputTokens:8,...(thinkingTrimBroken?{}:{thinkingConfig:{thinkingBudget:0}})}},signal,ROUTER_FETCH_TIMEOUT_MS,0);
+7644:             generationConfig:{temperature:annualBudgetMode?0:tomorrowBudgetMode?0.4:ideaMode?0.95:0.45,maxOutputTokens:annualBudgetMode?32768:ideaMode?8192:learnMode?6144:isTomorrowPrompt(fallbackPrompt)?2048:3072,...(annualBudgetMode?{th
+--- timeouts
+6568:MODEL_FETCH_TIMEOUT_MS = 30000
+6570:PANEL_FETCH_TIMEOUT_MS = 40000
+--- history
+7874:mpt)?10:4))).filter(m=>useTools||m.tools===false).map(m => ({role:m.role,parts:[{text:m.text.length>1500?m.text.slice(0,1500)+' …':m.text}]}));

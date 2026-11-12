@@ -1,0 +1,22 @@
+DATE 2026-11-10T16:23:03.068Z  FILE=/workspaces/Uoakk/mehryar-v4-final-fixed.html  panel.id match=true
+tools checkbox default: ai-tools-access=false
+tools turned ON
+welcome: امروز کجای کلاس کمکت کنم؟متن کامل بودجه‌بندی را بفرست؛ پیش‌نمایش را می‌بینی و فقط پس از تأیید معلم ذخیره می‌شود.آمار واقعی کلاسبدون مصرف درخواست آنلاینبرای فردا چه پیشنهادی داری؟ایدهٔ تدریس از شواهد ه
+
+=== Q1 greeting  TOTAL 0.3s  firstVisible 0.3s
+Q: سلام
+A[0] (ai-message assistant): مهریارسلام خانم جان، خوش آمدی. امروز چه کمکی بکنم؟ مثلاً می‌توانم برای فردا برنامه بریزم، برای یک مشکل کلاس راه‌حل بسازیم، یا گزارش امروز را ثبت کنیم. کپی پاسخ
+REQS:
+
+=== Q2 list students  TOTAL 150.2s  firstVisible 0.0s
+Q: اسم دانش‌آموزهای کلاسم رو بگو
+REQS:
+   ai gemini-3-flash-preview st=- 80004ms req=1245B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=12 think={"thinkingBudget":0} FAIL=AbortError: This operation was aborted ABORTED@80000ms
+   ai gemini-3-flash-preview st=- ?ms req=815B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=8 think={"thinkingBudget":0}
+
+=== Q3 heavy advice  TOTAL 150.0s  firstVisible 0.0s
+Q: امیر تو جمع با انتقال مشکل داره، چیکار کنم؟
+REQS:
+   ai gemini-3-flash-preview st=200 2773ms req=61263B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=3 maxOut=3072 think=null usage(in/out/think)=17656/18/185 finish=STOP
+   ai gemini-3-flash-preview st=200 2269ms req=63082B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=5 maxOut=3072 think=null usage(in/out/think)=18168/91/ finish=STOP
+   p st=200 238ms

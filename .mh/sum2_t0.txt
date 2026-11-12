@@ -1,0 +1,16 @@
+5:=== Q1 greeting  TOTAL 0.3s  firstVisible 0.3s
+10:=== Q2 list students  TOTAL 6.5s  firstVisible 6.5s
+14:   ai gemini-3-flash-preview st=200 4081ms req=815B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=8 think={"thinkingBudget":0} usage(in/out/think)=188/2/ finish=STOP
+15:   ai gemini-3-flash-preview st=200 2386ms req=9764B keys=systemInstruction,contents,generationConfig tools=0 cont=3 maxOut=3072 think={"thinkingBudget":512} usage(in/out/think)=2940/167/ finish=STOP
+18:=== Q3 heavy advice  TOTAL 8.0s  firstVisible 8.0s
+22:   ai gemini-3.8-flash st=503 1048ms req=10416B keys=systemInstruction,contents,generationConfig tools=0 cont=5 maxOut=3072 think={"thinkingBudget":1024} usage(in/out/think)=// finish=undefined ERR={
+30:   ai gemini-3-flash-preview st=200 6713ms req=10415B keys=systemInstruction,contents,generationConfig tools=0 cont=5 maxOut=3072 think={"thinkingBudget":512} usage(in/out/think)=3122/735/ finish=STOP
+33:=== Q4 record attendance  TOTAL 3.0s  firstVisible 3.0s
+37:   ai gemini-3-flash-preview st=200 2816ms req=12584B keys=systemInstruction,contents,generationConfig tools=0 cont=7 maxOut=3072 think={"thinkingBudget":512} usage(in/out/think)=3853/203/ finish=STOP
+40:=== Q5 parent message  TOTAL 4.3s  firstVisible 4.3s
+44:   ai gemini-3-flash-preview st=200 958ms req=852B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=8 think={"thinkingBudget":0} usage(in/out/think)=197/2/ finish=STOP
+45:   ai gemini-3-flash-preview st=200 3084ms req=13058B keys=systemInstruction,contents,generationConfig tools=0 cont=7 maxOut=3072 think={"thinkingBudget":512} usage(in/out/think)=4031/255/ finish=STOP
+48:=== Q6 follow-up  TOTAL 5.3s  firstVisible 5.3s
+52:   ai gemini-3-flash-preview st=200 3231ms req=798B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=8 think={"thinkingBudget":0} usage(in/out/think)=182/2/ finish=STOP
+53:   ai gemini-3-flash-preview st=200 1859ms req=13353B keys=systemInstruction,contents,generationConfig tools=0 cont=7 maxOut=3072 think={"thinkingBudget":512} usage(in/out/think)=4113/139/ finish=STOP
+57:ERRS 0

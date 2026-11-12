@@ -1,0 +1,54 @@
+stripped chars=1218592 lines=9780 (line numbers identical to original)
+
+ROUTES (76): #/about #/class #/curriculum #/curriculum/books #/curriculum/budget #/curriculum/progress #/curriculum/week #/guide/ #/home #/output/ #/output/KEY #/output/assessment #/output/attendance #/output/contacts #/output/deskCards #/output/envelope #/output/labels #/output/meeting #/output/messages #/output/notebook #/output/plan7 #/output/shortage #/outputs #/pro #/pulse #/pulse/ #/pulse/actions #/pulse/activities #/pulse/activities/ #/pulse/assistant #/pulse/assistant-preview #/pulse/att-stats #/pulse/attendance #/pulse/class-agreements #/pulse/color/ #/pulse/followups #/pulse/grades #/pulse/missions #/pulse/overview/needs #/pulse/overview/roster #/pulse/overview/seen #/pulse/overview/unseen #/pulse/parent-meeting #/pulse/paths #/pulse/plan #/pulse/quick #/pulse/radar #/pulse/report-card/ #/pulse/report/ #/pulse/responsibilities #/pulse/session/ #/pulse/sessions #/pulse/student/ #/pulse/tomorrow #/pulse/tomorrow-bag #/pulse/week #/pulse/week-digest #/settings #/settings/appearance #/settings/data #/settings/fields #/settings/help #/settings/learning #/settings/list/ #/settings/list/agenda #/settings/list/assessCriteria #/settings/meeting #/settings/messages #/settings/messages/ #/settings/messages/shortage #/settings/share #/students #/students/ #/students/done #/students/import #/welcome
+ROUTER L1987: const ROUTES = [
+ROUTER L2009: function route() {
+ROUTER L2021: window.addEventListener('hashchange', route);
+ROUTER L2165: window.addEventListener('hashchange', () => navDepth++);
+ROUTER L4155: if (typeof ROUTES === 'undefined' || typeof mount !== 'function') return;
+ROUTER L5596: const routes = [['#/students','دانش‌آموزان'],['#/pulse','نبض‌کلاس'],['#/pulse/quick','ثبت مشاهده'],['#/pulse/attendance','حضور و غیاب روزانه'],['#/pulse/att-stats','آمار ماهانه'],['#/pulse/followups','پیگیری'],['#/pulse/activities','بانک فعالیت'],['#
+ROUTER L8067: window.addEventListener('hashchange',() => {
+
+LS KEYS: ['budget_${grade}_${year}', 'mehryar_assistant_v1', 'mehyar_budget_${cleanGrade}_${cleanYear}', 'mehyar_budget_${cleanYear}_${cleanGrade}', 'mehyar_last_budget_key']
+STORE L1804: const STORAGE_KEY = 'mehryar_v6';
+STORE L1895: const raw = localStorage.getItem(STORAGE_KEY);
+STORE L1901: try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); dirty = false; showSaved(); }
+STORE L2611: const clearAll = () => ui.actionSheet({ title: 'پاک کردن همهٔ داده‌ها', message: 'پیشنهاد می‌کنیم اول یک پشتیبان بگیرید.', actions: [{ label: 'اول پشتیبان بگیر', onClick: exportJSON }, { label: 'پاک کن (مرحلهٔ بعد تأیید)
+STORE L3391: loadState=function(){try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){const saved=JSON.parse(raw);validateImport(saved);const next=migrate(saved);if(!saved.learning){localStorage.setItem(STORAGE_KEY+'_before_learn
+STORE L3393: function flushSave(){clearTimeout(saveTimer2);if(demoMode)return true;if(savingBlocked)return false;try{ensureMeta();syncStudentDossiers(state,[],true);localStorage.setItem(STORAGE_KEY,JSON.stringify(state));dirty=false;
+STORE L3395: replaceState=function(data){try{validateImport(data);const next=migrate(data);if(!demoMode){const old=localStorage.getItem(STORAGE_KEY);if(old)localStorage.setItem(STORAGE_KEY+'_before_import',old);localStorage.setItem(S
+STORE L3528: const oldData=renderData;renderData=function(){oldData();const box=document.createElement('section');box.className='pulse';box.innerHTML=ui.card(`<h2>ذخیره و بازیابی</h2><div class="pulse-actions">${ui.btnPrimary('ذخیرهٔ
+STORE L3588: try{raw=localStorage.getItem(STORAGE_KEY);}
+STORE L3598: try{localStorage.setItem(STORAGE_KEY+'_before_learning',raw);localStorage.setItem(STORAGE_KEY,JSON.stringify(state));storageRuntime.migrationPending=false;storageRuntime.raw=JSON.stringify(state);markStorageMode('persist
+STORE L3601: try{const probe=STORAGE_KEY+'_probe';localStorage.setItem(probe,'1');localStorage.removeItem(probe);markStorageMode('persistent');}
+STORE L3606: try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));markStorageMode('persistent');}
+STORE L3614: if(storageRuntime.migrationPending&&storageRuntime.raw){localStorage.setItem(STORAGE_KEY+'_before_learning',storageRuntime.raw);}
+STORE L3615: const json=JSON.stringify(state);localStorage.setItem(STORAGE_KEY,json);
+STORE L3666: if(!storageRuntime.raw){try{storageRuntime.raw=localStorage.getItem(STORAGE_KEY);}catch(e){}}
+STORE L3674: try{current=localStorage.getItem(STORAGE_KEY);}catch(e){markStorageMode('temporary','unavailable');renderStorageNotice();return false;}
+STORE L3680: try{localStorage.setItem(STORAGE_KEY+'_before_import',current);}catch(e){markStorageMode('temporary',classifyStorageError(e));return false;}
+STORE L3694: try{const previous=localStorage.getItem(STORAGE_KEY);if(previous)localStorage.setItem(STORAGE_KEY+'_before_import',previous);localStorage.setItem(STORAGE_KEY,JSON.stringify(next));storageRuntime.raw=JSON.stringify(next);
+STORE L3988: const APP_VERSION='4.1',PANEL_URL='https://billowing-feather-ba20.ssioojiu63.workers.dev/panel';
+STORE L3995: const flush=()=>{if(sending||!navigator.onLine)return;const q=qget();if(!Object.keys(q).length)return;sending=true;fetch(base+'/api.php?a=p',{method:'POST',body:JSON.stringify({id,v:APP_VERSION,ev:q}),keepalive:true,head
+STORE L6216: let saved;try {saved=JSON.parse(localStorage.getItem(STORAGE_KEY));}catch(_){fail('حافظه خوانده نشد.');}
+STORE L6224: try {localStorage.setItem(STORAGE_KEY,JSON.stringify(next));}catch(_){fail('ثبت انجام نشد؛ حافظه کافی نیست. هیچ بخشی از گزارش اعمال نشد.');}
+STORE L8794: const CURRICULUM_VERSION = 2;
+STORE L8924: if (!('indexedDB' in window)) return Promise.resolve(null);
+STORE L8926: dbPromise = new Promise(resolve => { const request=indexedDB.open(DB_NAME,1); request.onupgradeneeded=()=>request.result.createObjectStore(DB_STORE,{keyPath:'id'}); request.onsuccess=()=>resolve(request.result); request.
+
+EXTERNAL: ['https://eitaa.com/mlmpro', 'https://eitaa.com/mlmpro/281', 'https://eitaa.com/mlmpro/88']
+
+FUNCTIONS: 587
+SCRIPT #00 L1428-L1442 len=1183 -> OK
+SCRIPT #01 L1443-L1610 len=15819 -> OK
+SCRIPT #02 L1623-L1627 len=495 -> OK
+SCRIPT #03 L1630-L5561 len=2835713 -> OK
+SCRIPT #04 L5562-L5578 len=1260 -> OK
+SCRIPT #05 L5580-L6451 len=106006 -> OK
+SCRIPT #06 L6506-L8095 len=208265 -> OK
+SCRIPT #07 L8096-L8216 len=10717 -> OK
+SCRIPT #08 L8217-L8515 len=15902 -> OK
+SCRIPT #09 L8516-L8684 len=16848 -> OK
+SCRIPT #10 L8685-L8787 len=17369 -> OK
+SCRIPT #11 L8788-L9582 len=149786 -> OK
+SCRIPT #12 L9583-L9777 len=15073 -> OK

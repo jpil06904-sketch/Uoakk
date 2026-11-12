@@ -1,0 +1,37 @@
+Tue Nov 10 12:08:38 UTC 2026
+=== LS recent
+total 15708
+-rw-rw-rw-  1 codespace codespace      43 12:08:38 resume7.txt
+drwxrwxrwx+ 3 codespace codespace   12288 12:08:38 .
+-rw-rw-rw-  1 codespace codespace    2583 12:05:36 chat_mock.cjs
+-rw-rw-rw-  1 codespace codespace    8239 12:04:21 ai13.txt
+-rw-rw-rw-  1 codespace codespace    2213 12:04:20 demo2_top.txt
+-rw-rw-rw-  1 codespace codespace    8374 12:03:28 resume6.txt
+-rw-rw-rw-  1 codespace codespace    9299 12:02:50 resume5.txt
+-rw-rw-rw-  1 codespace codespace    3002 11:53:42 chat_t2.txt
+-rw-rw-rw-  1 codespace codespace    1725 11:52:19 chat_t1.txt
+-rw-rw-rw-  1 codespace codespace    3772 11:51:43 chat_t0.txt
+-rw-rw-rw-  1 codespace codespace       5 11:48:30 ai11_log.txt
+-rw-rw-rw-  1 codespace codespace   11179 11:48:30 ai11.txt
+-rw-rw-rw-  1 codespace codespace       5 11:47:53 ai10_log.txt
+-rw-rw-rw-  1 codespace codespace    9291 11:47:53 ai10.txt
+-rw-rw-rw-  1 codespace codespace    1409 11:47:08 resume4.txt
+-rw-rw-rw-  1 codespace codespace       5 11:32:26 ai9_log.txt
+-rw-rw-rw-  1 codespace codespace   11043 11:32:26 ai9.txt
+-rw-rw-rw-  1 codespace codespace     927 11:29:46 ai9.py
+-rw-rw-rw-  1 codespace codespace       5 11:28:52 ai8_log.txt
+-rw-rw-rw-  1 codespace codespace   13999 11:28:52 ai8.txt
+-rw-rw-rw-  1 codespace codespace    1099 11:21:21 ai8.py
+-rw-rw-rw-  1 codespace codespace       5 11:20:14 ai7_log.txt
+-rw-rw-rw-  1 codespace codespace   12619 11:20:14 ai7.txt
+-rw-rw-rw-  1 codespace codespace     821 11:20:13 ai7.py
+=== md5
+0b40689d4d3e7566819236ee45d20df0  /workspaces/Uoakk/mehryar-v4-final (10).html
+f08e92fecaecaaafff389b3234cce1cf  /workspaces/Uoakk/index.html
+0b40689d4d3e7566819236ee45d20df0  /workspaces/Uoakk/mehryar-v4-final (10).html
+89096129599b2e24e2ce4bf81d571373  /workspaces/Uoakk/mehryar-v4-final-fixed.html
+0b40689d4d3e7566819236ee45d20df0  /workspaces/Uoakk/mehryar-v4-final (10).html
+0b40689d4d3e7566819236ee45d20df0  .mh/backup-original.html
+89096129599b2e24e2ce4bf81d571373  /workspaces/Uoakk/mehryar-v4-final-fixed.html
+=== chat_mock size
+  34 2583 chat_mock.cjs

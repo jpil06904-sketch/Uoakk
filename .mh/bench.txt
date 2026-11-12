@@ -1,0 +1,26 @@
+start 10:21:41
+== budget=1024 run=1
+HTTP 200 total=11.513720
+OK finish= STOP thoughts= 826 out= 398 chars= 1163
+== budget=1024 run=2
+HTTP 200 total=8.918631
+OK finish= STOP thoughts= 742 out= 453 chars= 1230
+== budget=2048 run=1
+HTTP 200 total=18.039865
+OK finish= STOP thoughts= 699 out= 506 chars= 1443
+== budget=2048 run=2
+HTTP 200 total=7.580868
+OK finish= STOP thoughts= 568 out= 402 chars= 1200
+== budget=4096 run=1
+HTTP 200 total=10.213558
+OK finish= STOP thoughts= 925 out= 568 chars= 1615
+== budget=4096 run=2
+HTTP 200 total=11.318750
+OK finish= STOP thoughts= 1179 out= 471 chars= 1391
+== budget=-1 run=1
+HTTP 200 total=13.347634
+OK finish= STOP thoughts= 1055 out= 599 chars= 1687
+== budget=-1 run=2
+HTTP 200 total=13.967808
+OK finish= STOP thoughts= 1109 out= 571 chars= 1655
+FINISHED 10:23:17

@@ -1,0 +1,5 @@
+routes 68 errors 1
+EXIT=0
+-rw-rw-rw- 1 codespace codespace 11434 Nov  9 03:25 smoke_empty.json
+-rw-rw-rw- 1 codespace codespace    26 Nov  9 03:25 smoke_run1.txt
+-rw-rw-rw- 1 codespace codespace     0 Nov  9 03:25 smoke_run2.txt

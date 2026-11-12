@@ -1,0 +1,36 @@
+-rw-rw-rw-  1 codespace codespace  163698 03:20:57 script_11.js
+-rw-rw-rw-  1 codespace codespace   16851 03:20:58 script_12.js
+-rw-rw-rw-  1 codespace codespace    6478 03:21:37 sections.txt
+-rw-rw-rw-  1 codespace codespace    4913 03:24:47 smoke.cjs
+-rw-rw-rw-  1 codespace codespace   11434 03:25:10 smoke_empty.json
+-rw-rw-rw-  1 codespace codespace      26 03:25:10 smoke_run1.txt
+-rw-rw-rw-  1 codespace codespace      41 12:34:22 smoke_run2.txt
+-rw-rw-rw-  1 codespace codespace   10677 12:34:22 smoke_seed.json
+-rw-rw-rw-  1 codespace codespace   17518 15:49:29 state_now.txt
+-rw-rw-rw-  1 codespace codespace     229 03:26:01 status.txt
+-rw-rw-rw-  1 codespace codespace 1375119 03:20:57 stripped.html
+-rw-rw-rw-  1 codespace codespace     955 03:29:59 summary.py
+-rw-rw-rw-  1 codespace codespace    2946 03:30:18 summary.txt
+-rw-rw-rw-  1 codespace codespace    1225 03:30:01 summary1.txt
+-rw-rw-rw-  1 codespace codespace       0 03:30:18 summary_err.txt
+-rw-rw-rw-  1 codespace codespace    1849 12:50:19 texts.cjs
+-rw-rw-rw-  1 codespace codespace       4 12:50:25 texts_done.txt
+-rw-rw-rw-  1 codespace codespace    2553 12:54:01 texts_empty.txt
+-rw-rw-rw-  1 codespace codespace       0 12:53:58 texts_empty_log.txt
+-rw-rw-rw-  1 codespace codespace    2555 12:50:22 texts_seed.txt
+-rw-rw-rw-  1 codespace codespace       0 12:50:19 texts_seed_log.txt
+-rw-rw-rw-  1 codespace codespace    1012 12:53:38 verify.py
+-rw-rw-rw-  1 codespace codespace    1740 12:53:38 verify.txt
+-rw-rw-rw-  1 codespace codespace       5 12:53:38 verify_log.txt
+-rw-rw-rw-  1 codespace codespace     504 12:54:29 wait2.txt
+=== patch_log
+count 1
+patched
+=== md5
+89096129599b2e24e2ce4bf81d571373  /workspaces/Uoakk/mehryar-v4-final (10).html
+0b40689d4d3e7566819236ee45d20df0  backup-original.html
+f2293543b251d8fe07a15ff344b3371a  backup-before-scope-fix.html
+=== git
+?? .mh/
+?? "mehryar-v4-final (10).html"
+?? package-lock.json

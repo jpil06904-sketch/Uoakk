@@ -1,0 +1,8 @@
+1
+6512:LIGHT_MODEL = 'gemini-3-flash-preview', HEAVY_MODEL = LIGHT_MODEL
+6571:HEAVY_REQUESTS_PER_DAY = 1000000
+();
+</script>
+</body>
+</html>
+-rw-rw-rw- 1 codespace codespace 4856603 Nov 12 08:40 mehryar-v4-final-fixed.html

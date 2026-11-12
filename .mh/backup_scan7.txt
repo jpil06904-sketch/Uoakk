@@ -1,0 +1,75 @@
+== 9355-9380
+   migrate = saved => ensureClassScope(migrateBeforeClassScope(saved));
+   const persistBeforeClassScope = persist;
+   persist = (...args) => { ensureClassScope(state); return persistBeforeClassScope(...args); };
+   const setStateBeforeClassScope = setState;
+   setState = function(patch, opts = {}) { const result=setStateBeforeClassScope(patch,opts); ensureClassScope(state); return result; };
+   const replaceBeforeClassScope = replaceState;
+   replaceState = function(data) { const ok=replaceBeforeClassScope(data); if(ok) ensureClassScope(state); return ok; };
+  const exportBeforeCurriculum = exportJSON;
+  exportJSON = async function() {
+    ensureCurriculum(state);
+    const payload=clone(state), assets=[];
+    for (const book of payload.curriculum.books||[]) { const asset=assetFor(book); if(asset) assets.push({id:asset.id,name:asset.name||'',mime:asset.mime||'text/plain',text:asset.text||'',updatedAt:asset.updatedAt||''}); }
+    if (assets.length) payload.curriculumAssets=assets;
+    try { const text=JSON.stringify(payload,null,2); downloadJSONText(text,backupFilename()); ui.toast('پشتیبان کتاب‌ها و نقشهٔ آموزشی آماده شد',{icon:'check'}); }
+    catch (_) { exportBeforeCurriculum(); }
+  };
+
+  const curriculumOverview = () => {
+     ensureCurriculum(state); const entries=activeCurriculumBudgetEntries();
+      return {scopeKey:state.curriculum.scopeKey||curriculumScopeKey(state),grade:state.klass.grade||'',className:className()||'',academicYear:state.klass.year||'',catalog:state.curriculum.catalog,books:activeCurriculumBooks().map(book=>compactBook(book)),budget:{version:state.curriculum.budget.version,historyVersions:(state.curriculum.budget.history||[]).map(item=>item.version),entries:entries.length,approvedAt:entries.length?state.curriculum.budget.approvedAt||'':'',schoolDays:state.curriculum.budget.schoolDays,holidays:state.curriculum.budget.holidays}};
+  };
+  const weekRange = (date=localISO()) => { const d=new Date(`${date}T12:00:00`), start=Number(ensureCurriculum(state).curriculum.budget.weekStart)||6, diff=(d.getDay()-start+7)%7, from=plusDays(date,-diff); return {from,to:plusDays(from,6)}; };
+   const weekBudget = (range=weekRange()) => activeCurriculumBudgetEntries().filter(entry=>entry.startDate<=range.to&&entry.endDate>=range.from).sort((a,b)=>a.startDate.localeCompare(b.startDate)||a.bookId.localeCompare(b.bookId));
+   const budgetEntryText = entry => { const book=curriculumBook(entry.bookId), node=entry.nodeId&&curriculumNodes(book).find(item=>item.id===entry.nodeId); return {book,node,title:node?.title||entry.nodeTitle||'کل کتاب'}; };
+  const bookProgressSummary = book => { const nodes=curriculumNodes(book), progress=currentProgress(book?.id), statuses=progress.statuses||{}, taught=nodes.filter(node=>statuses[node.id]==='taught'), active=nodes.find(node=>statuses[node.id]==='in_progress')||nodes.find(node=>node.id===progress.currentNodeId), started=nodes.some(node=>statuses[node.id]&&statuses[node.id]!=='not_started'); return {nodes,progress,statuses,taught,active,started}; };
+  const formatIssues = issues => issues.length ? `<div class="curriculum-issues"><b>موارد نیازمند اصلاح</b><ul>${issues.map(issue=>`<li>${esc(issue)}</li>`).join('')}</ul></div>` : '';
+== 3550-3558
+
+/* دور پایانی: اعتبارسنجی، دسترس‌پذیری و حفاظت سابقه */
+const hardStyle=document.createElement('style');hardStyle.textContent=`.pulse-colors button{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}.pulse-colors svg{width:18px;height:18px;flex-shrink:0}.intro .preview>.chip{display:table;margin-bottom:12px}.pulse-print-table{border-collapse:collapse;width:100%;font:10pt/1.6 Tahoma}.pulse-print-table td,.pulse-print-table th{white-space:pre-wrap!important;overflow-wrap:anywhere;text-align:right!important}.pulse .table-scroll .pulse-print-table td,.pulse .table-scroll .pulse-print-table th{border:1px solid var(--sep);padding:10px}.pulse .table-scroll{background:var(--card);border-radius:12px}.pulse .row-sub{white-space:normal}`;document.head.append(hardStyle);
+const validateBase=validateImport;
+validateImport=function(d){validateBase(d);for(const k of ['klass','lists','progress','ui','outputSettings'])if(d[k]!==undefined&&!isObj(d[k]))throw Error('ساختار '+k+' نامعتبر است');if(d.fields!==undefined&&(!Array.isArray(d.fields)||d.fields.some(f=>!f||typeof f.key!=='string'||!/^[\w-]+$/.test(f.key)||typeof f.label!=='string'||!['text','tel','check'].includes(f.type))))throw Error('فیلد نامعتبر');if(d.messages!==undefined&&(!Array.isArray(d.messages)||d.messages.some(m=>!m||typeof m.key!=='string'||!/^[\w-]+$/.test(m.key)||typeof m.title!=='string'||typeof m.template!=='string')))throw Error('پیام نامعتبر');if(d.plan7!==undefined&&(!Array.isArray(d.plan7)||d.plan7.some(p=>!p||!Array.isArray(p.tasks)||p.tasks.some(t=>typeof t.text!=='string'||t.link&&!/^[\w-]+$/.test(t.link)))))throw Error('برنامهٔ هفت‌روزه نامعتبر');for(con
+const numericKeys=['lineH','perPage','extraBlank','hwCols','days','firstFriday','groupSize','invitePerPage'];for(const value of Object.values(d.outputSettings||{})){if(!isObj(value))throw Error('تنظیمات ابزار نامعتبر');for(const k of numericKeys)if(value[k]!==undefined&&(!Number.isFinite(value[k])||value[k]<0||value[k]>500))throw Error('مقدار عددی تنظیمات نامعتبر');if(value.fontSize!==undefined&&!['sm','md','lg'].includes(value.fontSize))throw Error('اندازهٔ فونت نامعتبر');if(value.selectedIds!==undefined&&value.selectedIds!==null&&(!Array.isArray(value.selectedIds)||value.selectedIds.some(id=>!d.students.some(s=>s.id===id))))throw Error('انتخاب دانش‌آموز نامعتبر');}
+if(d.learning){const l=d.learning;for(const m of Object.values(l.studentMeta||{})){if(!isObj(m)||!Array.isArray(m.tags)||m.tags.some(t=>typeof t!=='string')||m.enrolledOn&&!validDay(m.enrolledOn))throw Error('اطلاعات آموزشی فرد نامعتبر');}if(l.skills.some(k=>typeof k.label!=='string'||!SUBJECTS.includes(k.subject)))throw Error('مهارت نامعتبر');for(const a of l.customActivities){if(typeof a.title!=='string'||!Array.isArray(a.grades)||!Array.isArray(a.materials)||!Array.isArray(a.steps)||!isObj(a.practice)||['diagnosticPrompt','observationGuide','independentInstructions','exitCheck','teacherNote'].some(k=>typeof a[k]!=='string'))throw Error('فعالیت نامعتبر');}for(const f of l.followups){if(!Object.hasOwn(FOLLOW_STATUS,f.status)||!Object.hasOwn(FOLLOW_OUTCOME,f.outcome)||typeof f.action!=='string'||f.recheckSessionId&&!l.sessions.some(s=>s.id=
+// اطلاعات ناشناختهٔ سابقه از شروع ردیابی به بعد محاسبه می‌شود؛ مسیرِ دستی با شاهد محدود است.
+function planTableHtml(p){return `<table class="pulse-print-table"><thead><tr>${['زمان','معلم','همراه معلم','تمرین هدفمند','مستقل','مشاهدهٔ ناکافی'].map(t=>'<th>'+t+'</th>').join('')}</tr></thead><tbody>${p.slots.map(s=>'<tr>'+[fa(s.minutes)+' دقیقه',s.teacher,s.teacherGroup,s.practiceGroup,s.independentGroup,s.unknownGroup].map(t=>'<td>'+esc(t)+'</td>').join('')+'</tr>').join('')}</tbody></table>`;}
+== 8575-8585
+      if (!row||typeof row!=='object') continue;
+      const subject=row.subject||row.subjectId||'عمومی', id=String(row.topicId||row.skillId||`legacy-unknown-${++unknown}`), skill=ensureSkill(subject,id,row.topicLabel||row.skillLabel||'مبحث نامشخص');
+      row.subject=subject; row.subjectId=row.subjectId||subject; row.topicId=id; row.skillId=row.skillId||id; row.topicLabel=row.topicLabel||skill.topicLabel||skill.label; row.skillLabel=row.skillLabel||row.topicLabel;
+    }
+    return out;
+  }
+  const validateBeforeLegacyLayer = validateImport;
+  validateImport = function(data) { return validateBeforeLegacyLayer(normalizeLegacyShape(clone(data))); };
+  const migrateBeforeLegacyLayer = migrate;
+  migrate = function(saved) { return normalizeLegacyShape(migrateBeforeLegacyLayer(saved)); };
+  normalizeLegacyShape(state);
+== onFile variants
+606: .file-input{display:none}
+2605:  const importFile = () => { const inp = $('#file-in'); inp.value = ''; inp.click(); };
+2608:    try { const txt = await f.text(); const data = JSON.parse(txt); validateImport(data); if (!data || !Array.isArray(data.students)) throw new Error('bad'); if (!await ui.confirm('جایگزینی داده‌های فعلی؟', { message: `فایل شامل ${plural(data.students.length, 'دانش‌آموز')}${
+2616:      <input type="file" id="file-in" class="file-input" accept="application/json,.json" data-change="${h(onFile)}">
+3389: function validateImport(d){assertSafeTree(d);if(!isObj(d)||!Array.isArray(d.students)||(d.version!==undefined&&(!Number.isInteger(d.version)||d.version<1||d.version>6)))throw Error('نسخه یا ساختار نامعتبر');const ids=new Set()
+3395:replaceState=function(data){try{validateImport(data);const next=migrate(data);if(!demoMode){const old=localStorage.getItem(STORAGE_KEY);if(old)localStorage.setItem(STORAGE_KEY+'_before_import',old);localStorage.setItem(STORAGE_KEY,JSON.stringify(next))
+3689:  let next;try{validateImport(data);next=migrate(data);}catch(e){ui.toast('فایل معتبر نیست؛ دادهٔ فعلی تغییر نکرد.');return false;}
+== 8060-8075
+    return previousDemo();
+  };
+  exitDemo = function() {
+    if (demoMode) { cancelRequest(); if (demoSnapshot) { ({messages,draft,historyWarning,historyBlocked,lastStored,lastSnapshot} = demoSnapshot); demoSnapshot = null; } errorText = ''; }
+    return previousExitDemo();
+  };
+  window.addEventListener('mehryar:reset',() => {
+     cancelRequest(); clearTimeout(saveTimer); messages = []; draft = ''; errorText = ''; historyWarning = ''; historyBlocked = false; key = ''; verified = false;
+    lastStored = null; lastSnapshot = JSON.stringify({version:1,messages:[],draft:''});
+    clearAnswerCache();
+    useTools=false; try {sessionStorage.removeItem('mehryar_tools_consent');} catch (_) {}
+     try { localStorage.removeItem(CODE_SLOT); } catch (_) {} try { sessionStorage.removeItem(KEY_SLOT); } catch (_) { ui.toast('برای حذف کامل رمز، این برگه را هم ببند.'); }
+  });
+  window.addEventListener('hashchange',() => {
+    if (location.hash !== '#/class') { returnToAssistant = false; try { sessionStorage.removeItem('mehryar_assistant_return'); } catch (_) {} }
+    saveHistory();
+DONE

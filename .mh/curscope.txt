@@ -1,0 +1,68 @@
+## function ensureCurriculum 4537015
+function ensureCurriculum(data) {
+     if (!data || typeof data !== 'object') return data;
+      const base = curriculumDefaults(), raw = data.curriculum && typeof data.curriculum === 'object' ? data.curriculum : {}, activeScope=curriculumScopeKey(data), activeGrade=String(data.klass?.grade||'').trim(), activeYear=academicYearKey(data.klass?.year||''), contexts=isObj(raw.contexts)?clone(raw.contexts):{};
+      let current=raw;
+      if(raw.scopeKey&&raw.scopeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeScope]||{...base,scopeKey:activeScope}; }
+      current=curriculumContextSnapshot(current);
+      data.curriculum = {...base,...current,scopeKey:activeScope,contexts,catalog:{...base.catalog,...(current.catalog||{}),grade:activeGrade,academicYear:activeYear,source:activeGrade==='دوم'?OFFICIAL_SOURCE:'',sourceLabel:activeGrade==='دوم'?'پایگاه کتاب‌های درسی، اداره کل نظارت بر نشر و توزیع مواد آموزشی':activeGrade?`کاتالوگ رسمی پایهٔ ${activeGrade} در این مرحله وارد نشده است`:'کاتالوگ پایهٔ کلاس هنوز مشخص نشده است'},budget:{...base.budget,...(current.budget||{})},teachingProgress:{...(current.teachingProgress||{})},assets:{...(current.assets||{})}};
+    const existing = new Map((Array.isArray(current.books)?current.books:[]).map(book=>[book.id,book]));
+     const official = OFFICIAL_BOOKS.map(book=>normalizeBook(existing.get(book.id),{...book,sourceType:CURRICULUM_SOURCE.official,sourceLabel:CURRICULUM_SOURCE_LABEL.official}));
+     const extras = (Array.isArray(current.books)?current.books:[]).filter(book=>!officialById(book.id)).map(book=>normalizeBook(book,{id:String(book.id||'custom-'+slug(book.title)),title:String(book.title||'کتاب واردشده'),subject:String(book.subject||''),grade:String(book.grade||data.klass?.grade||''),academicYear:String(book.academicYear||data.klass?.year||''),officialPage:'',pdfUrl:'',sourceType:CURRICULUM_SOURCE.teacher,sourceLabel:CURRICULUM_SOURCE_LABEL.teacher}));
+       data.curriculum.books = [...official,...extras];
+     for (const book of data.curriculum.books) data.curriculum.teachingProgress[book.id] ||= {currentNodeId:'',statuses:{},exceptions:[],updatedAt:''};
+     data.curriculum.budget.version=Math.max(0,Number(data.curriculum.budget.version)||0);
+     data.curriculum.budget.history=Array.isArray(data.curriculum.budget.history)?data.curriculum.budget.history.slice(-12):[];
+     data.curriculum.budget.schoolDays = Array.isArray(data.curriculum.budget.schoolDays) && data.curriculum.budget.schoolDays.length ? data.curriculum.budget.schoolDays.map(Number).filter(x=>x>=0&&x<=6) : [6,0,1,2,3];
+      data.curriculum.budget.holidays = Array.isArray(data.curriculum.budget.holidays) ? data.curriculum.budget.holidays.filter(validDay) : [];
+      data.curriculum.budget.entries = Array.isArray(data.curriculum.budget.entries) ? data.curriculum.budget.entries.filter(entry=>entry&&entry.bookId) : [];
+      data.curriculum.budget.sourceText=String(data.curriculum.budget.sourceText||'');
+     if(data.curriculum.budget.draft!==null&&!isObj(data.curriculum.budget.draft))data.curriculum.budget.draft=null;
+     data.curriculum.schemaVersion = CURRICULUM_VERSION;
+     return data;
+    }
+    function validateCurriculumData(data) {
+      ensureCurriculum(data);const c=data.curriculum,b=c.budget,books=new Map(c.books.map(book=>[book.id,book]));
+       if(c.scopeKey!==curriculumScopeKey(data))throw Error('زمینهٔ کتاب و بودجه با کلاس فعال یکسان نیست؛ ثبت متوقف شد.');if(b.sourc
+
+=== scopeKey uses
+4251056 "ade||'',archived:!!state.learning?.studentMeta?.[student.id]?.archived})),\n    learning:state.learning,\n    curriculum:{scopeKey:state.curriculum?.scopeKey||'',budget:state.curriculum?.budget||{}}\n  });\n    return {read,prepare,commit,undo,"
+4251083 "arning?.studentMeta?.[student.id]?.archived})),\n    learning:state.learning,\n    curriculum:{scopeKey:state.curriculum?.scopeKey||'',budget:state.curriculum?.budget||{}}\n  });\n    return {read,prepare,commit,undo,localAnswer,get_budget,get_"
+4533160 'slice(0,4).some(part=>!part));\n     if(prevIncomplete&&!contexts[activeKey]){if(isObj(data.curriculum)&&data.curriculum.scopeKey===currentKey)data.curriculum.scopeKey=activeKey;data.classContexts=contexts;data.classScopeKey=activeKey;data.c'
+4533198 '(prevIncomplete&&!contexts[activeKey]){if(isObj(data.curriculum)&&data.curriculum.scopeKey===currentKey)data.curriculum.scopeKey=activeKey;data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);retur'
+4534121 "ne(data.klass);return data;\n   }\n    const curriculumDefaults = () => ({\n      schemaVersion: CURRICULUM_VERSION,\n      scopeKey:'',\n      contexts:{},\n      catalog: { grade:'', academicYear:'', source:'', sourceLabel:'کاتالوگ پایهٔ کلاس ه"
+4537459 "YearKey(data.klass?.year||''), contexts=isObj(raw.contexts)?clone(raw.contexts):{};\n      let current=raw;\n      if(raw.scopeKey&&raw.scopeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeSc"
+4537473 "lass?.year||''), contexts=isObj(raw.contexts)?clone(raw.contexts):{};\n      let current=raw;\n      if(raw.scopeKey&&raw.scopeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeScope]||{...base"
+4537512 'texts)?clone(raw.contexts):{};\n      let current=raw;\n      if(raw.scopeKey&&raw.scopeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeScope]||{...base,scopeKey:activeScope}; }\n      current'
+4537594 'copeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeScope]||{...base,scopeKey:activeScope}; }\n      current=curriculumContextSnapshot(current);\n      data.curriculum = {...base,...current,s'
+4537713 ',scopeKey:activeScope}; }\n      current=curriculumContextSnapshot(current);\n      data.curriculum = {...base,...current,scopeKey:activeScope,contexts,catalog:{...base.catalog,...(current.catalog||{}),grade:activeGrade,academicYear:activeYea'
+4540395 "ensureCurriculum(data);const c=data.curriculum,b=c.budget,books=new Map(c.books.map(book=>[book.id,book]));\n       if(c.scopeKey!==curriculumScopeKey(data))throw Error('زمینهٔ کتاب و بودجه با کلاس فعال یکسان نیست؛ ثبت متوقف شد.');if(b.sourc"
+4542429 "BookMatchesGrade(book,grade)); };\n      const getActiveClassContext = (data=state) => { ensureCurriculum(data); return {scopeKey:curriculumScopeKey(data),school:String(data.klass?.school||''),teacher:String(data.klass?.teacher||''),classNam"
+4595096 "=[...(parsed.notes||[]),...(input.parseNotes||[])];return {schemaVersion:1,id:String(input.id||`budget-draft-${uid()}`),scopeKey:curriculumScopeKey(data),grade:String(data.klass?.grade||''),academicYear:String(data.klass?.year||''),mode:['a"
+4595717 'ulum(data);const currentScope=curriculumScopeKey(data),rows=Array.isArray(draft?.rows)?draft.rows:[],scopeMatch=!draft?.scopeKey||draft.scopeKey===currentScope,readyRows=[],issues=Array.isArray(draft?.parseIssues)?draft.parseIssues.map(issu'
+4595733 ' currentScope=curriculumScopeKey(data),rows=Array.isArray(draft?.rows)?draft.rows:[],scopeMatch=!draft?.scopeKey||draft.scopeKey===currentScope,readyRows=[],issues=Array.isArray(draft?.parseIssues)?draft.parseIssues.map(issue=>`استخراج بودج'
+4604208 '} نیازمند بررسی. هنوز هیچ ردیف نامنطبق ثبت نشده است.`; }\n      const budgetDraftPayload = draft => draft ? {id:draft.id,scopeKey:draft.scopeKey,grade:draft.grade,academicYear:draft.academicYear,mode:draft.mode,counts:draft.counts,parseIssue'
+4604223 '. هنوز هیچ ردیف نامنطبق ثبت نشده است.`; }\n      const budgetDraftPayload = draft => draft ? {id:draft.id,scopeKey:draft.scopeKey,grade:draft.grade,academicYear:draft.academicYear,mode:draft.mode,counts:draft.counts,parseIssues:draft.parseIs'
+4607005 'tate);\n  const curriculumBudgetSnapshot = () => { ensureCurriculum(state); const c=state.curriculum,b=c.budget; return {scopeKey:c.scopeKey,version:Number(b.version)||0,entries:clone(b.entries),schoolDays:clone(b.schoolDays),weekStart:Numbe'
+4607016 'nst curriculumBudgetSnapshot = () => { ensureCurriculum(state); const c=state.curriculum,b=c.budget; return {scopeKey:c.scopeKey,version:Number(b.version)||0,entries:clone(b.entries),schoolDays:clone(b.schoolDays),weekStart:Number(b.weekSta'
+4607507 'mBudgetSnapshot(),current=state.curriculum,b=current.budget;\n    if(!curriculumBudgetBaseline||curriculumBudgetBaseline.scopeKey!==now.scopeKey){curriculumBudgetBaseline=now;return;}\n    const changed=JSON.stringify(curriculumBudgetBaseline'
+4607522 '(),current=state.curriculum,b=current.budget;\n    if(!curriculumBudgetBaseline||curriculumBudgetBaseline.scopeKey!==now.scopeKey){curriculumBudgetBaseline=now;return;}\n    const changed=JSON.stringify(curriculumBudgetBaseline.entries)!==JSO'
+4611394 "curriculumOverview = () => {\n     ensureCurriculum(state); const entries=activeCurriculumBudgetEntries();\n      return {scopeKey:state.curriculum.scopeKey||curriculumScopeKey(state),grade:state.klass.grade||'',className:className()||'',acad"
+4611420 " {\n     ensureCurriculum(state); const entries=activeCurriculumBudgetEntries();\n      return {scopeKey:state.curriculum.scopeKey||curriculumScopeKey(state),grade:state.klass.grade||'',className:className()||'',academicYear:state.klass.year|"
+4624596 "elect)select.value=target;document.getElementById('curriculum-book-import')?.focus();}));\n  }\n   const budgetEditor = { scopeKey:'', entries:null, schoolDays:null, holidays:null, importText:'', preview:null, newBookId:'' };\n  function budge"
+4625277 ' Set(activeBooks.map(book=>book.id)), existing=c.budget.entries.filter(entry=>activeIds.has(entry.bookId));\n      const scopeKey=state.curriculum.scopeKey||curriculumScopeKey(state);if(budgetEditor.scopeKey!==scopeKey){budgetEditor.scopeKey'
+4625303 '>book.id)), existing=c.budget.entries.filter(entry=>activeIds.has(entry.bookId));\n      const scopeKey=state.curriculum.scopeKey||curriculumScopeKey(state);if(budgetEditor.scopeKey!==scopeKey){budgetEditor.scopeKey=scopeKey;budgetEditor.ent'
+4625355 'activeIds.has(entry.bookId));\n      const scopeKey=state.curriculum.scopeKey||curriculumScopeKey(state);if(budgetEditor.scopeKey!==scopeKey){budgetEditor.scopeKey=scopeKey;budgetEditor.entries=clone(existing);budgetEditor.schoolDays=clone(c'
+4625366 'as(entry.bookId));\n      const scopeKey=state.curriculum.scopeKey||curriculumScopeKey(state);if(budgetEditor.scopeKey!==scopeKey){budgetEditor.scopeKey=scopeKey;budgetEditor.entries=clone(existing);budgetEditor.schoolDays=clone(c.budget.sch'
+4625389 '  const scopeKey=state.curriculum.scopeKey||curriculumScopeKey(state);if(budgetEditor.scopeKey!==scopeKey){budgetEditor.scopeKey=scopeKey;budgetEditor.entries=clone(existing);budgetEditor.schoolDays=clone(c.budget.schoolDays);budgetEditor.h'
+4625398 'copeKey=state.curriculum.scopeKey||curriculumScopeKey(state);if(budgetEditor.scopeKey!==scopeKey){budgetEditor.scopeKey=scopeKey;budgetEditor.entries=clone(existing);budgetEditor.schoolDays=clone(c.budget.schoolDays);budgetEditor.holidays=c'
+4659004 ":node.sourceLabel||CURRICULUM_SOURCE_LABEL.teacher,content:node.content||''}))};});\n       const output={section,class:{scopeKey:c.scopeKey||curriculumScopeKey(state),grade:state.klass.grade||'',className:className()||'',academicYear:state."
+4659015 "eLabel||CURRICULUM_SOURCE_LABEL.teacher,content:node.content||''}))};});\n       const output={section,class:{scopeKey:c.scopeKey||curriculumScopeKey(state),grade:state.klass.grade||'',className:className()||'',academicYear:state.klass.year|"
+4670578 "ctiveCurriculumBooks(), approvedEntries=activeCurriculumBudgetEntries(), week=weekBudget(), c=state.curriculum; return {scopeKey:c.scopeKey||curriculumScopeKey(state),grade:state.klass.grade||'',academicYear:state.klass.year||'',books:books"
+4670589 "ulumBooks(), approvedEntries=activeCurriculumBudgetEntries(), week=weekBudget(), c=state.curriculum; return {scopeKey:c.scopeKey||curriculumScopeKey(state),grade:state.klass.grade||'',academicYear:state.klass.year||'',books:books.map(book=>"
+=== normKey
+function normKey(s) { return normalizeName(s).replace(/[\s\u200c]/g, ''); }
+function copyText(text) {
+  const done = () => ui.toast('کپی شد', { icon: 'check' });
+  const fallback = () => {
+    const ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:

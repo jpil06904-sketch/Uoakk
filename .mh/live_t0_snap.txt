@@ -1,0 +1,21 @@
+DATE 2026-11-10T16:06:03.799Z  FILE=/workspaces/Uoakk/mehryar-v4-final-fixed.html  panel.id match=true
+tools checkbox default: ai-tools-access=false
+welcome: امروز کجای کلاس کمکت کنم؟متن کامل بودجه‌بندی را بفرست؛ پیش‌نمایش را می‌بینی و فقط پس از تأیید معلم ذخیره می‌شود.آمار واقعی کلاسبدون مصرف درخواست آنلاینبرای فردا چه پیشنهادی داری؟ایدهٔ تدریس از شواهد ه
+
+=== Q1 greeting  TOTAL 0.3s  firstVisible 0.3s
+Q: سلام
+A[0] (ai-message assistant): مهریارسلام خانم جان، خوش آمدی. امروز چه کمکی بکنم؟ مثلاً می‌توانم برای فردا برنامه بریزم، برای یک مشکل کلاس راه‌حل بسازیم، یا گزارش امروز را ثبت کنیم. کپی پاسخ
+REQS:
+
+=== Q2 list students  TOTAL 4.3s  firstVisible 4.3s
+Q: اسم دانش‌آموزهای کلاسم رو بگو
+A[0] (ai-message assistant): مهریارسلام خانم رضایی عزیز، من مهریار هستم. در حال حاضر من به لیست اسامی دانش‌آموزان کلاس شما دسترسی مستقیم ندارم؛ چون «دسترسی ابزارها» برای من خاموش است و سوابق قبلی کلاس هم در این پیام برای من ارسال نشده است. اگر لیست اسامی را در فایلی دارید یا قبلاً در جایی از برنامه ثبت شده، لطفاً دسترسی ابزارها را فعال کنید تا بتوانم آن‌ها را بخوانم و برای برنامه‌ریزی دقیق‌تر از آن‌ها استفاده کنم. در غیر این صورت، اگر نام دانش‌آموز خاصی مد نظرتان است یا می‌خواهید برای گروهی از بچه‌ها فعالیتی طراحی کنیم، بفرمایید تا با هم پیش برویم. کپی پاسخ
+REQS:
+   ai gemini-3-flash-preview st=200 1835ms req=815B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=8 think={"thinkingBudget":0} usage(in/out/think)=188/2/ finish=STOP
+   ai gemini-3-flash-preview st=200 2334ms req=9764B keys=systemInstruction,contents,generationConfig tools=0 cont=3 maxOut=3072 think={"thinkingBudget":512} usage(in/out/think)=2940/161/ finish=STOP
+   p st=- ?ms
+
+=== Q3 heavy advice  TOTAL 0.3s  firstVisible 0.3s
+Q: امیر تو جمع با انتقال مشکل داره، چیکار کنم؟
+A[0] (ai-message assistant): مهریاربرای پیشنهاد دقیقِ درسی باید «دسترسی ابزارها» را روشن کنی تا بودجه‌بندی و نبض کلاس خوانده شوند؛ بدون آن موضوع یا ضعف را حدس نمی‌زنم. کپی پاسخ
+REQS:

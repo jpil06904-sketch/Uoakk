@@ -1,0 +1,49 @@
+=== classContexts count=10
+### L1859 @1330694
+refix: '', teacher: '', school: '', grade: '', className: '', year: currentYearLabel(), phone: '', principal: '' },⏎    classContexts: {}, classScopeKey: '', classScopeKlass: null,⏎    fields: DEFAULT_FIELDS(),⏎    students: [],⏎    lists: DEFAULT_LISTS(),⏎    meeting: { date: '', time: '', place: '', note: '' },⏎    plan7: DEFAULT_PLAN(),⏎    messages: DEFAULT_MESSAGES(),⏎    outputSettings: {},⏎    progress: { welc
+
+### L8814 @4531972
+pshot = value => { const out=clone(value||{}); delete out.contexts; return out; };⏎   const classScopedKeys = ['klass','classContexts','fields','students','lists','meeting','plan7','messages','outputSettings','progress','learning','curriculum'];⏎   const classScopeSnapshot = data => { const out={}; for(const key of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]);
+
+### L8815 @4532284
+y of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };⏎   function ensureClassScope(data) {⏎     if(!data||typeof data!=='object')return data;⏎     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');⏎     if(!currentKey){data.classConte
+
+### L8818 @4532433
+⏎   function ensureClassScope(data) {⏎     if(!data||typeof data!=='object')return data;⏎     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');⏎     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}⏎     if(currentKey===activeKey){data.classContexts=con
+
+### L8818 @4532453
+lassScope(data) {⏎     if(!data||typeof data!=='object')return data;⏎     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');⏎     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}⏎     if(currentKey===activeKey){data.classContexts=contexts;data.classScop
+
+### L8819 @4532574
+lassContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');⏎     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}⏎     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}⏎     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeK
+
+### L8820 @4532716
+;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}⏎     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}⏎     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;⏎     const target=contexts[activeKey];⏎     if(target){for(const key of classScopedKeys)if(ke
+
+### L8823 @4533021
+currentKey]=snapshot;⏎     const target=contexts[activeKey];⏎     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}⏎     else if(currentKey!=='unassigned'){⏎       const blank=migrate({klass:clone(data.klass)});⏎       for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(blank,key))data[key]=clone(blank[key]);⏎     }⏎    
+
+### L8826 @4533240
+'unassigned'){⏎       const blank=migrate({klass:clone(data.klass)});⏎       for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(blank,key))data[key]=clone(blank[key]);⏎     }⏎     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;⏎   }⏎    const curriculumDefaults = () => ({⏎ 
+
+### L8828 @4533390
+blank,key))data[key]=clone(blank[key]);⏎     }⏎     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;⏎   }⏎    const curriculumDefaults = () => ({⏎      schemaVersion: CURRICULUM_VERSION,⏎      scopeKey:'',⏎      contexts:{},⏎      catalog: { grade:'', academicYear:'', source:'', sourceLabel:'کاتا
+
+=== setState\(\{\s*klass count=3
+### L2352 @1379341
+row({ icon: w.icon, gradient: w.g, title: esc(w.t), href: w.href })), 'mb8') ) : ''}`⏎  });⏎}⏎let returnToAssistant = false;⏎function renderClass() {⏎  const k = state.klass;⏎  const upd = (patch) => setState({ klass: patch }, { silent: true }) || refreshPreview();⏎  const refreshPreview = () => { const p = $('#class-preview'); if (p) p.innerHTML = classPreviewHtml(); };⏎  const classPreviewHtml = () => `<b>${esc(state.klass.school || 'نام مدرسه')}</b>${esc(className() || 'نام کلاس')} · ${esc(state.klass.year || '')}<br>آموزگار: ${esc(teacherName() || '…')}${state.klass.phone ? ` · ${esc(state
+
+### L2358 @1380018
+ackHref: returnToAssistant ? '#/pulse/assistant' : '#/home',⏎    content: `${ui.card(`⏎      ${ui.field('پیشوند', ui.segmented([['خانم', 'خانم'], ['آقای', 'آقای'], ['', '—']], k.teacherPrefix, v => { setState({ klass: { teacherPrefix: v } }); }))}⏎      ${ui.field('نام و نام خانوادگی آموزگار', ui.input({ id: 'f-teacher', value: k.teacher, placeholder: 'مثلاً مریم رضوانی', onInput: v => upd({ teacher: v }) }))}⏎      ${ui.field('نام مدرسه', ui.input({ id: 'f-school', value: k.school, placeholder: 'مثلاً دبستان شهید بهشتی', onInput: v => upd({ school: v }) }))}⏎      ${ui.field('پایه', ui.select
+
+### L2361 @1380632
+e', value: k.grade, options: [['', 'انتخاب کنید']].concat(GRADES.map(g => [g, g])), onChange: v => { const patch = { grade: v }; if (!k.className || GRADES.includes(k.className)) patch.className = v; setState({ klass: patch }); } }))}⏎      ${ui.field('نام کلاس', ui.input({ id: 'f-class', value: k.className, placeholder: k.grade ? `پیش‌فرض: ${k.grade}` : 'مثلاً دوم الف', onInput: v => upd({ className: v }) }))}⏎      ${ui.field('سال تحصیلی', ui.input({ id: 'f-year', value: k.year, placeholder: currentYearLabel(), onInput: v => upd({ year: v }) }))}⏎      ${ui.field('تلفن آموزگار (اختیاری)', ui
+
+=== function setState|setState\s*=\s*function count=2
+### L1910 @1333279
+meout(() => el.classList.remove('show'), 1200);⏎}⏎function setState(patch, opts = {}) {⏎  deepMerge(state, patch || {});⏎  dirty = true; persist();⏎  if (!opts.silent) scheduleRender();⏎}⏎function replaceState(newState) { state = migrate(newState); dirty = true; persist(); scheduleRender(); }⏎function getSettings(key) {⏎  const tool = OUTPUTS.find(o => o.key === key);⏎  return Object.assign({}, COMMON_DEFAULTS(), tool ? tool.defaults() : {}, state.outputSettings[key] || {});⏎}⏎function setSettings(key, patch, opts = {}) {⏎  const cur = Object.a
+
+### L9350 @4609783
+⏎   const setStateBeforeClassScope = setState;⏎   setState = function(patch, opts = {}) { const result=setStateBeforeClassScope(patch,opts); ensureClassScope(state); return result; };⏎   const replaceBeforeClassScope = replaceState;⏎   replaceState = function(data) { const ok=replaceBeforeClassScope(data); if(ok) ensureClassScope(state); return ok; };⏎  const exportBeforeCurriculum = exportJSON;⏎  exportJSON = async function() {⏎    ensureCurriculum(state);⏎    const payload=clone(state), assets=[];⏎    for (const book of payload.curriculum.boo
+
+=== function addStudents|const addStudents|function parseNames|function importNames count=0

@@ -1,0 +1,15 @@
+OK: MAX_MODEL_RETRIES = 3, MODEL_RETRY_DELAY_MS = 2000,
+OK: new Set([408,500,502,503,504]);
+OK: PANEL_FETCH_TIMEOUT_MS = 80000;
+OK: ROUTER_FETCH_TIMEOUT_MS = 30000;
+OK:     for (let attempt = 0; attempt <= retries; attempt++) {
+      if (attempt) aw
+OK: const model=options.model||LIGHT_MODEL;
+
+OK: if(model!==FALLBACK_MODEL&&isTransientModelFailure(error))return request(content
+OK: if(model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode&&isTransientMo
+OK: if((RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404)&&model
+OK: if((RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404)&&model
+OK: !allowToolCalls&&!programMode&&!thinkingTrimBroken&&normKey(fallbackPrompt).leng
+OK:       routeCache.set(prompt, label === 'RECORD' || label === 'OTHER' ? LIGHT_MOD
+BAD=0

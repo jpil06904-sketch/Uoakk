@@ -1,0 +1,22 @@
+=== net1
+== ping
+{"ok":true,"t":1794249913}
+HTTP 200 0.958550s
+
+== diag
+{"ok":true,"php":"8.4.27","sqlite":true,"data_writable":true,"db":true}
+HTTP 200 1.053043s
+
+=== act/bind logic
+#### a=act @ 1545547
+tatus==='green').length}، زرد ${history.filter(r=>r.status==='yellow').length}، قرمز ${history.filter(r=>r.status==='red').length}؛ ${getFollowupLevel(history).text}`);if(last.status!=='green'){const a=activitiesFor(key,state.learning.studentMeta[id]?.grade)[0];lines.push('نیازمند تمرین: '+last.skillLabel);if(a)lines.push('پیشنهاد کوتاه خانه (با انتخاب معلم): '+a.practice.simple);else lines.push('فعالیت تخصصی برای این پایه در بانک ثبت نشده؛ تمرین مناسب با معلم هماهنگ شود.');}} |   const fs=state.learning.followups.filter(x=>x.studentId===id&&x.created
+---
+#### a=act @ 1561620
+tivityHtml(items,key):''}`)).join('');} | function groupActivityHtml(items,path){const grades=[...new Set(items.map(x=>state.learning.studentMeta[x.student.id]?.grade))];return grades.map(grade=>{const a=activitiesFor(filter.skillId,grade)[0];if(!a)return note(`پایهٔ ${grade||'نامشخص'}: برای این مهارت هنوز فعالیت تخصصی در بانک ثبت نشده است.`);return `<p><b>پایهٔ ${esc(grade)}: ${esc(a.title)}</b> — ${fa(a.durationMinutes)} دقیقه</p><p>${esc(path==='teacher'?a.steps.join('؛ '):path==='practice'?a.practice.medium:a.independentInstructions)}</p><p class=
+---
+#### a=act @ 1578370
+Pages('گزارش هفته',[learningPage('گزارش هفته — خصوصی معلم',text)]),{icon:'print'}));} |  |  | let planDraft=null; | function makePlan(){const groups=buildLearningPaths(),grade=filter.grade||state.klass.grade,a=activitiesFor(filter.skillId,grade)[0],g=Object.fromEntries(Object.entries(groups).map(([k,v])=>[k,v.map(x=>x.student.id)]));const simple=a?.practice.simple||'پیشنهاد عمومی: یک مثال از درس واقعی را با شکل توضیح بده.',medium=a?.practice.medium||'پیشنهاد عمومی: یک مثال دیگر از همان درس را مستقل انجام بده.',challenge=a?.practice.challenge||'پیشنهاد عمومی
+---
+#### gemini-3\.8-flash.{0,0} @ 4260052
+se/assistant'; |   // Keep the online part deliberately conservative. All class data and records |   // remain local; Gemini is only used for the explanation or idea requested. |       const HEAVY_MODEL = 'gemini-3.8-flash', LIGHT_MODEL = 'gemini-3-flash-preview', FALLBACK_MODEL = LIGHT_MODEL, WORKER_FALLBACK_URL = 'https://red-heart-c9c0.ssioojiu63.workers.dev/'; |     // The configured Worker currently returns a subscription-provider error, so Gemini stays the only analysis path. |     const WORKER_FALLBACK_ENABLED = false; |    const HISTORY_KEY = 'mehryar_assistant_v1
+---

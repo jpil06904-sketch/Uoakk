@@ -1,0 +1,127 @@
+-rw-rw-rw- 1 codespace codespace 10439 18:44:20 ai1.txt
+-rw-rw-rw- 1 codespace codespace  6913 18:45:11 ai2.txt
+-rw-rw-rw- 1 codespace codespace  6580 18:47:38 ai3.txt
+-rw-rw-rw- 1 codespace codespace 21539 15:58:47 chat.txt
+-rw-rw-rw- 1 codespace codespace 11692 16:04:19 chat2.txt
+-rw-rw-rw- 1 codespace codespace     0 16:04:19 chat2_log.txt
+-rw-rw-rw- 1 codespace codespace  9331 16:05:11 chat3.txt
+-rw-rw-rw- 1 codespace codespace     0 16:05:11 chat3_log.txt
+-rw-rw-rw- 1 codespace codespace 23484 16:06:05 chat4.txt
+-rw-rw-rw- 1 codespace codespace     0 16:06:05 chat4_log.txt
+-rw-rw-rw- 1 codespace codespace  7199 16:06:56 chat5.txt
+-rw-rw-rw- 1 codespace codespace     0 16:06:56 chat5_log.txt
+-rw-rw-rw- 1 codespace codespace  3453 16:07:58 chat6.txt
+-rw-rw-rw- 1 codespace codespace  2399 16:08:46 chat7.txt
+-rw-rw-rw- 1 codespace codespace     0 15:58:46 chat_log.txt
+-rw-rw-rw- 1 codespace codespace   812 18:43:27 chat_ls.txt
+-rw-rw-rw- 1 codespace codespace 13103 18:43:28 code_find.txt
+-rw-rw-rw- 1 codespace codespace   154 18:45:14 net1.txt
+=== md5
+0b40689d4d3e7566819236ee45d20df0  /workspaces/Uoakk/mehryar-v4-final (10).html
+89096129599b2e24e2ce4bf81d571373  /workspaces/Uoakk/mehryar-v4-final-fixed.html
+=== ai1.txt
+### normActCode 1
+  @ 4260500 6516 :: rkers.dev/'; ⏎     // The configured Worker currently returns a subscription-provider error, so Gemini stays the only analysis path. ⏎     const WORKER_FALLBACK_ENABLED = false; ⏎    const HISTORY_KEY = 'mehryar_assistant_v1', KEY_SLOT = 'mehryar_assistant_session_key', CODE_SLOT = 'mehryar_ai_code'; ⏎     const normActCode = v => { const s = String(v || '').replace(/[۰-۹]/g,d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).toUpperCase().replace(/[^A-Z0-9]/g,''); return /^MH[A-Z0-9]{8}$/.test(s) ? 'MH-'+s.slice(2,6)+'-'+s.slice(6) : ''; }; ⏎     const isActCode = v => !!v && normActCode(v) === v; ⏎     async function runSpeedTest(box, btn) { ⏎       if (!box) return; ⏎       const P = window.__mehryarPanel; ⏎       if (!P || !isActCode(key)) { box.textContent = 'این تست فقط با کد فعال‌سازی کار می‌کند.'; return; } ⏎       btn.disabled = true; ⏎       const lines = [], sec = ms => fa((Math.round(Numbe
+### ai-key submit 2
+  @ 4440116 7908 :: cument.getElementById('ai-open-key')?.focus({preventScroll:true}); }}); ⏎     keyDialog.el.classList.add('ai-key-dialog'); keyDialog.el.setAttribute('aria-label','ورود رمز'); ⏎     const input = document.getElementById('ai-key'); input.value = key; ⏎     document.getElementById('ai-show-key').onclick = e => { ⏎       const show = input.type === 'password'; input.type = show ? 'text' : 'password'; ⏎       e.currentTarget.setAttribute('aria-pressed',String(show)); e.currentTarget.setAttribute('aria-label',show ? 'پنهان کردن رمز' : 'نمایش رمز'); ⏎     }; ⏎     const speedBtn = document.getElementById('ai-speed'); if (speedBtn) speedBtn.onclick = () => runSpeedTest(document.getElementById('ai-speed-box'), speedBtn); ⏎     document.getElementById('ai-key-form').onsubmit = async e => { ⏎       e.preventDefault(); ⏎       if (!input.value.trim()) { input.focus(); return; } ⏎       let newKey = input.value.trim(); ⏎       const actCode = norm
+  @ 4440922 7920 ::  if (!input.value.trim()) { input.focus(); return; } ⏎       let newKey = input.value.trim(); ⏎       const actCode = normActCode(newKey); ⏎       if (actCode) { ⏎         const btn = document.querySelector('#ai-key-form button[type=submit]'); if (btn) btn.disabled = true; ⏎         const res = await activateCode(actCode); ⏎         if (btn) btn.disabled = false; ⏎         if (!res.ok) { ui.toast(res.msg); return; } ⏎         newKey = actCode; try { localStorage.setItem(CODE_SLOT,actCode); } catch (_) {} ⏎         ui.toast('فعال شد.'); ⏎       } else { try { localStorage.removeItem(CODE_SLOT); } catch (_) {} } ⏎       if (newKey !== key) { clearLocalBackoff(); if (/سهمیه|Gemini/.test(errorText)) errorText = ''; } key = newKey; verified = false; if (newKey && window.__mehryarStat) window.__mehryarStat('ai_key'); ⏎       try { sessionStorage.setItem(KEY_SLOT,key); } catch (_) { ui.toast('رمز فقط تا بارگذاری مجدد این صفح
+### KEY storage 1
+  @ 4260478 6515 :: mehryar_assistant_v1', KEY_SLOT = 'mehryar_assistant_session_key', CODE_SLOT = 'mehryar_ai_code'; ⏎     const normActCode = v => { const s = String(v || '').replace(/[۰-۹]/g,d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).toUpperCase().replace(/[^A-Z0-9]/g,''); return /^MH[A-Z0-9]{8}$/.test(s) ? 'MH-'+s.slice(2,6)+'-
+### workers.dev 3
+  @ 3986814 3988 :: d); ⏎ }; ⏎  ⏎  ⏎ /* ===== Optional remote panel: banners, popup, anonymous counters. Empty PANEL_URL = fully off. ===== */ ⏎ const APP_VERSION='4.1',PANEL_URL='https://billowing-feather-ba20.ssioojiu63.workers.dev/panel'; ⏎ (()=>{ ⏎  if(!PANEL_URL)return; ⏎  const OFF='mehryar_stats_off',DID='mehryar_did',base=(()=>{try{return new URL(PANEL_URL,location.href).href.replace(/\/+$/,'');}catch(_){return PANEL_URL.replace(/\/+$/,'');}})(),viewed=new Set(); ⏎  const ls=(k,v)=>{t
+  @ 4260164 6512 :: requested. ⏎       const HEAVY_MODEL = 'gemini-3.8-flash', LIGHT_MODEL = 'gemini-3-flash-preview', FALLBACK_MODEL = LIGHT_MODEL, WORKER_FALLBACK_URL = 'https://red-heart-c9c0.ssioojiu63.workers.dev/'; ⏎     // The configured Worker currently returns a subscription-provider error, so Gemini stays the only analysis path. ⏎     const WORKER_FALLBACK_ENABLED = false; ⏎    const HISTORY_KEY = 'mehryar_assistant_v1', KEY_SLOT = 'mehryar_assistant_session_k
+  @ 4468225 8102 :: <script> ⏎ (() => { ⏎   'use strict'; ⏎   if (window.__mehryarDailyMessage) return; ⏎   window.__mehryarDailyMessage = true; ⏎  ⏎   const DAILY_MESSAGE_WORKER = 'https://red-heart-c9c0.ssioojiu63.workers.dev/'; ⏎   const dailyMessageState = {day:'',busy:false,text:'',error:''}; ⏎  ⏎   function dailyMessageTrim(value, limit=260) { ⏎     return String(value || '').replace(/\s+/g,' ').trim().slice(0,limit); ⏎   } ⏎  
+=== ai2.txt
+=== activateCode
+async function activateCode(code) {
+      const P = window.__mehryarPanel;
+      if (!P) return {ok:false,msg:'اتصال به پنل در این نسخه روشن نیست.'};
+      const c = new AbortController(), t = setTimeout(() => c.abort(), 15000);
+      try {
+        const r = await fetch(P.base+'/api.php?a=act',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({c:code,id:P.id}),signal:c.signal,cache:'no-store'});
+        const d = await r.json().catch(() => ({}));
+        if (d && d.ok) return {ok:true};
+        const m = {invalid:'کد درست نیست. دوباره بررسی کن.',used:'این کد روی گوشی دیگری فعال شده است. به مدیر بگو گوشی کد را آزاد کند.',off:'این کد غیرفعال شده است.',rate:'تلاش‌های ناموفق زیاد بود؛ چند دقیقه بعد دوباره امتحان کن.'};
+        return {ok:false,msg:m[d && d.err] || 'فعال‌سازی ناموفق بود؛ دوباره تلاش کن.'};
+      } catch (_) {
+        return {ok:false,msg:'ارتباط با پنل برقرار نشد. اینترنت را بررسی کن و دوباره تلاش کن.'};
+      } finally { clearTimeout(t); }
+    }
+   const CACHE_KEY = 'mehryar_assistant_answer_cache_v1', RATE_KEY = 'mehryar_assistant_rate_v1';
+    const MAX_MODEL_RETRIES = 3, MODEL_RETRY_DELAY_MS = 2000, MODEL_FETCH_TIMEOUT_MS = 30000, RESPONSE_BODY_TIMEOUT_MS = 30000;
+    const RETRYABLE_MODEL_STATUSES = new Set([408,500,502,503,504]);
+     const PANEL_MIN_REQUEST_GAP = 400, PANEL_MAX_REQUESTS_PER_MINUTE = 30, PANEL_FETCH_TIMEOUT_MS = 80000; let thinkingTrimBroken = false;
+     const MIN_REQUEST_GAP = 4500, MAX_REQUESTS_PER_MINUTE = 6, HEAVY_REQUESTS_PER_DAY = 50, LIGHT_REQUESTS_PER_DAY = 1500, MAX_TOOL_ROUNDS = 3, MAX_BUDGET_IMPORT_CHARS 
+=== isActCode uses
+@ 6521 ^MH[A-Z0-9]{8}$/.test(s) ? 'MH-'+s.slice(2,6)+'-'+s.slice(6) : ''; }; ⏎     const isActCode = v => !!v && normActCode(v) === v; ⏎     async function runSpeedTest(box, btn) { ⏎       if (!box) return; ⏎       const P = window.__mehryarPanel; ⏎       if (!P || !isActCode(key)) { box.textContent = 'این تست فقط با کد فعال‌سازی کار می‌کند.'; return; } ⏎       btn.disabled = true; ⏎       const lines = [], sec = ms => fa((Math.round(Number(ms) / 100) / 10).toString()).replace('.', '٫'), show = () => { box.innerHTML = lines.map(l => '<div>' + esc(l) + '</div>').join(''); }; ⏎       try { ⏎         lines.push('در حال اندازه‌گیری اتصال…'); show(); ⏎         const times = []; ⏎         for (let i = 0; i < 5; i++) { const t
+---
+@ 6910     if (count >= limit) { const error=new Error('برای پر نشدن سهمیهٔ مدل '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+'، سقف روزانهٔ برنامه رسید. اطلاعات محلی و ثبت گزارش‌ها فعال‌اند.'); error.code='MODEL_RATE_LIMIT'; throw error; } ⏎     const panelMode = isActCode(key), maxPerMinute = panelMode ? PANEL_MAX_REQUESTS_PER_MINUTE : MAX_REQUESTS_PER_MINUTE, minGap = panelMode ? PANEL_MIN_REQUEST_GAP : MIN_REQUEST_GAP; ⏎     const oldest = rate.minute[0] || 0, minuteWait = oldest + 60000 - now; ⏎     if (rate.minute.length >= maxPerMinute && minuteWait > 0) { await waitAbortable(minuteWait, signal); return reserveRequestSlot(signal, model); } ⏎     const last = rate.minute.at(-1) || 0, gap = last + minGap - 
+---
+@ 6983  { ⏎       clearTimeout(timer); ⏎       signal.removeEventListener('abort', forwardAbort); ⏎     } ⏎   } ⏎   async function fetchModelWithRetry(model, body, signal, timeoutMs, retries = MAX_MODEL_RETRIES) { ⏎     await reserveRequestSlot(signal, model); ⏎     if (isActCode(key) && !window.__mehryarPanel) { const e = new Error('اتصال به پنل در این نسخه روشن نیست.'); e.code = 'MODEL_NETWORK'; throw e; } ⏎     const viaPanel = isActCode(key); ⏎     const url = viaPanel ? window.__mehryarPanel.base+'/api.php?a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent'; ⏎     const makeOptions = () => viaPanel ? {method:'POST',headers:{'Content-Type':'text/
+---
+@ 6984 Ms, retries = MAX_MODEL_RETRIES) { ⏎     await reserveRequestSlot(signal, model); ⏎     if (isActCode(key) && !window.__mehryarPanel) { const e = new Error('اتصال به پنل در این نسخه روشن نیست.'); e.code = 'MODEL_NETWORK'; throw e; } ⏎     const viaPanel = isActCode(key); ⏎     const url = viaPanel ? window.__mehryarPanel.base+'/api.php?a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent'; ⏎     const makeOptions = () => viaPanel ? {method:'POST',headers:{'Content-Type':'text/plain'},body:key+'|'+window.__mehryarPanel.id+'\n'+JSON.stringify(body)} : {method:'POST',headers:{'Content-Type':'appl
+=== ai3.txt
+### DID id gen 1
+  @L 3991 :: !PANEL_URL)return; ⏎  const OFF='mehryar_stats_off',DID='mehryar_did',base=(()=>{try{return new URL(PANEL_URL,location.href).href.replace(/\/+$/,'');}catch(_){return PANEL_URL.replace(/\/+$/,'');}})(),viewed=new Set(); ⏎  const ls=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);v===null?localStorage.removeItem(k):localStorage.setItem(k,v);}catch(_){}return null;}; ⏎  let id=ls(DID);if(!id){id=Array.from(crypto.getRandomValues(new Uint8Array(12)),b=>b.toString(16).padStart(2,'0')).join('');ls(DID,id);} ⏎  const Q='mehryar_q',qget=()=>{try{return JSON.parse(ls(Q)||'{}')||{};}catch(_){return {};}};let sending=false;const setPS=s=>ls('mehryar_ps',JSON.stringify({s,t:Date.now()})); ⏎  const flush=()=>{if(sending||!navigator.onLine)return;const q=qget();if(!Object.keys(q).length)return;sending=true;fetch(base+'/api.php?a=p',{method:'POST',body:JSON.stringify({id,v:APP_VERSION,ev:q}),keepalive:true,headers:{'Content-Type':'text/plain'}}).then(r=>r.text()).th
+### assistant route 0
+### routes table 8
+  @L 1987 :: ================= ⏎    JS — Router ⏎    ============================================================ */ ⏎ const ROUTES = [ ⏎   [/^#\/welcome$/, () => renderWelcome()], ⏎   [/^#\/home$/, () => renderHome()], ⏎   [/^#\/class$/, () => renderClass()], ⏎   [/^#\/students$/, () => renderStudents()], ⏎   [/^#\/students\/import$/, () => renderImport()], ⏎   [/^#\/students\/done$/, () => renderStudentsDone()], ⏎   [/^#\/students\/([a-zA-Z0-9_-]+)$/, m => renderStudent(m[1])], ⏎   [/^#\/settings$/, () => renderSettings()], ⏎   [/^#\/settings\/fields$/, () => renderFields()], ⏎   [/^#\/settings\/meeting$/, () => renderMeetingSettings()], ⏎   [/^#\/settings\/messages$/, () => renderMessagesList()], ⏎   [/^#\/settings\/messages\/([a-zA-Z0-9_-]+)
+  @L 2009 :: a-zA-Z0-9_-]+)$/, m => renderOutput(m[1])], ⏎ ]; ⏎ let currentHash = ''; ⏎ let currentFn = null; ⏎ function route() { ⏎   const h = location.hash || '#/home'; ⏎   for (const [re, fn] of ROUTES) { ⏎     const m = h.match(re); ⏎     if (m) { ⏎       if (h !== currentHash) { H.clear(); closeAllLayers(); currentHash = h; const app = $('#app'); if (app) app.scrollTop = 0; } ⏎       currentFn = () => fn(m); ⏎       fn(m); saveLastRoute(h); return; ⏎     } ⏎   } ⏎   location.hash = '#/home'; ⏎ } ⏎ window.addEventListener('hashchange', route); ⏎ function saveLastRoute(h) { if (h === '#/welcome') return; state.ui.lastRoute = h; dirty = true; persist(); } ⏎ let renderQueued = false; ⏎ function scheduleRender() { ⏎   if (renderQueued) return; rend
+  @L 3275 ::  || '#/home') : '#/welcome'; } ⏎   else if(!state.progress.pulseIntroSeen) {location.hash='#/welcome';route();} else route(); ⏎   // Storage status is rendered inline; no startup toast covers the introduction. ⏎   document.addEventListener('keydown', e => { ⏎     if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) { ⏎       e.preventDefault(); ⏎       const b = $('#btnPrint'); ⏎       if (b && !b.disabled) b.click(); else ui.toast('از دکمهٔ چاپ داخل هر ابزار استفاده کنید'); ⏎     } ⏎     if (e.key === 'Escape' && layers.length) layers[layers.length - 1].close(); ⏎   }); ⏎   window.addEventListener('beforeunload',e=>{if(!dirty||demoMode)return;flushSave();if(dirty){e.preventDefault();e.returnValue='';}}); ⏎ 
+### send handler 0
+### ai-form ids 26
+  @L 6818 :: id="ai-save-annual-budget"
+  @L 6818 :: id="ai-cancel-annual-budget"
+  @L 7906 :: id="ai-key-form"
+  @L 7906 :: id="ai-key"
+  @L 7906 :: id="ai-show-key"
+  @L 7906 :: id="ai-forget"
+  @L 7906 :: id="ai-speed"
+  @L 7906 :: id="ai-speed-box"
+  @L 7964 :: id="ai-open-key"
+  @L 7966 :: id="ai-clear"
+  @L 7967 :: id="ai-live-stats"
+  @L 7967 :: id="ai-tools-access"
+  @L 7968 :: id="ai-log"
+  @L 7974 :: id="ai-apply-report"
+  @L 7974 :: id="ai-dismiss-report"
+  @L 7976 :: id="ai-open-output"
+  @L 7977 :: id="ai-undo-report"
+  @L 7978 :: id="ai-retry"
+  @L 7980 :: id="ai-form"
+  @L 7980 :: id="ai-pending-confirm"
+  @L 7980 :: id="ai-pending-cancel"
+  @L 7980 :: id="ai-message"
+  @L 7980 :: id="ai-stop"
+  @L 7980 :: id="ai-send"
+  @L 7980 :: id="ai-storage"
+  @L 7980 :: id="ai-counter"
+### a=ai response parse 3
+  @L 7043 :: = rateState(); rate.backoffUntilByModel[LIGHT_MODEL] = Date.now() + seconds * 1000; rate.kindByModel = rate.kindByModel || {}; rate.kindByModel[LIGHT_MODEL] = quotaKind(data); saveRateState(rate); } ⏎         return; ⏎       } ⏎       const answer = (data.candidates?.[0]?.content?.parts || []).filter(x => !x.thought && typeof x.text === 'string').map(x => x.text).join(' ').trim().toUpperCase(); ⏎       const label = (answer.match(/\b(NEXT|IDEA|STUDENT|RECORD|OTHER|LEARN)\b/) || [])[1]; ⏎       if (!label) return; ⏎       intentCache.set(key, label); if (intentCache.size > 60) intentCache.delete(intentCache.keys().next().value); ⏎       routeCache.set(p
+=== net1.txt
+== ping
+{"ok":true,"t":1794249913}
+HTTP 200 0.958550s
+
+== diag
+{"ok":true,"php":"8.4.27","sqlite":true,"data_writable":true,"db":true}
+HTTP 200 1.053043s
+
+=== code_find.txt
+### MH- 2
+  @ 4260723 "۰-۹]/g,d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).toUpperCase().replace(/[^A-Z0-9]/g,''); return /^MH[A-Z0-9]{8}$/.test(s) ? 'MH-'+s.slice(2,6)+'-'+s.slice(6) : ''; };\n    const isActCode = v => !!v && normActCode(v) === v;\n    async function runSpeedTest(box, btn) {\n      if (!box) return;\n      const P = window.__mehryarPanel;\n      if (!P || !i"
+  @ 4438978 'lass="ai-key-row"><input id="ai-key" class="input ltr" type="password" autocomplete="off" spellcheck="false" autocapitalize="none" maxlength="512" placeholder="MH-XXXX-XXXX"><button type="button" id="ai-show-key" class="icon-btn" aria-label="نمایش رمز" aria-pressed="false">${icon(\'eye\')}</button></div><div class="ai-key-actions"><button type="submit" class="btn btn-primary">ثبت</b'
+### \[A-Z\]\{4\} 0
+### A-Z0-9\]\{4\} 0
+### activation|activate|license|licence 29
+  @ 259 'ont License.\n                                 Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n   1. Definitions.\n\n      "License" shall mean the terms and conditions for use, reproduction,\n      and distribution as defined by Sections 1 through '
+  @ 3843 ' of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.\n\n   3. Grant of Patent License. Subject '
+  @ 3939 'exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.\n\n   3. Grant of Patent License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpe'
+  @ 4289 'tributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      (except as stated in this section) patent license to make, have made,\n      use, offer to sell, sell, import, and otherwise transfer the Work,\n      where such license applies only to those patent claims licensable\n      by such Contributor that are necessarily infring'
+  @ 4407 '(except as stated in this section) patent license to make, have made,\n      use, offer to sell, sell, import, and otherwise transfer the Work,\n      where such license applies only to those patent claims licensable\n      by such Contributor that are necessarily infringed by their\n      Contribution(s) alone or by combination of their Contribution(s)\n      with the Work to which such C'
+  @ 4939 'suit) alleging that the Work\n      or a Contribution incorporated within the Work constitutes direct\n      or contributory patent infringement, then any patent licenses\n      granted to You under this License for that Work shall terminate\n      as of the date such litigation is filed.\n\n   4. Redistribution. You may reproduce and distribute copies of the\n      Work or Derivative Works '
+  @ 7079 'nstrued\n          as modifying the License.\n\n      You may add Your own copyright statement to Your modifications and\n      may provide additional or different license terms and conditions\n      for use, reproduction, or distribution of Your modifications, or\n      for any such Derivative Works as a whole, provided Your use,\n      reproduction, and distribution of the Work otherwise c'
+  @ 7754 ' License, without any additional terms or conditions.\n      Notwithstanding the above, nothing herein shall supersede or modify\n      the terms of any separate license agreement you may have executed\n      with Licensor regarding such Contributions.\n\n   6. Trademarks. This License does not grant permission to use the trade\n      names, trademarks, service marks, or product names of th'
+  @ 11126 '0 (the "License");\n   you may not use this file except in compliance with the License.\n   You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n   Unless required by applicable law or agreed to in writing, software\n   distributed under the License is distributed on an "AS IS" BASIS,\n   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express o'
+  @ 1048718 'e License.\n\n\n                                 Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n   1. Definitions.\n\n      "License" shall mean the terms and conditions for use, reproduction,\n      and distribution as defined by Sections 1 through '
+  @ 

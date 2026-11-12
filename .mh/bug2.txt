@@ -1,0 +1,19 @@
+L9370 [bookProgressSummary *=|bookPro]:   const bookProgressSummary = book => { const nodes=curriculumNodes(book), progress=currentProgress(book.id), statuses=progress.statuses||{}, taught=nodes.filter(node=>statuses[node.id]==='taught'), active=nodes.find(node=>statuses[node.id]==='in_progress')||nodes.find(node=>node.id===progress.currentNodeId), started=nodes.some(node=>statuses[node.id]&&statuses[node.id]!=='not_started'); return {nodes,progress,statuses,taught,active,started}; };
+
+L8904 [function currentProgress|curre]:   const currentProgress = id => ensureCurriculum(state).curriculum.teachingProgress[id] || {currentNodeId:'',statuses:{},exceptions:[],updatedAt:''};
+
+L8903 [function curriculumNodes|curri]:   const curriculumNodes = book => flattenNodes(book?.nodes || []);
+
+L2547 [function renderSettingsList]: function renderSettingsList(key) {
+
+L1955 [function loadSample|loadSample]: function loadSample() {
+
+L3510 [function loadSample|loadSample]: loadSample=function(){if(demoMode){location.hash='#/pulse';return;}if(dirty&&!flushSave()){ui.toast('ابتدا پشتیبان بگیرید؛ ورود به نمونه تا رفع خطای ذخیره انجام نشد.');return;}clearTimeout(saveTimer2);saveEpoch++;realSnapshot=state;demoMode=true;state=sampleState();quickDraft=null;quickKey='';planDraft=null;dirty=false;location.hash='#/pulse';applyTheme();scheduleRender();};
+
+L3713 [function loadSample|loadSample]: loadSample=function(){if(!demoMode)storageRuntime.realDirty=dirty;enterDemoBeforeStorage();$('#save-ind')?.classList.remove('show');queueMicrotask(renderStorageNotice);};
+
+L8052 [function loadSample|loadSample]:   loadSample = function() {
+
+=== L9464-9466 renderProgress full head:
+
+  function renderProgress() {

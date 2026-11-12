@@ -1,0 +1,17 @@
+6:=== Q1 greeting  TOTAL 0.3s  firstVisible 0.3s
+11:=== Q2 list students  TOTAL 2.8s  firstVisible 2.8s
+15:   ai gemini-3-flash-preview st=200 2649ms req=61304B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=3 maxOut=3072 think={"thinkingBudget":1024} usage(in/out/think)=17657/100/ finish=STOP
+18:=== Q3 heavy advice  TOTAL 27.4s  firstVisible 0.0s
+20:RETRY BUTTON SHOWN
+22:   ai gemini-3.8-flash st=- 20004ms req=61778B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=5 maxOut=3072 think={"thinkingBudget":1024} FAIL=AbortError: This operation was aborted ABORTED@20000ms
+23:   ai gemini-3-flash-preview st=503 7205ms req=61778B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=5 maxOut=3072 think={"thinkingBudget":1024} PARSE=SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+26:=== Q4 record attendance  TOTAL 6.8s  firstVisible 0.0s
+28:RETRY BUTTON SHOWN
+30:   ai gemini-3-flash-preview st=503 6668ms req=61771B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=5 maxOut=3072 think={"thinkingBudget":1024} PARSE=SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+33:=== Q5 parent message  TOTAL 6.8s  firstVisible 0.0s
+35:RETRY BUTTON SHOWN
+37:   ai gemini-3-flash-preview st=503 6665ms req=61801B keys=systemInstruction,contents,tools,generationConfig tools=1 cont=5 maxOut=3072 think={"thinkingBudget":1024} PARSE=SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+40:=== Q6 follow-up  TOTAL 6.8s  firstVisible 0.0s
+42:RETRY BUTTON SHOWN
+44:   ai gemini-3-flash-preview st=503 6594ms req=37143B keys=systemInstruction,contents,generationConfig tools=0 cont=5 maxOut=3072 think={"thinkingBudget":512} PARSE=SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+48:ERRS 0

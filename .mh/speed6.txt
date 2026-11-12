@@ -1,0 +1,14 @@
+@ 4265495 :: ROUTER_FETCH_TIMEOUT_MS = 30000
+----
+@ 4340267 :: function greetingReply(p) { |     const first=String((p.info&&p.info.teacher)||'').trim().split(/\s+/)[0]; |     return (first?'سلام '+first+' جان، خوش آمدی.':'سلام، خوش آمدی.')+' امروز چه کمکی بکنم؟ مثلاً می‌توانم برای فردا برنامه بریزم، برای یک مشکل کلاس راه‌حل بسازیم، یا گزارش امروز را ثبت کنیم.'; |   } |   function threadContext(prompt) { |     const q=normKey(prompt), own=messages.filter(m=>m&&m.profile===profile().id).slice(-14), last=own[own.length-1]; |     const earlier=last&&last.role==='user'&&normKey(last.text)===q?own.slice(0,-1):own; |     return {q, earlier, users:earlier.filter(m=>m.role==='user').slice(-8)}; |   } |   function classProblemThread(prompt) { |     try { |       const {q,earlier,users}=threadContext(prompt); |       if(!q)return false; |       const roster=new Set((state.students||[]).map(st=>normKey(String(st&&st.name||'').trim().split(/\s+/)[0])).filter(n=>n.length>=2)); |       const stated=text=>{ |      
+----
+----
+----
+@ 4296754 :: function isLightRecordPrompt(prompt) { |     const q = normKey(prompt); |     return LIGHT_RECORD_TRIGGERS.some(trigger => q.includes(trigger)) && !/(ایده|راهکار|ریشه|تحلیل|روش.?تدریس|چطور.?تدریس|طراحی.?سوال|نمونه.?سوال|بازی.?آموزشی|مدیریت.?کلاس|افت.?تحصیلی|چکار.?کنیم|چیکار.?کنیم|چه.?کار.?کنیم|چی.?کار.?کنیم|چه.?کنیم|چی.?کنیم|قدم.?بعدی|بررسی|پیشنهاد)/.test(q); |   
+----
+@ 4297118 :: function isHeavyPrompt(prompt) { |     const q = normKey(prompt); |      return !isLightRecordPrompt(prompt) && (NEXT_DAY_TRIGGERS.some(trigger=>q.includes(trigger)) || HEAVY_TRIGGERS.some(trigger => q.includes(trigger)) || isProgramPrompt(prompt)); |   
+----
+CP@ 4312192 n(' ').trim().toUpperCase(); |       const label = (answer.match(/\b(NEXT|IDEA|STUDENT|RECORD|OTHER|LEARN)\b/) || [])[1]; |       if (!label) return; |       intentCache.set(key, label); if (intentCache.size > 60) intentCache.delete(intentCache.keys().next().value); |       routeCache.set(prompt, label === 'RECORD' || label === 'OTHER' ? LIGHT_MODEL : HEAVY_MODEL); |     } catch (_) {} |   } |   async function classifyPrompt(prompt, signal) { |     if (isHeavyPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt)) { routeCache.set(prompt,HEAVY_MODEL); return HEAVY_MODEL; } |     if (isLig
+..
+CP@ 4435860 ue; abort.abort(); },REQUEST_TIMEOUT_MS); |     try { |        const revision = annualBudgetMode?null:useTools ? MehryarTools.revision() : null; |            const model = annualBudgetMode?HEAVY_MODEL:aggregateOnly||tomorrowBudgetMode ? HEAVY_MODEL : isClarificationPrompt(prompt) ? LIGHT_MODEL : isInstructionalIdeaPrompt(prompt) ? HEAVY_MODEL : HEAVY_MODEL===LIGHT_MODEL ? modelForPrompt(prompt) : await classifyPrompt(prompt,abort.signal); |        cacheKey = cacheable ? answerCacheKey(prompt,p,allowToolCalls,model) : null; |         const text = await request(contents,annualBudgetMode?{grade:p.info.grad
+..

@@ -1,0 +1,86 @@
+@4260031: const HEAVY_MODEL = 'gemini-3.8-flash', LIGHT_MODEL = 'gemini-3-flash-preview', FALLBACK_MODEL = LIGHT_MODEL, WORKER_FALLBACK_URL = 'https://red-heart-c9c0.ssioojiu63.workers.dev/';
+
+@4260335: const WORKER_FALLBACK_ENABLED = false;
+
+@4264889: const MAX_MODEL_RETRIES = 3, MODEL_RETRY_DELAY_MS = 2000, MODEL_FETCH_TIMEOUT_MS = 30000, RESPONSE_BODY_TIMEOUT_MS = 30000;
+
+@4265087: const PANEL_MIN_REQUEST_GAP = 400, PANEL_MAX_REQUESTS_PER_MINUTE = 30, PANEL_FETCH_TIMEOUT_MS = 80000;
+
+@4310049: async function classifyIntent(prompt) {
+    try {
+      if (demoMode || !useTools) return;
+      const key = normKey(prompt);
+      if (intentCache.has(key) || prompt.length > 400) return;
+      if (isAnnualBudgetPrompt(prompt) || isClarificationPrompt(prompt) || isLightRecordPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt) || isLearnPrompt(prompt) || isInstructionalIdeaPrompt(prompt)) return;
+      const names = new Set();
+      try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (!k || !k.startsWith('mehyar_budget_')) continue; const b = JSON.parse(localStorage.getItem(k) || 'null'); for (const m of (b && b.months) || []) for (const sub of m.subjects || []) if (sub && sub.subjectTitle) names.add(String(sub.subjectTitle)); } } catch (_) {}
+      const ctl = new AbortController();
+      const {response, data} = await fetchModelWithRetry(LIGHT_MODEL, {systemInstruction:{parts:[{text:INTENT_SYSTEM_PROMPT + (names.size ? ' درس‌های موجود در بودجهٔ معلم: ' + [...names].slice(0, 20).join('، ') + '.' : '')}]}, contents:[{role:'user', parts:[{text:prompt}]}], generationConfig:{temperature:0, maxOutputTokens:12, thinkingConfig:{thinkingBudget:0}}}, ctl.signal, ROUTER_FETCH_TIMEOUT_MS, 0);
+      if (!response.ok) {
+        if (response.status === 429) { const seconds = retrySeconds(response, data), rate = rateState(); rate.backoffUntilByModel[LIGHT_MODEL] = Date.now() + seconds * 1000; rate.kindByModel = rate.kindByModel || {}; rate.kindByModel[LIGHT
+
+@4298728: function modelForPrompt(prompt) {
+    return isHeavyPrompt(prompt)||isAggregateReportPrompt(prompt) ? HEAVY_MODEL : LIGHT_MODEL;
+  }
+  function modelLimit(model) { return model === HEAVY_MODEL ? HEAVY_REQUESTS_PER_DAY : LIGHT_REQUESTS_PER_DAY; }
+  function answerCacheKey(prompt, p, allowToolCalls, model) {
+    const data = useTools ? shortHash(MehryarTools.revision()) : p.id;
+    return JSON.stringify([model, shortHash(key), localISO(), p.id, data, useTools, allowToolCalls, prompt]);
+  }
+  function cachedAnswer(cacheKey) {
+    const item = answerCache.find(x => x.key === cacheKey);
+    return item ? hideComputedEvidence(item.text) : null;
+  }
+  function rememberAnswer(cacheKey, text) {
+    text = hideComputedEvide
+
+@4305876: async function fetchModelWithRetry(model, body, signal, timeoutMs, retries = MAX_MODEL_RETRIES) {
+    await reserveRequestSlot(signal, model);
+    if (isActCode(key) && !window.__mehryarPanel) { const e = new Error('اتصال به پنل در این نسخه روشن نیست.'); e.code = 'MODEL_NETWORK'; throw e; }
+    const viaPanel = isActCode(key);
+    const url = viaPanel ? window.__mehryarPanel.base+'/api.php?a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent';
+    const makeOptions = () => viaPanel ? {method:'POST',headers:{'Content-Type':'text/plain'},body:key+'|'+window.__mehryarPanel.id+'\n'+JSON.stringify(body)} : {method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(body)};
+    let options = makeOptions();
+    const waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? PANEL_FETCH_TIMEOUT_MS : timeoutMs;
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      if (attempt) await waitAbortable(MODEL_RETRY_DELAY_MS * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 400), signal);
+      try {
+        let result = await fetchJsonWithTimeout(url, options, signal, waitMs);
+        if (result.response.status === 400 && body.generationConfig && body.generationConfig.thinkingConfig && /think/i.test(JSON.stringify(result.data || {}))) {
+          thinkingTrimBroken = true; delete body.generationConfig.thinkingConfig; options = makeOptions();
+          result = await fetchJsonWithTimeout(url, options, signal, waitMs);
+        }
+        if (RETRYABLE_MODEL_STATUSES.has(result.response.status) && attempt < retries && !(viaPanel && result.response.status === 504)) continue;
+        return result;
+      } catch (error) {
+        if (error.name === 'AbortError') throw error;
+        if (viaPanel && error.code === 'MODEL_TIMEOUT') throw error;
+        if (!isTransientModelFailure(error) || attempt >= retries) {
+          if (error instanceof TypeError) {
+            const networkError = new Error('ارتباط برقرار نشد. اینترنت و دسترسی به سرویس را بررسی کن.');
+            networkError.code = 'MODEL_NETWORK';
+            networkError.cause = error;
+            throw networkError;
+          }
+          throw error;
+        }
+      }
+    }
+    throw new Error('پاسخ سرویس مدل دریافت نشد.');
+  }
+  function quotaKind(data) {
+    const text = JSON.stringify(data?.error?.details || []) + ' ' + (data?.error?.message || '');
+    return /PerDay|per day|daily/i.test(text) ? 'day' : /PerMinute|per minute
+
+@4301475: function reserveRequestSlot(signal, model) {
+    let rate = rateState(), now = Date.now();
+    const backoffUntil = Number(rate.backoffUntilByModel[model]) || 0, count = rate.dayCountByModel[model] || 0, limit = modelLimit(model);
+    if (backoffUntil > now) { const error=new Error('برای محافظت از سهمیهٔ '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+'، درخواست آنلاین موقتاً متوقف است. چند ثانیه بعد دوباره تلاش کن. ثبت اطلاعات محلی همچنان فعال است.'); error.code='MODEL_RATE_LIMIT'; error.retryAt=backoffUntil; throw error; }
+    if (count >= limit) { const error=new Error('برای پر نشدن سهمیهٔ مدل '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+'، سقف روزانهٔ برنامه رسید. اطلاعات محلی و ثبت گزارش‌ها فعال‌اند.'); error.code='MODEL_RATE_LIMIT'; throw error; }
+    const panelMode = isActCode(key), maxPerMinute = panelMode ? PANEL_MAX_REQUESTS_PER_MINUTE : MAX_REQUESTS_PER_MINUTE, minGap = panelMode ? PANEL_MIN_REQUEST_GAP : MIN_REQUE
+
+@4312192: classifyPrompt(
+
+@4435860: classifyPrompt(
+
+HEAVY count 33

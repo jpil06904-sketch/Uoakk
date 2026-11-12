@@ -1,0 +1,56 @@
+#### send tail
+t)?{thinkingConfig:{thinkingBudget:768}}:!programMode&&!thinkingTrimBroken?{thinkingConfig:{thinkingBudget:allowToolCalls?1024:model===LIGHT_MODEL&&normKey(fallbackPrompt).length<=60?512:1024}}:{})}},signal,annualBudgetMode?120000:ideaMode?90000:MODEL_FETCH_TIMEOUT_MS,annualBudgetMode||ideaMode?1:MAX_MODEL_RETRIES);
+       let response,data;
+       try {
+         ({response,data}=await send());
+        } catch (error) {
+          if(model===HEAVY_MODEL&&isTransientModelFailure(error))heavyDownUntil=Date.now()+600000;
+           if(model!==FALLBACK_MODEL&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL,triedHeavy:true});
+            if(model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:error.code==='MODEL_RATE_LIMIT'&&Date.now()>=heavyDownUntil?HEAVY_MODEL:FALLBACK_MODEL,triedHeavy:true});
+            if (!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&model===HEAVY_MODEL&&fallbackPrompt&&/سهمیه|سقف روزانه|موقتاً متوقف|quota|rate limit/i.test(error.message||'')) return workerFallback(fallbackPrompt,signal);
+          throw error;
+        }
+        if(!response.ok) {
+        const reason=(data.error?.details||[]).map(d=>d.reason||'').join(' ');
+        if([401,403].includes(response.status)||/API_KEY_INVALID|API_KEY_EXPIRED/.test(reason))verified=false;
+        const toolSchemaError=response.status===400&&/function_declarations|parameters|toolConfig|function_calling|schema/i.test(data.error?.message||'');
+        if(toolSchemaError)throw new Error('ساختار درخواست ابزارها توسط سرویس پذیرفته نشد (HTTP 400). این خطا از طرح ابزار است، نه لزوماً رمز یا سهمیه. هیچ تغییری ثبت نشده است.');
+          if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&response.status===400&&model===HEAVY_MODEL&&fallbackPrompt)return workerFallback(fallbackPrompt,signal);
+             if(response.status===429){const seconds=retrySeconds(response,data),rate=rateState();rate.backoffUntilByModel[model]=Date.now()+seconds*1000;rate.kindByModel=rate.kindByModel||{};rate.kindByModel[model]=quotaKind(data);rate.secondsByModel=rate.secondsByModel||{};rate.secondsByModel[model]=seconds;rate.rawByModel=rate.rawByModel||{};rate.rawByModel[model]=response.status+': '+String(data.error?.message||'').replace(/\s+/g,' ').slice(0,200)+' (انتظار پیشنهادی: '+seconds+' ثانیه)';saveRateState(rate);if(model!==FALLBACK_MODEL)return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL});if(!options.triedHeavy&&!annualBudgetMode)return request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});if(!annualBudgetMode&&!tomorrowBudgetMod
+
+#### fmr body
+mBroken = true; delete body.generationConfig.thinkingConfig; options = makeOptions();
+          result = await fetchJsonWithTimeout(url, options, signal, waitMs);
+        }
+        if (RETRYABLE_MODEL_STATUSES.has(result.response.status) && attempt < retries && !(viaPanel && result.response.status === 504)) continue;
+        return result;
+      } catch (error) {
+        if (error.name === 'AbortError') throw error;
+        if (viaPanel && error.code === 'MODEL_TIMEOUT') throw error;
+        if (!isTransientModelFailure(error) || attempt >= retries) {
+          if (error instanceof TypeError) {
+            const networkError = new Error('ارتباط برقرار نشد. اینترنت و دسترسی به سرویس را بررسی کن.');
+            networkError.code = 'MODEL_NETWORK';
+            networkError.cause = error;
+            throw networkError;
+          }
+          throw error;
+        }
+      }
+    }
+    throw new Error('پاسخ سرویس مدل دریافت نشد.');
+  }
+  function quotaKind(data) {
+    const text = JSON.stringify(data?.error?.details || []) + ' ' + (data?.error?.message || '');
+    return /PerDay|per day|daily/i.test(text) ? 'day' : /PerMinute|per minute/i.test(text) ? 'minute' : '';
+  }
+  function retrySeconds(response, data) {
+    const header = Number(response.headers?.get('retry-after'));
+    const detail = (data.error?.details || []).find(x => typeof x.retryDelay === 'string')?.retryDelay;
+    const fromDetail = detail ? Number(String(detail).replace(/s$/,'')) : 0;
+    const fromMessage = Number((data.error?.message || '').match(/retry in\s+([\d.]+)s/i)?.[1]);
+    return clamp(Math.ceil(header || fromDetail || fromMessage || 30), 5, 300);
+  }
+  const intentCache = new Map();
+  function intentOf(prompt) { return intentCache.get(normKey(prompt)) || ''; }
+  const INTENT_SYSTEM_PROMPT = 'تو مسیریاب پیام‌های یک معلم دبستان در دستیار آموزشی هستی. فقط یک برچسب بنویس، بدون هیچ کلمهٔ اضافه. معلم ممکن است هر طوری و حتی خیلی کوتاه بنویسد؛ منظورش را بفهم، نه کلمه‌ها را. برچسب‌ها: LEARN = خود معلم می‌خواهد مطلبی را بفهمد یا یاد بگیرد: «چیه»، «یعنی چی»، «یادم بده»، «توضیح بده»، «از صفر بگو»، «نفهمیدم»، «سخت بود»، «واژه‌آموزی این درس چیه»، یا از پاسخ قبلی ناراضی است و فهم بیشتر می‌خواهد. قانون: اگر هم توضیح می‌خواهد هم ایده، LEARN بزن؛ IDEA فقط وقتی صریحاً بازی یا ایدهٔ تازه می‌خواهد و خود مفهوم

@@ -1,0 +1,13 @@
+
+=== Q6 follow-up  TOTAL 56.2s  firstVisible 56.2s
+Q: کوتاه‌ترش کن
+A[0] (ai-message assistant): مهریارسلام خانم رضایی، مهریار هستم. چون دسترسی ابزارها خاموش است، امکان ثبت غیبت سارا و کیان را ندارم. لطفاً دسترسی را فعال کنید تا بتوانم این مورد را در سوابق کلاس ذخیره کنم. کپی پاسخ
+REQS:
+   ai gemini-3-flash-preview st=503 6610ms req=798B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=8 think={"thinkingBudget":0} PARSE=SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+   ai gemini-3-flash-preview st=200 49438ms req=10895B keys=systemInstruction,contents,generationConfig tools=0 cont=7 maxOut=3072 think={"thinkingBudget":512} usage(in/out/think)=3269/62/ finish=STOP
+   p st=- ?ms
+
+history saved=3390 chars
+ERRS 0
+
+DONE

@@ -1,0 +1,34 @@
+1428:<script>
+1443:<script>
+1623:<script>
+1630:<script>
+5562:<script>
+5580:<script>
+6506:<script>
+8102:<script>
+8223:<script>
+8522:<script>
+8691:<script>
+8794:<script>
+9597:<script>
+== old file limits
+mehryar-v4-final (10).html:6571:HEAVY_REQUESTS_PER_DAY = 50, LIGHT_REQUESTS_PER_DAY = 1500
+mehryar-v4-final-fixed.html:6571:HEAVY_REQUESTS_PER_DAY = 1000000, LIGHT_REQUESTS_PER_DAY = 1000000
+== unknown key check
+== jsdom available
+.mh/budget_mock.cjs
+.mh/chat_err.cjs
+.mh/chat_err2.cjs
+.mh/chat_live.cjs
+.mh/chat_live2.cjs
+.mh/chat_mock.cjs
+.mh/demo.cjs
+.mh/demo2.cjs
+.mh/ping_ai.cjs
+.mh/ping_big.cjs
+.mh/scope_test.cjs
+.mh/scope_test2.cjs
+.mh/smoke.cjs
+.mh/syncheck.cjs
+.mh/texts.cjs
+DONE

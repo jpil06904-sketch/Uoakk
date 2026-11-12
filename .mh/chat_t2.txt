@@ -1,0 +1,43 @@
+ 6628 r5.txt
+14159 ai5.txt
+12619 ai7.txt
+33406 total
+=== r5 head
+=== root
+total 9700
+drwxrwxrwx+   9 codespace root         4096 Nov  9 18:24 .
+drwxr-xrwx+   5 codespace root         4096 Nov  8 16:40 ..
+drwxrwxrwx+   8 codespace root         4096 Nov  9 18:17 .git
+-rw-rw-rw-    1 codespace root          253 Nov  8 16:40 .gitignore
+drwxrwxrwx+   3 codespace codespace   12288 Nov 10 11:09 .mh
+-rw-rw-rw-    1 codespace root        13953 Nov  8 16:40 App.tsx
+-rw-rw-rw-    1 codespace root          553 Nov  8 16:40 README.md
+drwxrwxrwx+   2 codespace root         4096 Nov  8 16:40 components
+-rw-rw-rw-    1 codespace root         7305 Nov  8 16:40 constants.tsx
+drwxrwxrwx+   3 codespace codespace    4096 Nov  8 16:41 dist
+-rw-rw-rw-    1 codespace root         1055 Nov  8 16:40 index.html
+-rw-rw-rw-    1 codespace root          349 Nov  8 16:40 index.tsx
+-rw-rw-rw-    1 codespace codespace 4850421 Nov  9 18:24 mehryar-v4-final (10).html
+-rw-rw-rw-    1 codespace codespace 4851698 Nov  9 18:24 mehryar-v4-final-fixed.html
+-rw-rw-rw-    1 codespace root          228 Nov  8 16:40 metadata.json
+drwxrwxrwx+ 137 codespace codespace    4096 Nov  8 16:40 node_modules
+-rw-rw-rw-    1 codespace codespace  109579 Nov  8 16:40 package-lock.json
+-rw-rw-rw-    1 codespace root          840 Nov  8 16:40 package.json
+-rw-rw-rw-    1 codespace root           79 Nov  8 16:40 postcss.config.js
+drwxrwxrwx+   2 codespace root         4096 Nov  8 16:40 services
+drwxrwxrwx+   4 codespace root         4096 Nov  8 16:40 src
+-rw-rw-rw-    1 codespace root          459 Nov  8 16:40 tailwind.config.js
+-rw-rw-rw-    1 codespace root          628 Nov  8 16:40 tsconfig.json
+-rw-rw-rw-    1 codespace root          212 Nov  8 16:40 tsconfig.node.json
+-rw-rw-rw-    1 codespace root          669 Nov  8 16:40 vite.config.ts
+=== server code?
+/opt/conda/pkgs/urllib3-2.8.0-py314h06a4308_1/lib/python3.14/site-packages/urllib3/contrib/emscripten/emscripten_fetch_worker.js
+/opt/conda/pkgs/pip-26.2.2-pyh0d26453_0/site-packages/pip/_vendor/urllib3/contrib/emscripten/emscripten_fetch_worker.js
+/opt/conda/lib/python3.14/site-packages/urllib3/contrib/emscripten/emscripten_fetch_worker.js
+/opt/conda/lib/python3.14/site-packages/pip/_vendor/urllib3/contrib/emscripten/emscripten_fetch_worker.js
+/home/codespace/.cache/copilot/pkg/linux-x64/1.0.108/voice-installer.worker.js
+/home/codespace/.cache/copilot/pkg/linux-x64/1.0.108/voice-engine.worker.js
+/home/codespace/.cache/copilot/pkg/linux-x64/1.0.107/voice-installer.worker.js
+/home/codespace/.cache/copilot/pkg/linux-x64/1.0.1
+=== grep panel bits
+ai7.txt:n {ok:false,msg:'اتصال به پنل در این نسخه روشن نیست.'}; ⏎       const c = new AbortController(), t = setTimeout(() => c.abort(), 15000); ⏎       try { ⏎         const r = await fetch(P.base+'/api.php?a=act',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({c:code,id:P.id}),signal:c.signal,cache:'no-store'}); ⏎         const d = await r.json().cat

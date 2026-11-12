@@ -1,0 +1,106 @@
+== tools writing
+const MehryarTools = (() => {
+  'use strict';
+  const validateBeforeReports=validateImport;
+  validateImport=function(data){
+    validateBeforeReports(data);
+    const rows=data.learning?.teachingReports;if(rows===undefined)return true;
+    if(!Array.isArray(rows))throw Error('ساختار گزارش تدریس معتبر نیست.');
+    const ids=new Set();for(const r of rows){if(!isObj(r)||typeof r.id!=='string'||!/^[\w-]+$/.test(r.id)||ids.has(r.id)||!validDay(r.date)||typeof r.text!=='string'||!r.text.trim()||r.text.length>2000||!data.learning.skills.some(s=>s.id===r.skillId&&s.subject===r.subject)||r.grade&&!PD_GRADES.includes(r.grade))throw Error('گزارش تدریس نامعتبر است.');ids.add(r.id);for(const k of ['worked','difficulty','nextStep'])if(r[k]!==undefined&&(typeof r[k]!=='string'||r[k].length>2000))throw Error('متن گزارش تدریس معتبر نیست.');}
+    return true;
+6171:        l.attendanceDays ||= {};l.attendanceDays[date] ||= {};
+6172:        const previous=l.attendanceDays[date][st.id];l.attendanceDays[date][st.id]=value;
+1910:function setState(patch, opts = {}) {
+      1 localStorage.setItem(STORAGE_KEY
+== dossier usage
+2611:ORAGE_KEY+'_before_import');localStorage.removeItem('mehryar_assistant_v1');localStorage.removeItem(STUDENT_DOSSIER_KEY);} catch(e){ui.toast('پاک‌کردن حافظه انجام نشد.');return;} window.dispatchEvent(new Event('mehryar:reset')); state = migrate({}); state.ui.theme = keep.theme; state.ui.fontS
+3330:const STUDENT_DOSSIER_KEY='mehryar_student_dossiers_v1';
+3335:  let saved=null;try{saved=JSON.parse(localStorage.getItem(STUDENT_DOSSIER_KEY)||'null');}catch(_){saved=null;}
+3372:    if(persist&&!demoMode)localStorage.setItem(STUDENT_DOSSIER_KEY,JSON.stringify(studentDossierMemory));
+== history format
+    if(inquiry.classWideRequested&&!inquiry.classWideEligible)return 'برای پیشنهاد کل کلاس هنوز خطای مشترکِ مستند در یک مبحث نداریم. دو مشاهدهٔ مستقیم از همان مبحث و شکل خطای هر نفر را ثبت کن؛ تا آن �
+    return '';
+  }
+  MehryarTools.buildTeachingInquiry=buildTeachingInquiry;
+  MehryarTools.teachingPreflight=teachingPreflight;
+  function readHistory() {
+    messages = []; draft = ''; historyWarning = ''; historyBlocked = false;
+    try {
+      const raw = localStorage.getItem(HISTORY_KEY);
+      lastStored = raw;
+      if (!raw) { lastSnapshot = JSON.stringify({version:1,messages:[],draft:''}); return; }
+      if (raw.length > 5000000) throw new Error('oversized');
+      const saved = JSON.parse(raw);
+       if (saved.version !== 1 || !Array.isArray(saved.messages) || saved.messages.length > 200 || saved.messages.length % 2 || typeof saved.draft !== 'string' || saved.draft.length > MAX_BUDGET_IMPORT_CHARS) throw new Error('invalid');
+       messages = saved.messages.map((m,i) => {
+         if (m.role !== (i % 2 ? 'model' : 'user') || typeof m.text !== 'string' || m.text.length > MAX_BUDGET_IMPORT_CHARS || typeof m.profile !== 'string' || m.profile.length > 2000) throw new Error('invalid');
+        return {role:m.role, text:m.role==='model'?hideComputedEvidence(m.text):m.text, profile:m.profile,tools:m.tools!==false};
+      });
+      draft = saved.draft;
+      lastSnapshot = JSON.stringify({version:1,messages,draft});
+    } catch (_) {
+      messages = []; historyBlocked = true;
+      historyWarning = 'حافظهٔ چت خوانده نشد. برای شروع دوباره از دکمهٔ پاک کردن گفت‌وگو استفاده کن.';
+    }
+  }
+  function saveHistory() {
+    clearTimeout(saveTimer);
+    if (demoMode || historyBlocked) return;
+    try {
+      const snapshot = JSON.stringify({version:1,messages:messages.slice(-200),draft:pending?.text || draft});
+      if (snapshot === lastSnapshot) return;
+      if (localStorage.getItem(HISTORY_KEY) !== lastStored) {
+        historyBlocked = true; historyWarning = 'چت در برگهٔ دیگری تغییر کرده است. برای دیدن نسخهٔ تازه، صفحه را دوباره باز کن.'; paintStorage(); return;
+      }
+      localStorage.setItem(HISTORY_KEY,snapshot); lastStored = snapshot; lastSnapshot = snapshot;
+      historyWarning = '';
+    } catch (_) { historyWarning = 'ذخیرهٔ چت ممکن نشد؛ پیام‌ها فعلاً فقط تا بستن صفحه می‌مانند.'; }
+    paintStorage();
+  }
+  function paintStorage() {
+    const el = document.getElementById('ai-storage');
+== migrate body
+function migrate(saved) {
+  const base = defaultState();
+  const s = deepMerge(base, saved || {});
+  // فهرست‌ها: اگر کلیدی نبود، پیش‌فرض
+  const dl = DEFAULT_LISTS();
+  for (const k of Object.keys(dl)) if (!Array.isArray(s.lists[k]) && !isObj(s.lists[k])) s.lists[k] = dl[k];
+  if (!isObj(s.lists.assessCriteria)) s.lists.assessCriteria = dl.assessCriteria;
+  // فیلدها
+  if (!Array.isArray(s.fields) || !s.fields.length) s.fields = DEFAULT_FIELDS();
+  // پیام‌های داخلی گم‌شده
+  if (!Array.isArray(s.messages)) s.messages = [];
+  for (const m of DEFAULT_MESSAGES()) if (!s.messages.find(x => x.key === m.key)) s.messages.push(m);
+  if (!Array.isArray(s.plan7) || s.plan7.length !== 7) s.plan7 = DEFAULT_PLAN();
+  if (!Array.isArray(s.students)) s.students = [];
+  s.students = s.students.filter(st => st && st.name).map((st, i) => Object.assign({}, st, { id: st.id || uid(), no: st.no || i + 1, name: st.name, data: st.data || {}, shortage: st.shortage || {}, assess: Object.assign(emptyAssess(), st.assess || {}) }));
+  if (!Array.isArray(s.ui.printSelection)) s.ui.printSelection = [];
+  if (!Array.isArray(s.progress.dismissedBanners)) s.progress.dismissedBanners = [];
+  s.version = 6;
+  return s;
+}
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) state = migrate(JSON.parse(raw)); else state = migrate({});
+  } catch (e) { storageOk = false; state = migrate({}); }
+}
+let dirty = false;
+let persist = debounce(() => {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); dirty = false; showSaved(); }
+  catch (e) { if (storageOk) { storageOk = false; ui.toast('ذخیره‌سازی در این مرورگر در دسترس نیست'); } }
+}, 400);
+let savedTimer;
+function showSaved() {
+  const el = $('#save-ind'); if (!el) return;
+  el.innerHTML = icon('check') + 'ذخیره شد';
+  el.classList.add('show'); clearTimeout(savedTimer); savedTimer = setTimeout(() => el.classList.remove('show'), 1200);
+}
+function setState(patch, opts = {}) {
+  deepMerge(state, patch || {});
+  dirty = true; persist();
+  if (!opts.silent) scheduleRender();
+}
+function replaceState(newState) { state = migrate(newState); dirty = true; persist(); scheduleRender(); }
+DONE

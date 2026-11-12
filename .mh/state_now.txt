@@ -1,0 +1,151 @@
+=== LS
+-rw-rw-rw-  1 codespace codespace    3912 12:56:16 ctx6.txt
+-rw-rw-rw-  1 codespace codespace       5 12:56:16 ctx6_log.txt
+-rw-rw-rw-  1 codespace codespace     926 12:56:59 ctx7.py
+-rw-rw-rw-  1 codespace codespace   11075 12:56:59 ctx7.txt
+-rw-rw-rw-  1 codespace codespace       5 12:56:59 ctx7_log.txt
+-rw-rw-rw-  1 codespace codespace     596 13:04:34 ctx8.py
+-rw-rw-rw-  1 codespace codespace    7481 13:04:34 ctx8.txt
+-rw-rw-rw-  1 codespace codespace      20 13:04:34 ctx8_log.txt
+-rw-rw-rw-  1 codespace codespace     694 13:06:17 ctx9.py
+-rw-rw-rw-  1 codespace codespace    7988 13:06:17 ctx9.txt
+-rw-rw-rw-  1 codespace codespace      17 13:06:17 ctx9_log.txt
+-rw-rw-rw-  1 codespace codespace       5 12:49:39 ctx_log.txt
+-rw-rw-rw-  1 codespace codespace    2323 12:55:22 demo.cjs
+-rw-rw-rw-  1 codespace codespace    1302 12:55:25 demo.txt
+-rw-rw-rw-  1 codespace codespace    2213 12:56:16 demo2.cjs
+-rw-rw-rw-  1 codespace codespace    2739 12:56:19 demo2.txt
+-rw-rw-rw-  1 codespace codespace       4 12:56:19 demo2_log.txt
+-rw-rw-rw-  1 codespace codespace       4 12:56:48 demo2_wait.txt
+-rw-rw-rw-  1 codespace codespace       4 12:55:25 demo_log.txt
+-rw-rw-rw-  1 codespace codespace       4 12:56:09 demo_wait.txt
+-rw-rw-rw-  1 codespace codespace    3267 12:57:30 ecs.txt
+-rw-rw-rw-  1 codespace codespace       5 12:57:30 ecs_log.txt
+-rw-rw-rw-  1 codespace codespace       2 13:09:49 edit_log.txt
+drwxrwxrwx+ 3 codespace codespace    4096 03:24:13 env
+-rw-rw-rw-  1 codespace codespace       4 12:54:01 fin_all.txt
+-rw-rw-rw-  1 codespace codespace    1640 12:52:42 fix.py
+-rw-rw-rw-  1 codespace codespace      30 12:52:42 fix_log.txt
+-rw-rw-rw-  1 codespace codespace       5 12:52:42 fix_out.txt
+-rw-rw-rw-  1 codespace codespace   12446 03:20:57 functions.txt
+-rw-rw-rw-  1 codespace codespace    1530 12:55:01 ls8052.txt
+-rw-rw-rw-  1 codespace codespace       5 12:55:01 ls_log.txt
+-rw-rw-rw-  1 codespace codespace    2657 12:39:59 ls_now.txt
+-rw-rw-rw-  1 codespace codespace    2099 03:20:56 map.py
+-rw-rw-rw-  1 codespace codespace    6799 03:20:58 map.txt
+-rw-rw-rw-  1 codespace codespace      79 03:20:58 map_log.txt
+-rw-rw-rw-  1 codespace codespace    7748 12:49:12 now.txt
+-rw-rw-rw-  1 codespace codespace       7 03:24:13 npm_install.txt
+-rw-rw-rw-  1 codespace codespace       7 03:21:38 npmcheck.txt
+-rw-rw-rw-  1 codespace codespace   15053 13:03:16 resume.txt
+-rw-rw-rw-  1 codespace codespace    3659 12:59:08 sc.txt
+-rw-rw-rw-  1 codespace codespace       5 12:59:08 sc_log.txt
+-rw-rw-rw-  1 codespace codespace    4780 13:09:49 scope_test.cjs
+-rw-rw-rw-  1 codespace codespace     980 13:09:53 scope_test.txt
+-rw-rw-rw-  1 codespace codespace       7 13:09:53 scope_test_log.txt
+-rw-rw-rw-  1 codespace codespace    1237 03:20:57 script_00.js
+-rw-rw-rw-  1 codespace codespace   18156 03:20:57 script_01.js
+-rw-rw-rw-  1 codespace codespace     647 03:20:57 script_02.js
+-rw-rw-rw-  1 codespace codespace 2898353 03:20:57 script_03.js
+-rw-rw-rw-  1 codespace codespace    1404 03:20:57 script_04.js
+-rw-rw-rw-  1 codespace codespace  115732 03:20:57 script_05.js
+-rw-rw-rw-  1 codespace codespace  267861 03:20:57 script_06.js
+-rw-rw-rw-  1 codespace codespace   11462 03:20:57 script_07.js
+-rw-rw-rw-  1 codespace codespace   16721 03:20:57 script_08.js
+-rw-rw-rw-  1 codespace codespace   18407 03:20:57 script_09.js
+-rw-rw-rw-  1 codespace codespace   19829 03:20:57 script_10.js
+-rw-rw-rw-  1 codespace codespace  163698 03:20:57 script_11.js
+-rw-rw-rw-  1 codespace codespace   16851 03:20:58 script_12.js
+-rw-rw-rw-  1 codespace codespace    6478 03:21:37 sections.txt
+-rw-rw-rw-  1 codespace codespace    4913 03:24:47 smoke.cjs
+-rw-rw-rw-  1 codespace codespace   11434 03:25:10 smoke_empty.json
+-rw-rw-rw-  1 codespace codespace      26 03:25:10 smoke_run1.txt
+-rw-rw-rw-  1 codespace codespace      41 12:34:22 smoke_run2.txt
+-rw-rw-rw-  1 codespace codespace   10677 12:34:22 smoke_seed.json
+-rw-rw-rw-  1 codespace codespace       7 15:49:29 state_now.txt
+-rw-rw-rw-  1 codespace codespace     229 03:26:01 status.txt
+-rw-rw-rw-  1 codespace codespace 1375119 03:20:57 stripped.html
+-rw-rw-rw-  1 codespace codespace     955 03:29:59 summary.py
+-rw-rw-rw-  1 codespace codespace    2946 03:30:18 summary.txt
+-rw-rw-rw-  1 codespace codespace    1225 03:30:01 summary1.txt
+-rw-rw-rw-  1 codespace codespace       0 03:30:18 summary_err.txt
+-rw-rw-rw-  1 codespace codespace    1849 12:50:19 texts.cjs
+-rw-rw-rw-  1 codespace codespace       4 12:50:25 texts_done.txt
+-rw-rw-rw-  1 codespace codespace    2553 12:54:01 texts_empty.txt
+-rw-rw-rw-  1 codespace codespace       0 12:53:58 texts_empty_log.txt
+-rw-rw-rw-  1 codespace codespace    2555 12:50:22 texts_seed.txt
+-rw-rw-rw-  1 codespace codespace       0 12:50:19 texts_seed_log.txt
+-rw-rw-rw-  1 codespace codespace    1012 12:53:38 verify.py
+-rw-rw-rw-  1 codespace codespace    1740 12:53:38 verify.txt
+-rw-rw-rw-  1 codespace codespace       5 12:53:38 verify_log.txt
+-rw-rw-rw-  1 codespace codespace     504 12:54:29 wait2.txt
+=== MAIN FILE
+ls: cannot access '/workspaces/Uoakk/*.bak*': No such file or directory
+-rw-rw-rw- 1 codespace root         1055 2026-11-08_16:40:31 /workspaces/Uoakk/index.html
+-rw-rw-rw- 1 codespace codespace 4851065 2026-11-09_12:52:42 /workspaces/Uoakk/mehryar-v4-final (10).html
+f08e92fecaecaaafff389b3234cce1cf  /workspaces/Uoakk/index.html
+f2293543b251d8fe07a15ff344b3371a  /workspaces/Uoakk/mehryar-v4-final (10).html
+=== fix_out
+done
+=== scope_test
+FAIL A1 demo has 12 students after render  n=0 | دانش‌آموزان۰ نفرلیست خالی استاسم بچه‌ها را از واتساپ یا اکسل کپی کنید و اینجا بچ
+A2 demo classScopeKey="کلاسفرضی|آموزگارنمونه|دومنمونه|دوم|۱۴۰۵–۱۴۰۶"
+FAIL A3 demo did not create stray class contexts  ["||||۱۴۰۵–۱۴۰۶"]
+PASS A4 exitDemo restores real (empty) state
+PASS A5 no runtime errors
+B0 fresh key="||||۱۴۰۵–۱۴۰۶"
+PASS B1 students added
+FAIL B2 students kept after first-time teacher name  n=0 ctx=["||||۱۴۰۵–۱۴۰۶","|م|||۱۴۰۵–۱۴۰۶","|مر|||۱۴۰۵–۱۴۰۶","|مری|||۱۴۰۵–۱۴۰۶"]
+FAIL B3 students kept after completing class info  n=0
+FAIL B4 persisted state still has students
+PASS B5 switching to a different complete class gives a separate (empty) roster  n=0
+FAIL B6 switching back restores the original roster  n=0
+PASS B7 no runtime errors
+RESULT: 6 FAILED=== ctx13
+=== around unassigned L8812
+سی (دوم)', subject:'فارسی', grade:'دوم', academicYear:'1405-1406', officialPage:'http://chap.sch.ir/books/14149', pdfUrl:'http://chap.sch.ir/sites/default/files/lbooks/1405-1406/9/C203.pdf' },
+    { id:'g2-204-1405-1406', code:'204', title:'نگارش فارسی (دوم)', subject:'نگارش فارسی', grade:'دوم', academicYear:'1405-1406', officialPage:'http://chap.sch.ir/books/14150', pdfUrl:'http://chap.sch.ir/sites/default/files/lbooks/1405-1406/9/C204.pdf' },
+    { id:'g2-205-1405-1406', code:'205', title:'ریاضی (دوم)', subject:'ریاضی', grade:'دوم', academicYear:'1405-1406', officialPage:'http://chap.sch.ir/books/14151', pdfUrl:'http://chap.sch.ir/sites/default/files/lbooks/1405-1406/9/C205.pdf' },
+    { id:'g2-206-1405-1406', code:'206', title:'علوم تجربی (دوم)', subject:'علوم تجربی', grade:'دوم', academicYear:'1405-1406', officialPage:'http://chap.sch.ir/books/14152', pdfUrl:'http://chap.sch.ir/sites/default/files/lbooks/1405-1406/9/C206.pdf' }
+  ];
+  const officialById = id => OFFICIAL_BOOKS.find(book => book.id === id);
+  const slug = value => normKey(value).replace(/[^\u0600-\u06ff\w]+/g,'-').replace(/^-+|-+$/g,'').slice(0,70) || 'node';
+   const academicYearKey = value => String(value || '').replace(/[۰-۹]/g,d=>FA_DIGITS.indexOf(d)).replace(/[–—]/g,'-').replace(/\s+/g,'');
+   const curriculumScopeKey = data => { const k=data?.klass||{}; const parts=['school','teacher','className','grade','year'].map(name=>normKey(String(k[name]||''))); return parts.some(Boolean)?parts.join('|'):'unassigned'; };
+ 
+=== uses ensureClassScope\(: 7
+L9333: mBudgetSnapshot();};⏎   const migrateBeforeCurriculum = migrate;⏎   migrate = saved => ensureCurriculum(migrateBeforeCurriculum(saved));⏎  const flushBeforeCurriculum = flushSave;⏎  flushSave = function() { ensureCurriculum(state); preserveDirectBudgetVersion(); return flushBeforeCurriculum(); };⏎  ensureClassScope(state);⏎  const flushBeforeClassScope = flushSave;⏎  flushSave = function() { ensureClassScope(state); return flushBeforeClassScope(); };⏎  const replaceBeforeCurriculum = replaceStat
+L9335: rriculum(migrateBeforeCurriculum(saved));⏎  const flushBeforeCurriculum = flushSave;⏎  flushSave = function() { ensureCurriculum(state); preserveDirectBudgetVersion(); return flushBeforeCurriculum(); };⏎  ensureClassScope(state);⏎  const flushBeforeClassScope = flushSave;⏎  flushSave = function() { ensureClassScope(state); return flushBeforeClassScope(); };⏎  const replaceBeforeCurriculum = replaceState;⏎   replaceState = function(data) {⏎    const incoming = data && typeof data === 'object' ? c
+L9346: culum(incoming);⏎     if (ok && Array.isArray(assets)) assets.forEach(asset => { if(asset?.id&&typeof asset.text==='string') putAsset(asset); });⏎     if (ok) curriculumBudgetBaseline=curriculumBudgetSnapshot();⏎     return ok;⏎   };⏎   const migrateBeforeClassScope = migrate;⏎   migrate = saved => ensureClassScope(migrateBeforeClassScope(saved));⏎   const persistBeforeClassScope = persist;⏎   persist = (...args) => { ensureClassScope(state); return persistBeforeClassScope(...args); };⏎   const 
+L9348: ') putAsset(asset); });⏎     if (ok) curriculumBudgetBaseline=curriculumBudgetSnapshot();⏎     return ok;⏎   };⏎   const migrateBeforeClassScope = migrate;⏎   migrate = saved => ensureClassScope(migrateBeforeClassScope(saved));⏎   const persistBeforeClassScope = persist;⏎   persist = (...args) => { ensureClassScope(state); return persistBeforeClassScope(...args); };⏎   const setStateBeforeClassScope = setState;⏎   setState = function(patch, opts = {}) { const result=setStateBeforeClassScope(patc
+L9350: lassScope(saved));⏎   const persistBeforeClassScope = persist;⏎   persist = (...args) => { ensureClassScope(state); return persistBeforeClassScope(...args); };⏎   const setStateBeforeClassScope = setState;⏎   setState = function(patch, opts = {}) { const result=setStateBeforeClassScope(patch,opts); ensureClassScope(state); return result; };⏎   const replaceBeforeClassScope = replaceState;⏎   replaceState = function(data) { const ok=replaceBeforeClassScope(data); if(ok) ensureClassScope(state); r
+L9352: ateBeforeClassScope = setState;⏎   setState = function(patch, opts = {}) { const result=setStateBeforeClassScope(patch,opts); ensureClassScope(state); return result; };⏎   const replaceBeforeClassScope = replaceState;⏎   replaceState = function(data) { const ok=replaceBeforeClassScope(data); if(ok) ensureClassScope(state); return ok; };⏎  const exportBeforeCurriculum = exportJSON;⏎  exportJSON = async function() {⏎    ensureCurriculum(state);⏎    const payload=clone(state), assets=[];⏎    for (c
+=== uses classScopeKey: 4
+L1859: s = () => ({ fa: null, math: null, reading: null, dictation: null, attention: null });⏎function defaultState() {⏎  return {⏎    version: 6,⏎    klass: { teach
+=== ctx14
+=== function loadSample L1955
+function loadSample() {
+  const names = ['علی احمدی', 'زهرا کریمی', 'امیر محمدی', 'نرگس رضایی', 'طاها موسوی', 'پارسا نادری', 'فاطمه حسینی', 'محمدرضا صادقی', 'یاسمن جعفری', 'سیده فاطمه‌زهرا موسوی‌نژاد', 'آرمین کاظمی', 'ریحانه قاسمی'];
+  const phones = ['09121234567', '09351112233', '09122223344', '', '09193334455', '09124445566', '', '09135556677', '09126667788', '09127778899', '', '09128889900'];
+  const dads = ['09121110000', '', '09122220000', '09123330000', '', '09124440000', '09125550000', '', '', '09127770000', '09128880000', ''];
+  const students = names.map((n, i) => ({ id: uid(), no: i + 1, name: n, data: { mom: phones[i], dad: dads[i], emergency: i % 4 === 0 ? '09130000' + (10 + i) : '', health: i === 3 ? 'آلرژی به بادام‌زمینی' : '', note: i === 9 ? 'سرویس دارد' : '' }, shortage: {}, assess: emptyAssess() }));
+  const items = DEFAULT_LISTS().firstDayItems;
+  const mark = (idx, has, miss) => { items.forEach(it => students[idx].shortage[it] = 'has'); (miss || []).forEach(it => students[idx].shortage[it] = 'missing'); };
+  mark(0, true, []); mark(1, true, ['دفتر املا', 'عکس']); mark(2, true, ['فرم اطلاعات']); mark(4, true, ['پوشه‌کار', 'کتاب‌ها', 'عکس']); mark(6, true, []); m
+=== function exitDemo L3511
+function exitDemo(){if(!demoMode)return;clearTimeout(saveTimer2);saveEpoch++;state=realSnapshot;realSnapshot=null;demoMode=false;quickDraft=null;quickKey='';planDraft=null;dirty=false;applyTheme();location.hash='#/home';scheduleRender();}
+const SHARE_INTRO='مهریار ابزارهای آفلاین کلاس و یک چت‌بات آنلاین اختیاری برای معلم‌ها دارد. اسامی کلاس رو یک‌بار وارد می‌کنی، برگه‌ها رو آماده می‌کنی و با چند ثبت کوتاه، نیازهای یادگیری و پیگیری‌های بچه‌ها رو می‌بینی. برای آموزش دوباره و کار گروه‌ها هم فعالیت آماده داره. شاید برای کلاست مفید باشه.\nبرای استفادهٔ همکارت، فایل اصلی HTML برنامه را هم بفرست.\nخودِ ابزار را بفرست، نه اطلاعات کلاست را.';
+copyText=async function(text){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);ui.toast('کپی شد');return;}}catch(e){}const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;top:0;left:0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}ta.remove();if(ok){ui.toast('کپی شد');return;}const sh=ui.sheet({title:'کپی دستی',body:note('مرورگر کپی خودکار را نپذیرفت. متن را انتخاب و کپی کنید.')+ui.textarea({id:'manual-copy',value:text,style:'min
+=== function sampleState L3509
+function sampleState(){const s=migrate({}),names=['امیر','سارا','مینا','کیان','پارسا','رها','یاسمن','آرمان','نگار','مانی','سیده فاطمه‌زهرا موسوی‌نژاد','هانا'];s.klass={...s.klass,teacher:'آموزگار نمونه',school:'کلاس فرضی',grade:'دوم',className:'دوم نمونه'};s.students=names.map((name,i)=>({id:'sample-'+i,no:i+1,name,data:{},shortage:{},assess:emptyAssess()}));s.learning.trackingStartedOn=plusDays(localISO(),-14);for(const st of s.students)s.learning.studentMeta[st.id]={enrolledOn:plusDays(localISO(),-14),grade:'دوم',tags:st.id==='sample-5'?['خجالتی']:[],archived:false};for(let n=0;n<5;n++){const skill=n===3?{id:'f-fluency',label:'کندخوانی',subject:'فارسی'}:{id:'m-carry',label:'جمع با انتقال',subject:'ریاضی'};const r={id:'sample-session-'+n,date:plusDays(localISO(),n-4),sequence:n,subject:skill.subject,skillId:skill.id,skillLabel:skill.label,lessonTitle:'نمونهٔ فرضی',rosterIds:s.students.map(x=>x.id),records:{},createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};for(let i=0;i<12;i++){const rec=emptyRec();rec.attendance=i===7&&n===4?'absent':'present';rec.observed=i!==5&&rec.attendance!=='absent';rec.status=i===0?'red':i===1?(n<2?'red':'green'):i===2?(n<2?'green':'y
+=== const ensureCurriculum L-1
+=== function ensureCurriculum L8857
+function ensureCurriculum(data) {
+     if (!data || typeof data !== 'object') return data;
+      const base = curriculumDefaults(), raw = data.curriculum && typeof data.curriculum === 'object' ? data.curriculum : {}, activeScope=curriculumScopeKey(data), activeGrade=String(data.klass?.grade||'').trim(), activeYear=academicYearKey(data.klass?.year||''), contexts=isObj(raw.contexts)?clone(raw.contexts):{};
+      let current=raw;
+      if(raw.scopeKey&&raw.scopeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeScope]||{...base,scopeKey:activeScope}; }
+      current=curriculumContextSnapshot(current);
+      data.curriculum = {...base,...current,scopeKey:activeScope,contexts,catalog:{...base.catalog,...(current.catalog||{}),grade:activeGrade,academicYear:activeYear,source:activeGrade==='دوم'?OFFICIAL_SOURCE:'',sourceLabel:activeGrade==='دوم'?'پایگاه کتاب‌های درسی، اداره کل نظارت بر نشر و توزیع مواد آموزشی':activeGrade?`کاتالوگ رسمی پایهٔ ${activeGrade} در این مرحله وارد نشده است`:'کاتالوگ پایهٔ کلاس هنوز مشخص نشده است'},budget:{...base.budget,...(current.budget||{})},teachingProgress:{...(current.teachingProgress||{})},assets:{...(current.assets||{})}};
+    const existing = new Map((Array.isArray(current.books)?current.books:[]).map(book=>[book.id,book]));
+     const official = OFFICIAL_BOOKS.map(book=>normalizeBook(existi

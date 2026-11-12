@@ -1,0 +1,8 @@
+6858:function modelForPrompt(prompt) {
+----
+----
+6378:     {name:'prepare_teacher_report',description:'Propose 1-50 changes from an explicit teacher report/request. NEVER writes directly; 
+7084:  عمل: توصیهٔ صرف نیاز به ابزار نوشتن ندارد. «آماده کن/پیش‌نویس بساز/ثبت کن» مجوز آماده‌سازی پیش‌نویس است، نه ثبت نهایی. با prepare_teacher_report پیش‌نمایش واقعی dailyPlan/activity/گزارش بسا�
+7596:‌فردا؛ تبدیل ذهنی نکن. روز هفته یا تاریخ بدون سال مبهم را بپرس. طرح درس و فعالیت پیشنهادی با درخواست معلم قابل آماده‌سازی‌اند؛ مشاهده و نتیجهٔ فرضی هرگز نه. برای اصلاح، pendingD
+7690:        if(calls.some(p=>p.functionCall.name==='prepare_teacher_report')) {
+7698:            contents.push(content,{role:'user',parts:[{functionResponse:{name:'prepare_teacher_report',response:{error:error.message,nothingSaved:true}}}]});

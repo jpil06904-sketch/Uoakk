@@ -1,0 +1,7 @@
+== ping
+{"ok":true,"t":1794249913}
+HTTP 200 0.958550s
+
+== diag
+{"ok":true,"php":"8.4.27","sqlite":true,"data_writable":true,"db":true}
+HTTP 200 1.053043s

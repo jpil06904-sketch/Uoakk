@@ -1,0 +1,81 @@
+#### function isTransientModelFailure count=1
+@4304616: function isTransientModelFailure(error) { |     return error?.code === 'MODEL_TIMEOUT' || error?.code === 'MODEL_NETWORK' || error?.code === 'MODEL_UNAVAILABLE' || error?.code === 'MODEL_RATE_LIMIT' || error instanceof TypeError; |   } |   async function fetchJsonWithTimeout(url, options, signal, timeoutMs) { |     const controller = new AbortController(); |     let timedOut = false; |     const forwardAbort = () => controller.abort(); |     if (signal.aborted) controller.abort(); else signal.addEventListener('abort', forwardAbort, {once:true}); |     const timer = setTimeout(() => { timedOut = true; controller.abort(); }, timeoutMs); |     try { |       const response = await fetch(url, {...options, signal:con
+
+#### classifyPrompt\( count=2
+@4312192: ARN)\b/) || [])[1]; |       if (!label) return; |       intentCache.set(key, label); if (intentCache.size > 60) intentCache.delete(intentCache.keys().next().value); |       routeCache.set(prompt, label === 'RECORD' || label === 'OTHER' ? LIGHT_MODEL : HEAVY_MODEL); |     } catch (_) {} |   } |   async function classifyPrompt(prompt, signal) { |     if (isHeavyPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt)) { routeCache.set(prompt,HEAVY_MODEL); return HEAVY_MODEL; } |     if (isLightRecordPrompt(prompt)) { routeCache.set(prompt,LIGHT_MODEL); return LIGHT_MODEL; } |      const cached = routeCache.get(prompt); |     if (cached) return cached; |     try { |       const {response,data}=await fetchModelWithRetry(LIGHT_MODEL,{systemInstruction:{parts:[{text:ROUTER_SYSTEM_PROMPT}]},contents
+
+@4435860: eTools ? MehryarTools.revision() : null; |            const model = annualBudgetMode?HEAVY_MODEL:aggregateOnly||tomorrowBudgetMode ? HEAVY_MODEL : isClarificationPrompt(prompt) ? LIGHT_MODEL : isInstructionalIdeaPrompt(prompt) ? HEAVY_MODEL : HEAVY_MODEL===LIGHT_MODEL ? modelForPrompt(prompt) : await classifyPrompt(prompt,abort.signal); |        cacheKey = cacheable ? answerCacheKey(prompt,p,allowToolCalls,model) : null; |         const text = await request(contents,annualBudgetMode?{grade:p.info.grade,year:p.info.year}:aggregateOnly?{grade:p.info.grade,className:p.info.className}:p.info,abort.signal,p.id,{allowToolCalls,model,fallbackPrompt:prompt,aggregateOnly,annualBudget:annualBudgetMode,tomorrowBudgetMode,annualBudgetText:annualBudgetMode?cleanBudgetText(prompt):'',annualBudgetFallbackGrade
+
+#### async function request\( count=1
+@4381441: async function request(contents, info, signal, expectedProfile, options={}) { |     const allowToolCalls=!!options.allowToolCalls; |     const annualBudgetMode=!!options.annualBudget; |     const tomorrowBudgetMode=!!options.tomorrowBudgetMode; |     const model=options.model||LIGHT_MODEL; |     const fallbackPrompt=options.fallbackPrompt||''; |     const aggregateOnly=!!options.aggregateOnly; |      const budgetYearAssumptionRules='\n\nاگر خروجی ابزار get_budget_and_progress شامل budgetYearAssumed=true است، روشن بگو بودجهٔ ثبت‌شده برای پایه وجود دارد اما سالش مشخص نبوده؛ پیشنهاد را فقط با فرض انطباق آن با سال فعال ارائه کن و این فرض را تأییدنشده معرفی کن.'; |      const clarificationModeRules=isClarificationPrompt(fallbackPrompt)?'\n\nاین پیام پیگیری و رفع ابهام است، نه درخواست تشخیص یا ایدهٔ تازه. با توجه به آخرین پاسخ مرتبط در تاریخچه، همان نکته را با فارسی ساده و خودمانی توضیح بده؛ در صورت نیاز فقط یک مثال روشن بزن. اگر معلم در پیام خودش موضوع مشخصی گفته، همان را توضیح بده؛ اگر موضوعی نگفته و پاسخ مرتبطی هم در تاریخچه نیست، فقط یک سؤال کوتاه بپرس که کدام بخش را می‌خواهد روشن‌تر بشنود. قالب چندبخشی، تحلیل تازهٔ کلاس، درخواست گزارش تازه و حدس دربارهٔ یادگیری دانش‌آموز ممنوع است. جملهٔ ثابت دربارهٔ ناکافی‌بودن گزارش برای آزمایش تشخیصی را تکرار نکن.' : ''; |       const ideaMode=!annualBudgetMode&&!tomorrowBudgetMode&&isInstructionalIdeaPrompt(fallbackPrompt), ideaModeRules=ideaMode?'\n\nقانون نهایی همین درخواست: حالت «طراح ایده‌های درسی خفن مهریار» فعال است. پاسخ تشخیصی چندبخشی، فهرست فرضیه‌ها یا توصیهٔ عمومی ممنوع است. برای اولویت شمارهٔ ۱ هر پایه دقیقاً ۳ ایده بده، نه کمتر و نه بیشتر؛ به‌ترتیب حرکتی/هیجانی، کارتی/گروهی و قصه/نمایش/چالشی. هر ایده دقیقاً ۶ بخش قرارداد ایده را داشته باشد و بخش ۶ را حتماً با سه خط جدا و برچسب‌های دقیق «قرمزها:»، «زردها:» و «سبزها:» بنویس. فقط از budget و lessonContext خوانده‌شده استفاده کن. اگر مشاهدهٔ قرمز یا زرد نداریم، ضعف نساز و در هر سه خط وضعیت سنجش آغازین عینی را توضیح بده. تشخیص پزشکی، ادعای نتیجه، اطلاعات حساس و مبحث خارج از بودجه ممنوع است. استاندارد کیفیت ایده‌ها (بدون تغییر در قالب ۳ ایده و ۶ بخش): ۱) هر ایده یک «قلاب» داشته باشد: در بخش اقدام یک جملهٔ آمادهٔ معلم بین گیومه بنویس با لحن معما، ماجرا یا مأموریت که از ثانیهٔ اول بچه‌ها را درگیر کند. ۲) هر ایده یک «چرخش» داشته باشد: لحظه‌ای غیرمنتظره مثل رمز مخفی، شخصیتی خیالی که عمداً اشتباه می‌کند و بچه‌ها باید مچش را بگیرند، تغییر قانون وسط بازی یا یک تله. ۳) بچه‌ها فاعل باشند: حدس بزنند، تصمیم بگیرند، اشتباه را پیدا کنند یا بخشی از بازی را خودشان بسازند؛ فقط اجراکنندهٔ دستور نباش
+
+#### options\.model count=1
+@4381696: د و دوباره می‌توانی تلاش کنی.'); |     } |   } |   async function request(contents, info, signal, expectedProfile, options={}) { |     const allowToolCalls=!!options.allowToolCalls; |     const annualBudgetMode=!!options.annualBudget; |     const tomorrowBudgetMode=!!options.tomorrowBudgetMode; |     const model=options.model||LIGHT_MODEL; |     const fallbackPrompt=options.fallbackPrompt||''; |     const aggregateOnly=!!options.aggregateOnly; |      const budgetYearAssumptionRules='\n\nاگر خروجی ابزار get_budget_and_progress شامل budgetYearAssumed=true است، روشن بگو بودجهٔ ثبت‌شده برای پایه وجود دارد اما سالش مش
+
+#### HEAVY_MODEL count=33
+@4260037: e. All class data and records |   // remain local; Gemini is only used for the explanation or idea requested. |       const HEAVY_MODEL = 'gemini-3.8-flash', LIGHT_MODEL = 'gemini-3-flash-preview', FALLBACK_MODEL = LIGHT_MODEL, WORKER_FALLBACK_
+
+@4298830: WideColor}; |   } |   function modelForPrompt(prompt) { |     return isHeavyPrompt(prompt)||isAggregateReportPrompt(prompt) ? HEAVY_MODEL : LIGHT_MODEL; |   } |   function modelLimit(model) { return model === HEAVY_MODEL ? HEAVY_REQUESTS_PER_DAY : LI
+
+@4298909: ompt)||isAggregateReportPrompt(prompt) ? HEAVY_MODEL : LIGHT_MODEL; |   } |   function modelLimit(model) { return model === HEAVY_MODEL ? HEAVY_REQUESTS_PER_DAY : LIGHT_REQUESTS_PER_DAY; } |   function answerCacheKey(prompt, p, allowToolCalls, mo
+
+@4300342: Obj(saved.dayCountByModel) ? saved.dayCountByModel : {}; |     if (legacyCount && !Number.isInteger(saved.dayCountByModel[HEAVY_MODEL])) saved.dayCountByModel[HEAVY_MODEL] = legacyCount; |      for (const model of [HEAVY_MODEL,LIGHT_MODEL,FALLB
+
+@4300379: yCountByModel : {}; |     if (legacyCount && !Number.isInteger(saved.dayCountByModel[HEAVY_MODEL])) saved.dayCountByModel[HEAVY_MODEL] = legacyCount; |      for (const model of [HEAVY_MODEL,LIGHT_MODEL,FALLBACK_MODEL]) saved.dayCountByModel[mod
+
+@4300433: nteger(saved.dayCountByModel[HEAVY_MODEL])) saved.dayCountByModel[HEAVY_MODEL] = legacyCount; |      for (const model of [HEAVY_MODEL,LIGHT_MODEL,FALLBACK_MODEL]) saved.dayCountByModel[model] = Number.isInteger(saved.dayCountByModel[model]) ?
+
+@4301792:  || 0, limit = modelLimit(model); |     if (backoffUntil > now) { const error=new Error('برای محافظت از سهمیهٔ '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+'، درخواست آنلاین موقتاً متوقف است. چند ثانیه بعد دوباره تلاش کن. ثبت اطلاعات محلی همچنان ف
+
+@4302082: etryAt=backoffUntil; throw error; } |     if (count >= limit) { const error=new Error('برای پر نشدن سهمیهٔ مدل '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+'، سقف روزانهٔ برنامه رسید. اطلاعات محلی و ثبت گزارش‌ها فعال‌اند.'); error.code='MODEL_RATE
+
+@4303210: State(rate); |   } |   function quotaStatus() { |     const rate = rateState(); |     return 'تحلیلی: '+fa(rate.dayCountByModel[HEAVY_MODEL]||0)+' از '+fa(HEAVY_REQUESTS_PER_DAY)+' · سریع: '+fa(rate.dayCountByModel[LIGHT_MODEL]||0)+' از '+fa(LIGHT_
+
+@4312138: (intentCache.keys().next().value); |       routeCache.set(prompt, label === 'RECORD' || label === 'OTHER' ? LIGHT_MODEL : HEAVY_MODEL); |     } catch (_) {} |   } |   async function classifyPrompt(prompt, signal) { |     if (isHeavyPrompt(prompt) || 
+
+@4312343: { |     if (isHeavyPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt)) { routeCache.set(prompt,HEAVY_MODEL); return HEAVY_MODEL; } |     if (isLightRecordPrompt(prompt)) { routeCache.set(prompt,LIGHT_MODEL); return LI
+
+@4312364: pt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt)) { routeCache.set(prompt,HEAVY_MODEL); return HEAVY_MODEL; } |     if (isLightRecordPrompt(prompt)) { routeCache.set(prompt,LIGHT_MODEL); return LIGHT_MODEL; } |      con
+
+@4313519: ght&&typeof p.text==='string').map(p=>p.text).join(' ').trim().toUpperCase(); |       const model=/\bHARD\b/.test(answer)?HEAVY_MODEL:LIGHT_MODEL; |       routeCache.set(prompt,model); if(routeCache.size>40)routeCache.delete(routeCache.keys().n
+
+@4377326: ail = String(providerMessage || reason || '').replace(/\s+/g,' ').trim().slice(0,240); |     const modelLabel = model === HEAVY_MODEL ? 'مدل تحلیلی Gemini' : 'مدل سریع Gemini'; |     if (/API_KEY_INVALID|API_KEY_EXPIRED/.test(source) || code ==
+
+@4409426: !annualBudgetMode&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true}); |             if (!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&model===
+
+@4409546: HEAVY_MODEL,triedHeavy:true}); |             if (!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&model===HEAVY_MODEL&&fallbackPrompt&&/سهمیه|سقف روزانه|موقتاً متوقف|quota|rate limit/i.test(error.message||'')) return workerFal
+
+@4410390: ده است.'); |           if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&response.status===400&&model===HEAVY_MODEL&&fallbackPrompt)return workerFallback(fallbackPrompt,signal); |              if(response.status===429){const s
+
+@4411205: MODEL});if(!options.triedHeavy&&!annualBudgetMode)return request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&fallbackPrompt)return 
+
+@4411425: llbackPrompt)return workerFallback(fallbackPrompt,signal);const quotaError=new Error('سهمیه یا سرعت مجاز مدل '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+' پر شده است. طبق پاسخ سرویس، '+fa(seconds)+' ثانیه صبر کن؛ ثبت اطلاعات محلی همچنان فعال اس
+
+@4412071: !options.triedHeavy&&!annualBudgetMode){try{return await request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});}catch(altError){if(altError?.name==='AbortError')throw altError;altNote=' مدل تحلیلی را ه
+
+@4421353: } |   function quotaResumeAt(error) { |     const rate = rateState(), now = Date.now(), h = Number(rate.backoffUntilByModel[HEAVY_MODEL]) || 0, l = Number(rate.backoffUntilByModel[LIGHT_MODEL]) || 0; |     if (h > now && l > now) return Math.min(
+
+@4421648:  l); |   } |   function quotaRawNow() { |     const rate = rateState(), now = Date.now(), h = Number(rate.backoffUntilByModel[HEAVY_MODEL]) || 0, l = Number(rate.backoffUntilByModel[LIGHT_MODEL]) || 0; |     const m = h > now && l > now ? (h < l ? 
+
+@4421768: HEAVY_MODEL]) || 0, l = Number(rate.backoffUntilByModel[LIGHT_MODEL]) || 0; |     const m = h > now && l > now ? (h < l ? HEAVY_MODEL : LIGHT_MODEL) : (l > now ? LIGHT_MODEL : HEAVY_MODEL); |     return (rate.rawByModel || {})[m] || ''; |   } |   f
+
+@4421822: l[LIGHT_MODEL]) || 0; |     const m = h > now && l > now ? (h < l ? HEAVY_MODEL : LIGHT_MODEL) : (l > now ? LIGHT_MODEL : HEAVY_MODEL); |     return (rate.rawByModel || {})[m] || ''; |   } |   function clearLocalBackoff() { |     const rate = rateSta
+
+@4422265: Now() { |     const rate = rateState(), now = Date.now(), k = rate.kindByModel || {}, h = Number(rate.backoffUntilByModel[HEAVY_MODEL]) || 0, l = Number(rate.backoffUntilByModel[LIGHT_MODEL]) || 0; |     if (h > now && l > now) return k[HEAVY_M
+
+@4422378: yModel[HEAVY_MODEL]) || 0, l = Number(rate.backoffUntilByModel[LIGHT_MODEL]) || 0; |     if (h > now && l > now) return k[HEAVY_MODEL] === 'day' && k[LIGHT_MODEL] === 'day' ? 'day' : (k[h < l ? HEAVY_MODEL : LIGHT_MODEL] || ''); |     return (l
+
+@4422450: EL]) || 0; |     if (h > now && l > now) return k[HEAVY_MODEL] === 'day' && k[LIGHT_MODEL] === 'day' ? 'day' : (k[h < l ? HEAVY_MODEL : LIGHT_MODEL] || ''); |     return (l > now ? k[LIGHT_MODEL] : k[HEAVY_MODEL]) || ''; |   } |   function startQuo
+
+@4422526: LIGHT_MODEL] === 'day' ? 'day' : (k[h < l ? HEAVY_MODEL : LIGHT_MODEL] || ''); |     return (l > now ? k[LIGHT_MODEL] : k[HEAVY_MODEL]) || ''; |   } |   function startQuotaCountdown(until) { |     clearInterval(quotaTimer); |     const tick = () => {
+
+@4433732:  |     let cacheKey = null, cached = null; |     if (cacheable) for (const candidate of [...new Set([modelForPrompt(prompt),HEAVY_MODEL,LIGHT_MODEL])]) { |       const candidateKey = answerCacheKey(prompt,p,allowToolCalls,candidate), value = cach
+
+@4435643: t revision = annualBudgetMode?null:useTools ? MehryarTools.revision() : null; |            const model = annualBudgetMode?HEAVY_MODEL:aggregateOnly||tomorrowBudgetMode ? HEAVY_MODEL : isClarificationPrompt(prompt) ? LIGHT_MODEL : isInstructio
+
+@4435691: hryarTools.revision() : null; |            const model = annualBudgetMode?HEAVY_MODEL:aggregateOnly||tomorrowBudgetMode ? HEAVY_MODEL : isClarificationPrompt(prompt) ? LIGHT_MODEL : isInstructionalIdeaPrompt(prompt) ? HEAVY_MODEL : HEAVY_MODE
+
+@4435787: y||tomorrowBudgetMode ? HEAVY_MODEL : isClarificationPrompt(prompt) ? LIGHT_MODEL : isInstructionalIdeaPrompt(prompt) ? HEAVY_MODEL : HEAVY_MODEL===LIGHT_MODEL ? modelForPrompt(prompt) : await classifyPrompt(prompt,abort.signal); |        cac
+
+@4435801: getMode ? HEAVY_MODEL : isClarificationPrompt(prompt) ? LIGHT_MODEL : isInstructionalIdeaPrompt(prompt) ? HEAVY_MODEL : HEAVY_MODEL===LIGHT_MODEL ? modelForPrompt(prompt) : await classifyPrompt(prompt,abort.signal); |        cacheKey = cachea
+

@@ -1,0 +1,46 @@
+ensureCurriculum at L8857
+function ensureCurriculum(data) {
+     if (!data || typeof data !== 'object') return data;
+      const base = curriculumDefaults(), raw = data.curriculum && typeof data.curriculum === 'object' ? data.curriculum : {}, activeScope=curriculumScopeKey(data), activeGrade=String(data.klass?.grade||'').trim(), activeYear=academicYearKey(data.klass?.year||''), contexts=isObj(raw.contexts)?clone(raw.contexts):{};
+      let current=raw;
+      if(raw.scopeKey&&raw.scopeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeScope]||{...base,scopeKey:activeScope}; }
+      current=curriculumContextSnapshot(current);
+      data.curriculum = {...base,...current,scopeKey:activeScope,contexts,catalog:{...base.catalog,...(current.catalog||{}),grade:activeGrade,academicYear:activeYear,source:activeGrade==='دوم'?OFFICIAL_SOURCE:'',sourceLabel:activeGrade==='دوم'?'پایگاه کتاب‌های درسی، اداره کل نظارت بر نشر و توزیع مواد آموزشی':activeGrade?`کاتالوگ رسمی پایهٔ ${activeGrade} در این مرحله وارد نشده است`:'کاتالوگ پایهٔ کلاس هنوز مشخص نشده است'},budget:{...base.budget,...(current.budget||{})},teachingProgress:{...(current.teachingProgress||{})},assets:{...(current.assets||{})}};
+    const existing = new Map((Array.isArray(current.books)?current.books:[]).map(book=>[book.id,book]));
+     const official = OFFICIAL_BOOKS.map(book=>normalizeBook(existing.get(book.id),{...book,sourceType:CURRICULUM_SOURCE.official,sourceLabel:CURRICULUM_SOURCE_LABEL.official}));
+     const extras = (Array.isArray(current.books)?current.books:[]).filter(book=>!officialById(book.id)).map(book=>normalizeBook(book,{id:String(book.id||'custom-'+slug(book.title)),title:String(book.title||'کتاب واردشده'),subject:String(book.subject||''),grade:String(book.grade||data.klass?.grade||''),academicYear:String(book.academicYear||data.klass?.year||''),officialPage:'',pdfUrl:'',sourceType:CURRICULUM_SOURCE.teacher,sourceLabel:CURRICULUM_SOURCE_LABEL.teacher}));
+       data.curriculum.books = [...official,...extras];
+     for (const book of data.curriculum.books) data.curriculum.teachingProgress[book.id] ||= {currentNodeId:'',statuses:{},exceptions:[],updatedAt:''};
+     data.curriculum.budget.version=Math.max(0,Number(data.curriculum.budget.version)||0);
+     data.curriculum.budget.history=Array.isArray(data.curriculum.budget.history)?data.curriculum.budget.history.slice(-12):[];
+     data.curriculum.budget.schoolDays = Array.isArray(data.curriculum.budget.schoolDays) && data.curriculum.budget.schoolDays.length ? data.curriculum.budget.schoolDays.map(Number).filter(x=>x>=0&
+
+=== loadSample body
+function loadSample() {
+  const names = ['علی احمدی', 'زهرا کریمی', 'امیر محمدی', 'نرگس رضایی', 'طاها موسوی', 'پارسا نادری', 'فاطمه حسینی', 'محمدرضا صادقی', 'یاسمن جعفری', 'سیده فاطمه‌زهرا موسوی‌نژاد', 'آرمین کاظمی', 'ریحانه قاسمی'];
+  const phones = ['09121234567', '09351112233', '09122223344', '', '09193334455', '09124445566', '', '09135556677', '09126667788', '09127778899', '', '09128889900'];
+  const dads = ['09121110000', '', '09122220000', '09123330000', '', '09124440000', '09125550000', '', '', '09127770000', '09128880000', ''];
+  const students = names.map((n, i) => ({ id: uid(), no: i + 1, name: n, data: { mom: phones[i], dad: dads[i], emergency: i % 4 === 0 ? '09130000' + (10 + i) : '', health: i === 3 ? 'آلرژی به بادام‌زمینی' : '', note: i === 9 ? 'سرویس دارد' : '' }, shortage: {}, assess: emptyAssess() }));
+  const items = DEFAULT_LISTS().firstDayItems;
+  const mark = (idx, has, miss) => { items.forEach(it => students[idx].shortage[it] = 'has'); (miss || []).forEach(it => students[idx].shortage[it] = 'missing'); };
+  mark(0, true, []); mark(1, true, ['دفتر املا', 'عکس']); mark(2, true, ['فرم اطلاعات']); mark(4, true, ['پوشه‌کار', 'کتاب‌ها', 'عکس']); mark(6, true, []); mark(9, true, ['فرم اطلاعات', 'دفتر ریاضی']);
+  students[0].assess = { fa: 3, math: 2, reading: 3, dictation: 2, attention: 3 };
+  students[1].assess = { fa: 1, math: 2, reading: 1, dictation: 0, attention: 2 };
+  students[2].assess = { fa: 2, math: 3, reading: 2, dictation: 2, attention: 1 };
+  students[4].assess = { fa: 0, math: 1, reading: 1, dictation: 1, attention: 1 };
+  students[6].assess = { fa: 3, math: 3, reading: 3, dictation: 3, attention: 3 };
+  const fresh = defaultState();
+  fresh.klass = { teacherPrefix: 'خانم', teacher: 'مریم رضوانی', school: 'دبستان شهید بهشتی', grade: 'دوم', className: 'دوم الف', year: currentYearLabel(), phone: '09120000000', principal: 'آقای کریمی' };
+  fresh.students = students;
+  fresh.meeting = { date: '۱۴ مهر', time: '۱۶:۰۰', place: 'نمازخانهٔ مدرسه', note: 'لطفاً بدون همراهی دانش‌آموز تشریف بیاورید.' };
+  fresh.progress = Object.assign(fresh.progress, { welcomeSeen: true, classDone: true, studentsDone: true, shortageStarted: true });
+  fresh.ui = Object.assign(fresh.ui, { theme: state.ui.theme, fontScale: state.ui.fontScale, lastRoute: '#/home' });
+  replaceState(fresh);
+}
+function exportJSON() {
+  const name = `مهریار-${className() || 'کلاس'}-${state.klass.year || ''}.json`;
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob
+
+=== sampleState
+L3509 function sampleState(){const s=migrate({}),names=['امیر','سارا','مینا','کیان','پارسا','رها','یاسمن','آرمان','نگار','مانی','سیده فاطمه‌زهرا موسوی‌نژاد','هانا'];s.klass={...s.klass,teacher:'آموزگار نمونه',school:'کلاس فرضی',grade:'دوم',className:'دوم نمونه'};s.students=names.map((name,i)=>({id:'sample-'+i,no:i+1,name,data:{},shortage:{},assess:emptyAssess()}));s.learning.trackingStartedOn=plusDays(localISO(),-14);for(const st of s.students)s.learning.studentMeta[st.id]={enrolledOn:plusDays(localISO(),-14),grade:'دوم',tags:st.id==='sample-5'?['خجالتی']:[],archived:false};for(let n=0;n<5;n++){const skill=n===3?{id:'f-fluency',label:'کندخوانی',subject:'فارسی'}:{id:'m-carry',label:'جمع با انتقال',subject:'ریاضی'};const r={id:'sample-session-'+n,date:plusDays(localISO(),n-4),sequence:n,subject:skill.subject,skillId:skill.id,skillLabel:skill.label,lessonTitle:'نمونهٔ فرضی',rosterIds:s.students.map(x=>x.id),records:{},createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};for(let i=0;i<12;i++){const rec=emptyRec();rec.attendance=i===7&&n===4?'absent':'present';rec.observed=i!==5&&rec.attendance!=='absent';rec.status=i===0?'red':i===1?(n<2?'red':'green'):i===2?(n<2?'green':'yellow'):i===3?'yellow':i===4?'red':'green';if(rec.status!=='green'&&rec.observed){rec.errors=[skill.label];rec.causeReviewPending=true;}if(i===4&&n!==3)rec.homework='missing';r.records['sample-'+i]=rec;}s.learning.sessions.push(r);}s.learning.followups=[{id:'sample-fu-1',studentId:'sample-0',subject

@@ -1,0 +1,86 @@
+SEND LOOP @4407134
+const send=async()=>fetchModelWithRetry(model,{systemInstruction:{parts:[{text:system+(annualBudgetMode?'':useTools&&!ideaMode&&!isClarificationPrompt(fallbackPrompt)?toolRules+(tomorrowBudgetMode?'':COLOR_MAP_RULES)+(tomorrowBudgetMode?'':budgetGuardRules):'')+(useTools&&!annualBudgetMode&&!ideaMode&&!learnMode&&!aggregateOnly&&!isClarificationPrompt(fallbackPrompt)?teacherTypeRules:'')+(!annualBudgetMode&&!ideaMode&&!learnMode&&!aggregateOnly&&isFollowUpPlanPrompt(fallbackPrompt)?followUpPlanRules:'')+(programMode?programThreadRules:'')+ideaModeRules+learnModeRules+tomorrowBudgetRules+(tomorrowBudgetMode?budgetYearAssumptionRules:'')+clarificationModeRules}]},contents,
+            ...(allowToolCalls?{tools:[{functionDeclarations:annualBudgetMode?[ANNUAL_BUDGET_FUNCTION_DECLARATION]:MehryarTools.declarations}]}:{}),
+              ...(tomorrowBudgetMode?{toolConfig:{functionCallingConfig:{mode:tomorrowBudgetRead?'AUTO':'ANY',...(tomorrowBudgetRead?{}:{allowedFunctionNames:['get_budget_and_progress']})}}}:annualBudgetMode?{toolConfig:{functionCallingConfig:{mode:'ANY',allowedFunctionNames:['save_annual_budget']}}}:{}),
+             generationConfig:{temperature:annualBudgetMode?0:tomorrowBudgetMode?0.4:ideaMode?0.95:0.45,maxOutputTokens:annualBudgetMode?32768:ideaMode?8192:learnMode?6144:isTomorrowPrompt(fallbackPrompt)?2048:3072,...(annualBudgetMode?{thinkingConfig:{thinkingBudget:0}}:ideaMode?{thinkingConfig:{thinkingBudget:3072}}:learnMode?{thinkingConfig:{thinkingBudget:1024}}:isTomorrowPrompt(fallbackPrompt)?{thinkingConfig:{thinkingBudget:768}}:!allowToolCalls&&!programMode&&!thinkingTrimBroken&&normKey(fallbackPrompt).length<=24?{thinkingConfig:{thinkingBudget:model===LIGHT_MODEL?512:1024}}:{})}},signal,annualBudgetMode?120000:ideaMode?90000:MODEL_FETCH_TIMEOUT_MS,annualBudgetMode||ideaMode?1:MAX_MODEL_RETRIES);
+       let response,data;
+       try {
+         ({response,data}=await send());
+        } catch (error) {
+          if(model!==FALLBACK_MODEL&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL});
+            if(model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});
+            if (!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&model===HEAVY_MODEL&&fallbackPrompt&&/سهمیه|سقف روزانه|موقتاً متوقف|quota|rate limit/i.test(error.message||'')) return workerFallback(fallbackPrompt,signal);
+          throw error;
+        }
+        if(!response.ok) {
+        const reason=(data.error?.details||[]).map(d=>d.reason||'').join(' ');
+        if([401,403].includes(response.status)||/API_KEY_INVALID|API_KEY_EXPIRED/.test(reason))verified=false;
+        const toolSchemaError=response.status===400&&/function_declarations|parameters|toolConfig|function_calling|schema/i.test(data.error?.message||'');
+        if(toolSchemaError)throw new Error('ساختار درخواست ابزارها توسط سرویس پذیرفته نشد (HTTP 400). این خطا از طرح ابزار است، نه لزوماً رمز یا سهمیه. هیچ تغییری ثبت نشده است.');
+          if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&response.status===400&&model===HEAVY_MODEL&&fallbackPrompt)return workerFallback(fallbackPrompt,signal);
+             if(response.status===429){const seconds=retrySeconds(response,data),rate=rateState();rate.backoffUntilByModel[model]=Date.now()+seconds*1000;rate.kindByModel=rate.kindByModel||{};rate.kindByModel[model]=quotaKind(data);rate.secondsByModel=rate.secondsByModel||{};rate.secondsByModel[model]=seconds;rate.rawByModel=rate.rawByModel||{};rate.rawByModel[model]=response.status+': '+String(data.error?.message||'').replace(/\s+/g,' ').slice(0,200)+' (انتظار پیشنهادی: '+seconds+' ثانیه)';saveRateState(rate);if(model!==FALLBACK_MODEL)return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL});if(!options.triedHeavy&&!annualBudgetMode)return request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&fallbackPrompt)return workerFallback(fallbackPrompt,signal);const quotaError=new Error('سهمیه یا سرعت مجاز مدل '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+' پر شده است. طبق پاسخ سرویس، '+fa(seconds)+' ثانیه صبر کن؛ ثبت اطلاعات محلی همچنان فعال است.');quotaError.code='MODEL_RATE_LIMIT';throw quotaError;}
+           if((RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404)&&model!==FALLBACK_MODEL&&!options.triedHeavy)return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL,triedHeavy:true});let altNote='';if((RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404)&&model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode){try{return await request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});}catch(altError){if(altError?.name==='AbortError')throw altError;altNote=' مدل تحلیلی را هم امتحان کردم ولی جواب نداد: '+String(altError?.message||altError).slice(0,180);}}
+            const providerError=new Error(friendlyError(response.status,reason,data.error?.message,model)+altNote);
+            if(RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404){providerError.code='MODEL_UNAVAILABLE';providerError.status=response.status;}
+            throw providerError;
+      }
+      if(data.promptFeedback?.blockReason)throw new Error('این درخواست قابل پاسخ‌گویی نیست. سؤال را آموزشی و بدون اطلاعات حساس بازنویسی کن.');
+      const candidate=data.candidates?.[0], content=candidate?.content;
+      if(candidate?.finishReason&&!['STOP','MAX_TOKENS'].includes(candidate.finishReason))throw new Error('پاسخ کامل نشد؛ هیچ تغییری ثبت نشده است.');
+      const calls=(content?.parts||[]).filter(p=>p.functionCall);
+       if(calls.length) {
+         if(annualBudgetMode&&candidate.finishReason==='MAX_TOKENS')throw new Error('خروجی ابزار کامل نشد؛ هیچ داده‌ای ذخیره نشد. ورودی را به چند بخش ماهانه تقسیم کن و هر بخش را جداگانه بفرست.');
+         if(!allowToolCalls||calls.length>(annualBudgetMode?24:4)||candidate.finishReason==='MAX_TOKENS')throw new Error('برای کم‌کردن مصرف سهمیه، این درخواست ابزار کامل یا مجاز نیست؛ سؤال یا گزارش را کوتاه‌تر و مشخص‌تر بفرست.');
+         if(tomorrowBudgetMode){const okCalls=tomorrowBudgetRead?calls.filter(p=>['get_budget_and_progress','read_class_data'].includes(p.functionCall.name)):calls.filter(p=>p.functionCall.name==='get_budget_and_progress').slice(0,1);if(!okCalls.length){contents.push(content,{role:'user',parts:calls.map(p=>({functionResponse:{name:p.functionCall.name,response:{error:tomorrowBudgetRead?'در پیشنهاد فردا فقط خواندن مجاز است؛ با دادهٔ خوانده‌شده همین حالا پاسخ متنی بده.':'ابتدا فقط get_budget_and_progress را صدا بزن.',nothingSaved:true}}}))});continue;}if(okCalls.length!==calls.length){calls.splice(0,calls.length,...okCalls);content.parts=(content.parts||[]).filter(p=>!p.functionCall||okCalls.includes(p));}}
+         signal.throwIfAborted();
+        if(annualBudgetMode){
+          if(!calls.length||calls.some(p=>p.functionCall.name!=='save_annual_budget'))throw new Error('پارسر بودجه فقط باید ابزار save_annual_budget را صدا بزند؛ چیزی ذخیره نشد.');
+          if(profile().id!==expectedProfile)throw new Error('اطلاعات کلاس تغییر کرده؛ دوباره درخواست بده.');
+           try{const mergedArgs=calls.reduce((acc,p)=>{const a=p.functionCall.args||{};if(!acc.academicYear&&a.academicYear)acc.academicYear=a.academicYear;if(!acc.grade&&a.grade)acc.grade=a.grade;if(Array.isArray(a.months))acc.months.push(...a.months);return acc;},{academicYear:'',grade:'',months:[]});stageAnnualBudgetPreview(mergedArgs,options.annualBudgetText||fallbackPrompt,options.annualBudgetFallbackGrade||'',options.annualBudgetFallbackYear||'');return 'پیش‌نمایش کامل آماده است؛ هنوز چیزی ذخیره نشده است.';}
+          catch(error){contents.push(content,{role:'user',parts:[{functionResponse:{name:'save_annual_budget',response:{error:error.message,nothingSaved:true}}}]});continue;}
+        }
+        if(calls.some(p=>p.functionCall.name==='prepare_output_preview')) {
+          if(calls.length!==1)throw new Error('پیش‌نمایش باید در یک درخواست مستقل آماده شود.');
+          try {const result=MehryarTools.prepareOutput(calls[0].functionCall.args||{});return result.title+'؛ '+fa(result.pages)+' صفحه پیش‌نمایش محلی آماده شد. دکمهٔ «باز کردن پیش‌نمایش» را بزن؛ هنوز چاپ یا ارسال نشده و تنظیمات دائمی تغییر نکرده‌اند.';}
+          catch(error){contents.push(content,{role:'user',parts:[{functionResponse:{name:'prepare_output_preview',response:{error:error.message,nothingSaved:true}}}]});continue;}
+        }
+        if(calls.some(p=>p.functionCall.name==='prepare_teacher_report')) {
+          if(calls.length!==1)throw new Error('گزارش باید در یک بستهٔ مستقل آماده شود؛ دوباره تلاش کن.');
+          if(profile().id!==expectedProfile)throw new Error('اطلاعات کلاس تغییر کرده؛ 
+
+
+CLASSIFYPROMPT @4312177
+async function classifyPrompt(prompt, signal) {
+    if (isHeavyPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt)) { routeCache.set(prompt,HEAVY_MODEL); return HEAVY_MODEL; }
+    if (isLightRecordPrompt(prompt)) { routeCache.set(prompt,LIGHT_MODEL); return LIGHT_MODEL; }
+     const cached = routeCache.get(prompt);
+    if (cached) return cached;
+    try {
+      const {response,data}=await fetchModelWithRetry(LIGHT_MODEL,{systemInstruction:{parts:[{text:ROUTER_SYSTEM_PROMPT}]},contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0,maxOutputTokens:8,...(thinkingTrimBroken?{}:{thinkingConfig:{thinkingBudget:0}})}},signal,ROUTER_FETCH_TIMEOUT_MS,0);
+      if(!response.ok){
+        if(response.status===429){const seconds=retrySeconds(response,data),rate=rateState();rate.backoffUntilByModel[LIGHT_MODEL]=Date.now()+seconds*1000;rate.kindByModel=rate.kindByModel||{};rate.kindByModel[LIGHT_MODEL]=quotaKind(data);saveRateState(rate);}
+        throw new Error(friendlyError(response.status,(data.error?.details||[]).map(d=>d.reason||'').join(' '),data.error?.message,LIGHT_MODEL));
+      }
+      const answer=(data.candidates?.[0]?.content?.parts||[]).filter(p=>!p.thought&&typeof p.text==='string').map(p=>p.text).join(' ').trim().toUpperCase();
+      const model=/\bHARD\b/.test(answer)?HEAVY_MODEL:LIGHT_MODEL;
+      routeCache.set(prompt,model); if(routeCache.size>40)routeCache.delete(routeCache.keys().next().value);
+      return model;
+    } catch(error) {
+      if(error.name==='AbortError')throw error;
+      return modelForPrompt(prompt);
+    }
+  }
+  let lastStored = null, lastSnapshot = JSON.stringify({version:1,messages:[],draft:''});
+  const guide = `تو مهریار، دستیار آموزشی و اجرایی معلم دبستان در خودِ چت مهریار هستی؛ معلم را برا
+
+intentChecking @4423463: tChild && el.firstChild.nodeType === 3) el.firstChild.nodeValue = errorText; else refresh(); |       if (done) { clearInterval(quotaTimer); quotaTimer = null; } |     }; |     tick(); if (until > Date.now()) quotaTimer = setInterval(tick, 1000); |   } |   let intentChecking = false; |   async function run() { |     try { await runInner(); } catch (error) { console.error(error); busy = false; intentChecking = false; errorText = 'خطای داخلی برنامه هنگام ارسال: ' + String(error && error.message || error).slice(0
+
+intentChecking @4423594: imer); quotaTimer = null; } |     }; |     tick(); if (until > Date.now()) quotaTimer = setInterval(tick, 1000); |   } |   let intentChecking = false; |   async function run() { |     try { await runInner(); } catch (error) { console.error(error); busy = false; intentChecking = false; errorText = 'خطای داخلی برنامه هنگام ارسال: ' + String(error && error.message || error).slice(0, 200) + ' . چیزی ثبت نشد و متن سؤالت حفظ شده است؛ دوباره بفرست.'; try { refresh(); } catch (_) {} } |   } |   async function runInner(
+
+intentChecking @4423864: se; errorText = 'خطای داخلی برنامه هنگام ارسال: ' + String(error && error.message || error).slice(0, 200) + ' . چیزی ثبت نشد و متن سؤالت حفظ شده است؛ دوباره بفرست.'; try { refresh(); } catch (_) {} } |   } |   async function runInner() { |     if (busy || intentChecking || !draft.trim()) return; |     clearInterval(quotaTimer); quotaTimer = null; |     const p = profile(), prompt = draft.trim(); |     if (isGreetingOnly(prompt) && !pendingAnnualBudget) { postBudgetExchange(prompt, p, greetingReply(p)); retu
+
+intentChecking @4424124: king || !draft.trim()) return; |     clearInterval(quotaTimer); quotaTimer = null; |     const p = profile(), prompt = draft.trim(); |     if (isGreetingOnly(prompt) && !pendingAnnualBudget) { postBudgetExchange(prompt, p, greetingReply(p)); return; } |     intentChecking = true; try { await classifyIntent(prompt); } finally { intentChecking = false; } |     if (busy) return; |        const annualBudgetMode=isAnnualBudgetPrompt(prompt)&&!isBudgetQuestionPrompt(prompt); |       const tomorrowBudgetMode=!annual
+
+intentChecking @4424195: r = null; |     const p = profile(), prompt = draft.trim(); |     if (isGreetingOnly(prompt) && !pendingAnnualBudget) { postBudgetExchange(prompt, p, greetingReply(p)); return; } |     intentChecking = true; try { await classifyIntent(prompt); } finally { intentChecking = false; } |     if (busy) return; |        const annualBudgetMode=isAnnualBudgetPrompt(prompt)&&!isBudgetQuestionPrompt(prompt); |       const tomorrowBudgetMode=!annualBudgetMode&&isTomorrowPrompt(prompt);let tomorrowDraftNotice=''; |       
+
+aria-busy @4452166: ?'checked':''} ${busy||pendingAnnualBudget?'disabled':''}> دسترسی ابزارها</label><a href="#/outputs">ابزارها</a></div> |         <div id="ai-log" class="ai-log" role="log" aria-label="پیام‌های گفت‌وگو" aria-live="polite" aria-relevant="additions text" aria-busy="${busy}"> |            ${!messages.length && !pending ? `<div class="ai-welcome"><div class="ai-mark">${icon('assistantChat')}</div><h2>امروز کجای کلاس کمکت کنم؟</h2><p>${p.ready ? 'با دسترسی ابزارها، شواهد کلاس و تجربه‌های ثبت‌شدهٔ تدریس را

@@ -1,0 +1,45 @@
+===  curriculumScopeKey *= *|function curriculumScopeKey 1
+L8812:  || '').replace(/[۰-۹]/g,d=>FA_DIGITS.indexOf(d)).replace(/[–—]/g,'-').replace(/\s+/g,'');
+   const curriculumScopeKey = data => { const k=data?.klass||{}; const parts=['school','teacher','className','grade','year'].map(name=>normKey(String(k[name]||''))); return parts.some(Boolean)?parts.join('|'):'unassigned'; };
+   const curriculumContextSnapshot = value => { const out=clone(value||{}); delete out.contexts; return out; };
+   const classScopedKeys = ['klass','classContexts','fields','students','lists','meeting','plan7','messages','outputSettings','progress','learning','curriculum'];
+   const classScopeSnapshot = data => { const out={}; for(const key of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };
+   function ensureClassScope(data) {
+     if(!data||typeof data!=='object')return data;
+     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data
+---
+===  function loadSample 1
+L1955: m.key === key && !m.deleted) || DEFAULT_MESSAGES().find(m => m.key === key); }
+/* نمونهٔ آزمایشی */
+function loadSample() {
+  const names = ['علی احمدی', 'زهرا کریمی', 'امیر محمدی', 'نرگس رضایی', 'طاها موسوی', 'پارسا نادری', 'فاطمه حسینی', 'محمدرضا صادقی', 'یاسمن جعفری', 'سیده فاطمه‌زهرا موسوی‌نژاد', 'آرمین کاظمی', 'ریحانه قاسمی'];
+  const phones = ['09121234567', '09351112233', '09122223344', '', '09193334455', '09124445566', '', '09135556677', '09126667788', '09127778899', '', '09128889900'];
+  const dads = ['09121110000', '', '09122220000', '09123330000', '', '09124440000', '09125550000', '', '', '09127770000', '09128880000', ''];
+  const students = names.map((n, i) => ({ id: uid(), no: i + 1, name: n, data: { mom: phones[i], dad: dads[i], emergency: i % 4 === 0 ? '09130000' + (10 + i) : '', health: i === 3 ? 'آلرژی به بادام‌زمینی' : '', note: i === 9 ? 'سرویس دارد' : '' }, shortage: {}, assess: emptyAssess() }));
+  const items = DEFAULT_LISTS().firstDayItems;
+  const mark = (idx, has, miss) => { item
+---
+===  function exitDemo 1
+L3511: ull;quickKey='';planDraft=null;dirty=false;location.hash='#/pulse';applyTheme();scheduleRender();};
+function exitDemo(){if(!demoMode)return;clearTimeout(saveTimer2);saveEpoch++;state=realSnapshot;realSnapshot=null;demoMode=false;quickDraft=null;quickKey='';planDraft=null;dirty=false;applyTheme();location.hash='#/home';scheduleRender();}
+const SHARE_INTRO='مهریار ابزارهای آفلاین کلاس و یک چت‌بات آنلاین اختیاری برای معلم‌ها دارد. اسامی کلاس رو یک‌بار وارد می‌کنی، برگه‌ها رو آماده می‌کنی و با چند ثبت کوتاه، نیازهای یادگیری و پیگیری‌های بچه‌ها رو می‌بینی. برای آموزش دوباره و کار گروه‌ها هم فعالیت آماده داره. شاید برای کلاست مفید باشه.\nبرای استفادهٔ همکارت، فایل اصلی HTML برنامه را هم بفرست.\nخودِ ابزار را بفرست، نه اطلاعات کلاست را.';
+copyText=async function(text){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);ui.toast('کپی شد');return;}}catch(e){}const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;top:0;left:0';document.body.appendC
+---
+===  demoMode *= 3
+L3384: 1)studentDossiers.pop();
+  return {month:localISO().slice(0,7),classSummary,studentDossiers};
+}
+let demoMode=false,realSnapshot=null,saveTimer2=null,saveEpoch=0,loadWarning='';
+const legacyMigrate=migrate;
+function learningDefaults(){return {schemaVersion:1,trackingStartedOn:localISO(),settings:{weekStart:6,schoolDays:[6,0,1,2,3],unseenThreshold:5,radarLimit:7},studentMeta:{},skills:[],sessions:[],followups:[],teachingReports:[],responsibilityRoles:['تخته','کتابخانه','پخش وسایل','نظم وسایل'],responsibilityHistory:[],classAgreements:[],parentMeetings:[],dailyPlans:[],customActivities:[],drafts:{},bagChecks:{},pathOverrides:{}};}
+migrate=function(saved){const s=legacyMigrate(saved);s.learning=deepMerge(learningDefaults(),saved?.learning||{});if(s.learning.schemaVersion!==1)throw Error('نسخهٔ آموزشی ناشناخته');for(const a of ACTIVITY_BANK){if(!s.learning.skills.some(k=>k.id===a.skillId))s.learning.skills.push({id:a.skillId,label:a.skillLabel,subject:a.subject});}for(const st of s.students){s.learn
+---
+L3510: مونه تا رفع خطای ذخیره انجام نشد.');return;}clearTimeout(saveTimer2);saveEpoch++;realSnapshot=state;demoMode=true;state=sampleState();quickDraft=null;quickKey='';planDraft=null;dirty=false;location.hash='#/pulse';applyTheme();scheduleRender();};
+function exitDemo(){if(!demoMode)return;clearTimeout(saveTimer2);saveEpoch++;state=realSnapshot;realSnapshot=null;demoMode=false;quickDraft=null;quickKey='';planDraft=null;dirty=false;applyTheme();location.hash='#/home';scheduleRender();}
+const SHARE_INTRO='مهریار ابزارهای آفلاین کلاس و یک چت‌بات آنلاین اختیاری برای معلم‌ها دارد. اسامی کلاس رو یک‌بار وارد می‌کنی، برگه‌ها رو آماده می‌کنی و با چند ثبت کوتاه، نیازهای یادگیری و پیگیری‌های بچه‌ها رو می‌بینی. برای آموزش دوباره و کار گروه‌ها هم فعالیت آماده داره. شاید برای کلاست مفید باشه.\nبرای استفادهٔ همکارت، فایل اصلی HTML برنامه را هم بفرست.\nخودِ ابزار را بفرست، نه اطلاعات کلاست را.';
+copyText=async function(text){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);ui.toast('
+---
+L3511: emo(){if(!demoMode)return;clearTimeout(saveTimer2);saveEpoch++;state=realSnapshot;realSnapshot=null;demoMode=false;quickDraft=null;quickKey='';planDraft=null;dirty=false;applyTheme();location.hash='#/home';scheduleRender();}
+const SHARE_INTRO='مهریار ابزارهای آفلاین کلاس و یک چت‌بات آنلاین اختیاری برای معلم‌ها دارد. اسامی کلاس رو یک‌بار وارد می‌کنی، برگه‌ها رو آماده می‌کنی و با چند ثبت کوتاه، نیازهای یادگیری و پیگیری‌های بچه‌ها رو می‌بینی. برای آموزش دوباره و کار گروه‌ها هم فعالیت آماده داره. شاید برای کلاست مفید باشه.\nبرای استفادهٔ همکارت، فایل اصلی HTML برنامه را هم بفرست.\nخودِ ابزار را بفرست، نه اطلاعات کلاست را.';
+copyText=async function(text){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);ui.toast('کپی شد');return;}}catch(e){}const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;top:0;left:0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}ta.remove();if(ok){ui.toa
+---

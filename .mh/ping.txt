@@ -1,0 +1,5 @@
+texts_seed_log.txt
+verify.py
+verify.txt
+verify_log.txt
+wait2.txt

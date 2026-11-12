@@ -1,0 +1,42 @@
+== exportJSON defs
+1976:function exportJSON
+3660:exportJSON=function(){
+9363:  exportJSON = async function() {
+== exportJSON calls
+1976:function exportJSON() {
+2611:ن بگیرید.', actions: [{ label: 'اول پشتیبان بگیر', onClick: exportJSON }, { label: 'پاک کن (مرحلهٔ بعد تأیید)',
+2615: || 'کلاس')}-${esc(state.klass.year || '')}.json`, onClick: exportJSON }) + ui.row({ icon: 'upload', gradient: 
+3402: بستن صفحه از بین بروند.</span>'+ui.btnPlain('پشتیبان JSON',exportJSON);}
+3686:class="storage-help-buttons">${ui.btnPrimary('پشتیبان JSON',exportJSON,{icon:'download'})}${ui.btnGray('اگر دان
+9362:  const exportBeforeCurriculum = exportJSON;
+9363:  exportJSON = async function() {
+== replaceState callers
+1915:function replaceState(newState) { state = migrate(newState); dirty = true; persist
+1974:  replaceState(fresh);
+2608:l ? ` از ${esc(data.klass.school)}` : ''} است. داده‌های فعلی این دستگاه جایگزین می‌شود.`, ok: 'بارگذاری' })) return; if(replaceState(data)) ui.toast('فایل بارگذاری شد', { i
+== assertSafeTree
+3388:function assertSafeTree(v,depth=0){if(depth>45)throw Error('ساختار بیش از حد تو در تو');if(v&&typeof v==='object')for(const k of Object.keys(v)){if(['__proto__','constructor','prototype'].includes(k))throw Error('کلید غیرمجاز');assertSafeTree(v[k],depth+1);}}
+== validateImport wrappers
+3554:validateImport=function(d){validateBase(d);for(const k of ['klass','lists','progress','ui','outputSettings'])if(d[k]!==unde
+5585:validateImport=function(data){
+8582:validateImport = function(data) { return validateBeforeLegacyLayer(normalizeLegacyShape(clone(data))); };
+== budget value shape
+       const json=preview.json,key=`mehyar_budget_${json.grade}_${json.academicYear}`,indexKey='mehyar_last_budget_key';let previousBudget=null,previousIndex=null,writesStarted=false;
+      try{previousBudget=localStorage.getItem(key);previousIndex=localStorage.getItem(indexKey);writesStarted=true;localStorage.setItem(key,JSON.stringify(json));localStorage.setItem(indexKey,key);}
+      catch(_){if(writesStarted)try{if(previousBudget===null)localStorage.removeItem(key);else localStorage.setItem(key,previousBudget);if(previousIndex===null)localStorage.removeItem(indexKey);else localStorage.setItem(indexKey,previousIndex);}catch(__){}errorText='ذخیرهٔ بودجه انجام نشد؛ فضای محلی مرورگر را بررسی کن. پیش‌نمایش باقی ماند و هیچ مشاهده‌ای تغییر نکرد.';refresh();return;}
+== mehryar:reset listeners
+2611:حافظه انجام نشد.');return;} window.dispatchEvent(new Event('mehryar:reset')); state = migrate({}); state.ui.theme = keep.theme; state.ui.fontScale = keep.fontScale; state.progress.welcomeSeen = true; state.progress.pulseIntroSeen=tru
+8066:  window.addEventListener('mehryar:reset',() => {
+== dossier memory load
+const STUDENT_DOSSIER_KEY='mehryar_student_dossiers_v1';
+let studentDossierMemory={version:1,month:'',students:{}};
+function emptyStudentDossier(st={}){return {id:st.id||'',name:st.name||'',absentCount:0,activeIssues:[],resolvedIssues:[],strengths:[],statusColor:'yellow'};}
+function normalizeStudentDossier(raw,st){const d=emptyStudentDossier(st),x=isObj(raw)?raw:{};return {id:st.id,name:st.name,absentCount:Number.isInteger(x.absentCount)&&x.absentCount>=0?x.absentCount:0,activeIssues:Array.isArray(x.activeIssues)?x.activeIssues.filter(v=>typeof v==='string').slice(0,12):[],resolvedIssues:Array.isArray(x.resolvedIssues)?x.resolvedIssues.filter(v=>typeof v==='string').
+function loadStudentDossierStore(){
+  let saved=null;try{saved=JSON.parse(localStorage.getItem(STUDENT_DOSSIER_KEY)||'null');}catch(_){saved=null;}
+  studentDossierMemory={version:1,month:saved?.month||'',students:isObj(saved?.students)?saved.students:{}};
+  return studentDossierMemory;
+}
+function addDossierValue(list,value){const text=String(value||'').replace(/\s+/g,' ').trim().slice(0,180);if(text&&!list.includes(text))list.push(text);return list.slice(-12);}
+function sameDossierTopic(text,skill){const q=normKey(text),label=normKey(skill?.label||skill||'');return !!label&&q.includes(label);}
+DONE

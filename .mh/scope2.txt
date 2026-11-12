@@ -1,0 +1,70 @@
+size 4694389
+===  classContexts 10
+L1859:  {⏎    version: 6,⏎    klass: { teacherPrefix: '', teacher: '', school: '', grade: '', className: '', year: currentYearLabel(), phone: '', principal: '' },⏎    classContexts: {}, classScopeKey: '', classScopeKlass: null,⏎    fields: DEFAULT_FIELDS(),⏎    students: [],⏎    lists: DEFAULT_LISTS(),⏎    meeting: { date: '', time: '', place: '', note: '' },⏎    plan7: DEFAULT_PLAN()
+---
+L8814: igned'; };⏎   const curriculumContextSnapshot = value => { const out=clone(value||{}); delete out.contexts; return out; };⏎   const classScopedKeys = ['klass','classContexts','fields','students','lists','meeting','plan7','messages','outputSettings','progress','learning','curriculum'];⏎   const classScopeSnapshot = data => { const out={}; for(const key of classScopedKeys) if(Obj
+---
+L8815: t = data => { const out={}; for(const key of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };⏎   function ensureClassScope(data) {⏎     if(!data||typeof data!=='object')return data;⏎     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data)
+---
+L8818: delete out.classContexts; return out; };⏎   function ensureClassScope(data) {⏎     if(!data||typeof data!=='object')return data;⏎     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');⏎     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(
+---
+L8818: exts; return out; };⏎   function ensureClassScope(data) {⏎     if(!data||typeof data!=='object')return data;⏎     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');⏎     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return d
+---
+L8819: ontexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');⏎     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}⏎     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}⏎  
+---
+L8820: !currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}⏎     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}⏎     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;⏎     const ta
+---
+L8823: a.classScopeKlass||data.klass);contexts[currentKey]=snapshot;⏎     const target=contexts[activeKey];⏎     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}⏎     else if(currentKey!=='unassigned'){⏎       const blank=migrate({klass:clone(data.klass)});⏎       for(const key of classScopedKeys)if(key!=='c
+---
+L8826: arget[key]);}⏎     else if(currentKey!=='unassigned'){⏎       const blank=migrate({klass:clone(data.klass)});⏎       for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(blank,key))data[key]=clone(blank[key]);⏎     }⏎     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKla
+---
+L8828: if(key!=='classContexts'&&Object.hasOwn(blank,key))data[key]=clone(blank[key]);⏎     }⏎     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;⏎   }⏎    const curriculumDefaults = () => ({⏎      schemaVersion: CURRICULUM_VERSION,⏎      scopeKey:'',⏎      conte
+---
+===  classScopeKlass 5
+L1859: rPrefix: '', teacher: '', school: '', grade: '', className: '', year: currentYearLabel(), phone: '', principal: '' },⏎    classContexts: {}, classScopeKey: '', classScopeKlass: null,⏎    fields: DEFAULT_FIELDS(),⏎    students: [],⏎    lists: DEFAULT_LISTS(),⏎    meeting: { date: '', time: '', place: '', note: '' },⏎    plan7: DEFAULT_PLAN(),⏎    messages: DEFAULT_MESSAGES(),⏎  
+---
+L8819: ctiveKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');⏎     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}⏎     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}⏎     const snapshot=classScopeSnapshot(data);snapshot.klass
+---
+L8820: xts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}⏎     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}⏎     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;⏎     const target=contexts[activeKey];⏎  
+---
+L8821: iveKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}⏎     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;⏎     const target=contexts[activeKey];⏎     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(targ
+---
+L8828: ey]=clone(blank[key]);⏎     }⏎     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;⏎   }⏎    const curriculumDefaults = () => ({⏎      schemaVersion: CURRICULUM_VERSION,⏎      scopeKey:'',⏎      contexts:{},⏎      catalog: { grade:'', academicYear:'', sourc
+---
+===  curriculumScopeKey\( 10
+L8818: ction ensureClassScope(data) {⏎     if(!data||typeof data!=='object')return data;⏎     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');⏎     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}⏎     if(currentKey===
+---
+L8859: object') return data;⏎      const base = curriculumDefaults(), raw = data.curriculum && typeof data.curriculum === 'object' ? data.curriculum : {}, activeScope=curriculumScopeKey(data), activeGrade=String(data.klass?.grade||'').trim(), activeYear=academicYearKey(data.klass?.year||''), contexts=isObj(raw.contexts)?clone(raw.contexts):{};⏎      let current=raw;⏎      if(raw.scope
+---
+L8881: CurriculumData(data) {⏎      ensureCurriculum(data);const c=data.curriculum,b=c.budget,books=new Map(c.books.map(book=>[book.id,book]));⏎       if(c.scopeKey!==curriculumScopeKey(data))throw Error('زمینهٔ کتاب و بودجه با کلاس فعال یکسان نیست؛ ثبت متوقف شد.');if(b.sourceText.length>MAX_BUDGET_IMPORT_CHARS)throw Error('متن منبع بودجه از حد مجاز بزرگ‌تر است؛ هیچ بخشی ذخیره نشد.');
+---
+L8897: m.books.filter(book=>curriculumBookMatchesGrade(book,grade)); };⏎      const getActiveClassContext = (data=state) => { ensureCurriculum(data); return {scopeKey:curriculumScopeKey(data),school:String(data.klass?.school||''),teacher:String(data.klass?.teacher||''),className:String(data.klass?.className||''),grade:String(data.klass?.grade||''),academicYear:String(data.klass?.year|
+---
+L9282: ut.parseIssues||[])],parseNotes=[...(parsed.notes||[]),...(input.parseNotes||[])];return {schemaVersion:1,id:String(input.id||`budget-draft-${uid()}`),scopeKey:curriculumScopeKey(data),grade:String(data.klass?.grade||''),academicYear:String(data.klass?.year||''),mode:['append','replace'].includes(input.mode)?input.mode:'append',source:String(input.source||'teacher').trim().slic
+---
+L9285: At||now),updatedAt:now,rows:result.rows,counts:result.counts};⏎   }⏎  function validateBudgetDraft(data,draft) {⏎     ensureCurriculum(data);const currentScope=curriculumScopeKey(data),rows=Array.isArray(draft?.rows)?draft.rows:[],scopeMatch=!draft?.scopeKey||draft.scopeKey===currentScope,readyRows=[],issues=Array.isArray(draft?.parseIssues)?draft.parseIssues.map(issue=>`استخرا
+---
+L9365: nst curriculumOverview = () => {⏎     ensureCurriculum(state); const entries=activeCurriculumBudgetEntries();⏎      return {scopeKey:state.curriculum.scopeKey||curriculumScopeKey(state),grade:state.klass.grade||'',className:className()||'',academicYear:state.klass.year||'',catalog:state.curriculum.catalog,books:activeCurriculumBooks().map(book=>compactBook(book)),budget:{versio
+---
+L9404: =new Set(activeBooks.map(book=>book.id)), existing=c.budget.entries.filter(entry=>activeIds.has(entry.bookId));⏎      const scopeKey=state.curriculum.scopeKey||curriculumScopeKey(state);if(budgetEditor.scopeKey!==scopeKey){budgetEditor.scopeKey=scopeKey;budgetEditor.entries=clone(existing);budgetEditor.schoolDays=clone(c.budget.schoolDays);budgetEditor.holidays=clone(c.budget.h
+---
+L9502: teacher,sourceLabel:node.sourceLabel||CURRICULUM_SOURCE_LABEL.teacher,content:node.content||''}))};});⏎       const output={section,class:{scopeKey:c.scopeKey||curriculumScopeKey(state),grade:state.klass.grade||'',className:className()||'',academicYear:state.klass.year||''},catalog:c.catalog,books:bookPayloads,budget:{version:c.budget.version,historyVersions:(c.budget.history||
+---
+L9567: ate); const books=activeCurriculumBooks(), approvedEntries=activeCurriculumBudgetEntries(), week=weekBudget(), c=state.curriculum; return {scopeKey:c.scopeKey||curriculumScopeKey(state),grade:state.klass.grade||'',academicYear:state.klass.year||'',books:books.map(book=>compactBook(book)),budgetVersion:c.budget.version,previousBudgetVersions:(c.budget.history||[]).map(item=>item
+---
+===  contexts\[ 4
+L8821: ntexts;data.classScopeKlass=clone(data.klass);return data;}⏎     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;⏎     const target=contexts[activeKey];⏎     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}⏎     else if(curre
+---
+L8822: urn data;}⏎     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;⏎     const target=contexts[activeKey];⏎     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}⏎     else if(currentKey!=='unassigned'){⏎       const blank=migrate
+---
+L8861: YearKey(data.klass?.year||''), contexts=isObj(raw.contexts)?clone(raw.contexts):{};⏎      let current=raw;⏎      if(raw.scopeKey&&raw.scopeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeScope]||{...base,scopeKey:activeScope}; }⏎      current=curriculumContextSnapshot(current);⏎      data.curriculum = {...base,...current,scopeK
+---
+L8861: ne(raw.contexts):{};⏎      let current=raw;⏎      if(raw.scopeKey&&raw.scopeKey!==activeScope) { contexts[raw.scopeKey]=curriculumContextSnapshot(raw); current=contexts[activeScope]||{...base,scopeKey:activeScope}; }⏎      current=curriculumContextSnapshot(current);⏎      data.curriculum = {...base,...current,scopeKey:activeScope,contexts,catalog:{...base.catalog,...(current.ca
+---
+===  normKey *= 0
+===  function normKey 1
+L1661: izeName(s) {⏎  return String(s || '').replace(/[يى]/g, 'ی').replace(/ك/g, 'ک').replace(/\u200c+$/g, '').replace(/^\u200c+/g, '').replace(/\s+/g, ' ').trim();⏎}⏎function normKey(s) { return normalizeName(s).replace(/[\s\u200c]/g, ''); }⏎function copyText(text) {⏎  const done = () => ui.toast('کپی شد', { icon: 'check' });⏎  const fallback = () => {⏎    const ta = document.createE
+---
+===  currentYearLabel *=|function currentYearLabel 1
+L1681: odayFa() {⏎  try { return new Intl.DateTimeFormat('fa-IR', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date()); } catch (e) { return ''; }⏎}⏎function currentYearLabel() {⏎  try {⏎    const y = parseInt(en(new Intl.DateTimeFormat('fa-IR', { year: 'numeric' }).format(new Date())), 10);⏎    const m = parseInt(en(new Intl.DateTimeFormat('fa-IR', { month: 'numeric
+---

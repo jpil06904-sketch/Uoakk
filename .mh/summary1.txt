@@ -1,0 +1,9 @@
+===== smoke_empty.json seed= None routes= 68 totalErrors= 1 bootErrors= 0
+blocked: ['https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=p', 'https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=cfg']
+ERR #/curriculum/progress jsdomError TypeError: Cannot read properties of undefined (reading 'id') |     at bookProgressSummary (https://mehryar.local/index.html#/welcome:583:106) |     at renderProgress (https://mehryar.local/index.html#/welcome:678:322) |     at route (https://mehryar.local/index.html:387:7) |     at callTheUserObjectsOperation (/workspaces/Uoakk/.mh/env/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30) |     at innerInvokeEventListeners (/workspaces/Uoakk/.mh/env/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25) |     at invokeEventListeners (/workspaces/Uoakk/.mh/env/node_modules/
+ROUTE #/curriculum/progress len 1027 err 1 
+ROUTE #/settings/list/assessCriteria len 1473 err 0   -> #/settings
+smoke_seed.json MISSING
+-rw-rw-rw- 1 codespace codespace 11434 Nov  9 03:25 smoke_empty.json
+-rw-rw-rw- 1 codespace codespace    26 Nov  9 03:25 smoke_run1.txt
+-rw-rw-rw- 1 codespace codespace     0 Nov  9 03:25 smoke_run2.txt

@@ -1,0 +1,16 @@
+### BG='پایه دوم ابتدایی' BY='1405-1406' BM='آبان'
+  LAST: مهریارپاسخ آزمایشی مهریار: برای تمرین جمع دو رقمی، بازی کارت‌های عدد را در گروه‌های دونفره اجرا کن. [این پاسخ فقط خواندنی است؛ داده‌های کلاس تغییر نکرده‌اند.] کپی پاسخ
+  REQS: [{"url":"https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=ai&m=gemini-3-flash-preview","method":"POST","authPart":"MH-FSGZ-AQSY|<deviceId>","hasSystem":true,"tools":1,"contents":1,"size":37128,"kind":"answer"},{"url":"https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=p","method":"
+### BG='دوم' BY='۱۴۰۵-۱۴۰۶' BM='آبان'
+  LAST: مهریارپاسخ آزمایشی مهریار: برای تمرین جمع دو رقمی، بازی کارت‌های عدد را در گروه‌های دونفره اجرا کن. [این پاسخ فقط خواندنی است؛ داده‌های کلاس تغییر نکرده‌اند.] کپی پاسخ
+  REQS: [{"url":"https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=ai&m=gemini-3-flash-preview","method":"POST","authPart":"MH-FSGZ-AQSY|<deviceId>","hasSystem":true,"tools":1,"contents":1,"size":37115,"kind":"answer"},{"url":"https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=p","method":"
+### BG='دوم' BY='1405-1406' BM='آبان ماه'
+  LAST: مهریارپاسخ آزمایشی مهریار: برای تمرین جمع دو رقمی، بازی کارت‌های عدد را در گروه‌های دونفره اجرا کن. [این پاسخ فقط خواندنی است؛ داده‌های کلاس تغییر نکرده‌اند.] کپی پاسخ
+  REQS: [{"url":"https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=ai&m=gemini-3-flash-preview","method":"POST","authPart":"MH-FSGZ-AQSY|<deviceId>","hasSystem":true,"tools":1,"contents":1,"size":37119,"kind":"answer"},{"url":"https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=p","method":"
+### BG='دوم' BY='1405-1406' BM='مهر'
+  LAST: مهریاربودجهٔ سالانه ذخیره شده، اما برای ماه جاری (آبان) مبحثی در آن نیست. بودجهٔ همین ماه را پیست کن؛ موضوع تازه‌ای حدس نمی‌زنم. کپی پاسخ
+  REQS: []
+### BG='دوم' BY='1404-1405' BM='آبان'
+  LAST: مهریارپاسخ آزمایشی مهریار: برای تمرین جمع دو رقمی، بازی کارت‌های عدد را در گروه‌های دونفره اجرا کن. [این پاسخ فقط خواندنی است؛ داده‌های کلاس تغییر نکرده‌اند.] کپی پاسخ
+  REQS: [{"url":"https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=ai&m=gemini-3-flash-preview","method":"POST","authPart":"MH-FSGZ-AQSY|<deviceId>","hasSystem":true,"tools":1,"contents":1,"size":37115,"kind":"answer"},{"url":"https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=p","method":"
+FINISHED

@@ -1,0 +1,5 @@
+      1 6512:gemini-3-flash-preview
+---
+6570:EL_MIN_REQUEST_GAP = 0, PANEL_MAX_REQUESTS_PER_MINUTE = 100000, PANEL_FETCH_TIMEOUT_MS = 40000; let heavyDownUntil = 0
+7649:          if(model===HEAVY_MODEL&&isTransientModelFailure(error))heavyDownUntil=Date.now()+600000
+7662:           if(model===HEAVY_MODEL&&RETRYABLE_MODEL_STATUSES.has(response.status))heavyDownUntil=Date.now()+600000

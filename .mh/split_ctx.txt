@@ -1,0 +1,41 @@
+--- orig
+index.html
+mehryar-v4-final (10).html
+mehryar-v4-final-fixed.html
+--- 7570-7575
+    const annualBudgetMode=!!options.annualBudget;
+    const tomorrowBudgetMode=!!options.tomorrowBudgetMode;
+    const model=options.model===HEAVY_MODEL&&!options.annualBudget&&Date.now()<heavyDownUntil?LIGHT_MODEL:(options.model||LIGHT_MODEL);
+    const fallbackPrompt=options.fallbackPrompt||'';
+    const aggregateOnly=!!options.aggregateOnly;
+     const budgetYearAssumptionRules='\n\nاگر خروجی ابزار get_budget_and_progress شامل budgetYearAssumed=true است، روشن بگو بودجهٔ ثبت‌شده برای پایه وجود دارد اما سالش مشخص نبوده؛ پیشنهاد را فقط با فرض انطباق آن با سال فعال ارائه کن و این فرض را تأییدنشده معرفی کن.';
+--- 7640-7646
+۷) مرور امتحان: برنامهٔ مرور را بر اساس مشاهده‌ها، پیگیری‌ها و گزارش‌های ثبت‌شدهٔ ماه‌های قبل بچین: بیشتر وقت برای مباحثی که بارها قرمز یا زرد بوده‌اند، کمتر برای مباحث پایدار. اگر داده کم است، تقسیم را برابر و صادقانه «بدون سابقهٔ کافی» اعلام کن.`;
+      for(let round=0;round<(tomorrowBudgetMode?8:MAX_TOOL_ROUNDS);round++) {
+      signal.throwIfAborted();
+          const send=async()=>fetchModelWithRetry(model,{systemInstruction:{parts:[{text:system+(annualBudgetMode?'':useTools&&!ideaMode&&!isClarificationPrompt(fallbackPrompt)?toolRules+(tomorrowBudgetMode?'':COLOR_MAP_RULES)+(tomorrowBudgetMode?'':budgetGuardRules):'')+(useTools&&!annualBudgetMode&&!ideaMode&&!learnMode&&!aggregateOnly&&!isClarificationPrompt(fallbackPrompt)?teacherTypeRules:'')+(!annualBudgetMode&&!ideaMode&&!learnMode&&!aggregateOnly&&isFollowUpPlanPrompt(fallbackPrompt)?followUpPlanRules:'')+(programMode?programThreadRules:'')+ideaModeRules+learnModeRules+tomorrowBudgetRules+(tomorrowBudgetMode?budgetYearAssumptionRules:'')+clarificationModeRules}]},contents,
+            ...(allowToolCalls?{tools:[{functionDeclarations:annualBudgetMode?[ANNUAL_BUDGET_FUNCTION_DECLARATION]:MehryarTools.declarations}]}:{}),
+              ...(tomorrowBudgetMode?{toolConfig:{functionCallingConfig:{mode:tomorrowBudgetRead?'AUTO':'ANY',...(tomorrowBudgetRead?{}:{allowedFunctionNames:['get_budget_and_progress']})}}}:annualBudgetMode?{toolConfig:{functionCallingConfig:{mode:'ANY',allowedFunctionNames:['save_annual_budget']}}}:{}),
+             generationConfig:{temperature:annualBudgetMode?0:tomorrowBudgetMode?0.4:ideaMode?0.95:0.45,maxOutputTokens:annualBudgetMode?32768:ideaMode?8192:learnMode?6144:isTomorrowPrompt(fallbackPrompt)?2048:3072,...(annualBudgetMode?{thinkingConfig:{thinkingBudget:0}}:ideaMode?{thinkingConfig:{thinkingBudget:1024}}:learnMode?{thinkingConfig:{thinkingBudget:512}}:isTomorrowPrompt(fallbackPrompt)?{thinkingConfig:{thinkingBudget:512}}:!programMode&&!thinkingTrimBroken?{thinkingConfig:{thinkingBudget:allowToolCalls?512:0}}:{})}},signal,annualBudgetMode?120000:ideaMode?90000:MODEL_FETCH_TIMEOUT_MS,annualBudgetMode||ideaMode?1:MAX_MODEL_RETRIES);
+       let response,data;
+       try {
+--- 6850-6858
+    const noOne = /هیچ\s*(?:کدام|کدوم|کس|یک)?\s*(?:از\s*)?(?:کلاس|بچه|پچه|دانش[‌\s-]*آموز)/.test(source);
+    const classWide = /(?:کل|همه|تمام|سراسر)\s*(?:کلاس|بچه|پچه|دانش[‌\s-]*آموز)/.test(source) || noOne || /(?:کلکلاس|کل(?:بچه|پچه|دانشآموز)|همهبچه|همهپچه|همهدانشآموز|تمامکلاس|تمام(?:بچه|پچه)|هیچ(?:کدام|کدوم|کس)?از?(?:کلاس|بچه|پچه|دانشآموز))/.test(q);
+    const grades = ['اول','دوم','سوم','چهارم','پنجم','ششم'].filter(grade => new RegExp('(?:^|[\\s‌])'+grade+'(?:$|[\\s‌])').test(source));
+    const classWideColor = /(?:بلد\s*نبود|بلد\s*نبودن|نتوانست|نتونست|یاد\s*نگرفته|هیچ\s*(?:کدام|کدوم|کس|یک)?\s*(?:از\s*)?.{0,40}بلد)/.test(source) || /(?:بلدنبود|بلدنبودن|نتوانست|نتونست|یادنگرفته|هیچ(?:کدام|کدوم|کس)?از?.{0,40}بلد)/.test(q) ? 'red' : /(?:بخشی|بعضی|برخی|نیاز\s*به\s*تمرین|نسبتاً|نسبتا)/.test(source+q) ? 'yellow' : /(?:همه|تمام).{0,30}(?:بلد|مسلط)|کاملاً\s*بلد|کاملا\s*بلد|مسلط\s*بود/.test(source+q) ? 'green' : '';
+    return {classWide,grade:grades.length===1?grades[0]:'',classWideColor};
+  }
+  function modelForPrompt(prompt) {
+    return isHeavyPrompt(prompt)||isAggregateReportPrompt(prompt) ? HEAVY_MODEL : LIGHT_MODEL;
+  }
+--- 6985-6992
+    const viaPanel = isActCode(key);
+    const url = viaPanel ? window.__mehryarPanel.base+'/api.php?a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent';
+    const makeOptions = () => viaPanel ? {method:'POST',headers:{'Content-Type':'text/plain'},body:key+'|'+window.__mehryarPanel.id+'\n'+JSON.stringify(body)} : {method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(body)};
+    let options = makeOptions();
+    const waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? (model === HEAVY_MODEL ? 20000 : PANEL_FETCH_TIMEOUT_MS) : timeoutMs;
+    if (viaPanel) retries = Math.min(retries, model === HEAVY_MODEL ? 0 : 1);
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      if (attempt) await waitAbortable(MODEL_RETRY_DELAY_MS * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 400), signal);
+      try {

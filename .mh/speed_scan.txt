@@ -1,0 +1,15 @@
+== footer quota text
+7501:    if (el) { el.textContent = demoMode ? 'گفت‌وگوی نمونه ذخیره نمی‌شود.' : (historyWarning || '۱۰۰ نوبت آخر، فقط در همین مرورگر') + ' · ' + quotaStatus(); el.classList.toggle('ai-storage-warning',!!historyWarning); }
+== tahlili
+6923:    return 'تحلیلی: '+fa(rate.dayCountByModel[HEAVY_MODEL]||0)+' از '+fa(HEAVY_REQUESTS_PER_DAY)+' · سریع: '+fa(rate.dayCountByModel[LIGHT_MODEL]||0)+' از '+fa(LIGHT_REQUESTS_PER_DAY);
+== 429 handling client
+6908:یع')+'، درخواست آنلاین موقتاً متوقف است. چند ثانیه بعد دوباره تلاش کن. ثبت اطلاعات محلی همچنان فعال است.'); error.code='MODEL_RATE_LIMIT'; error.retryAt=backoffUntil; throw error; }
+6909:+(model===HEAVY_MODEL?'تحلیلی':'سریع')+'، سقف روزانهٔ برنامه رسید. اطلاعات محلی و ثبت گزارش‌ها فعال‌اند.'); error.code='MODEL_RATE_LIMIT'; throw error; }
+6957:.code === 'MODEL_TIMEOUT' || error?.code === 'MODEL_NETWORK' || error?.code === 'MODEL_UNAVAILABLE' || error?.code === 'MODEL_RATE_LIMIT' || error instanceof TypeError;
+7651:ode&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:error.code==='MODEL_RATE_LIMIT'&&Date.now()>=heavyDownUntil?HEAVY_MODEL:FALLBACK_MODEL,triedHeavy:true});
+7661:سریع')+' پر شده است. طبق پاسخ سرویس، '+fa(seconds)+' ثانیه صبر کن؛ ثبت اطلاعات محلی همچنان فعال است.');quotaError.code='MODEL_RATE_LIMIT';throw quotaError;}
+7894:at && error?.name !== 'AbortError') { const em = String(error?.message || error); window.__mehryarStat(error?.code === 'MODEL_RATE_LIMIT' || /429|سهمیه/.test(em) ? 'ai_quota' : /503|خطای موقت|شلوغ|high demand/i.test(em) ? 'ai_busy' : 'ai_err'); }
+7903:        if (error?.code === 'MODEL_RATE_LIMIT') { const until = quotaResumeAt(error); if (until > Date.now()) startQuotaCountdown(until); }
+== retryDelay
+7022:    const detail = (data.error?.details || []).find(x => typeof x.retryDelay === 'string')?.retryDelay;
+DONE

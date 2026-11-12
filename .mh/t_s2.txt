@@ -1,0 +1,17 @@
+PASS C1 complete class has 3 students
+INFO C2 after editing name of complete class: students=  0 ctx=["دبستاننمونه|مریمرضوانی|دوم|دوم|۱۴۰۵–۱۴۰۶","دبستاننمونه|مریمرضوان|دوم|دوم|۱۴۰۵–۱۴۰۶"]
+PASS C3 restoring exact old name brings roster back  n=3
+INFO C4 storage keys  ["mehryar_did:24","mehryar_open_day:10","mehryar_q:10","mehryar_v6:54612","mehryar_student_dossiers_v1:45","mehryar_ps:33"]
+PASS C5 no runtime errors
+PASS D1 reload keeps students  n=3 key="دبستاننمونه|مریمرضوانی|دوم|دوم|۱۴۰۵–۱۴۰۶"
+PASS D2 reload keeps teacher
+PASS D3 students page lists names  دانش‌آموزان۳ نفرروی هر نام بزنید تا شماره‌ها، کمبودها و سنجش را ثبت کنید. برای حذف، انگشت 
+PASS D4 class page renders
+PASS D5 no runtime errors
+INFO E1 legacy replaceState ok=true students=0  ctx=["||||۱۴۰۵–۱۴۰۶"]
+PASS E2 no runtime errors on legacy data
+PASS F1 demo shows 12 sample students  n=12
+PASS F2 real roster back after exiting demo  n=3
+PASS F3 demo did not leak into real contexts
+PASS F4 no runtime errors
+RESULT: ALL PASSED

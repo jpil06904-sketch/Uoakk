@@ -1,0 +1,36 @@
+#### gemini-3\.8
+@ 4260052 : ialog{display:none!important}}\n</style>\n<script>\n(() => {\n  'use strict';\n  const routePath = '#/pulse/assistant';\n  // Keep the online part deliberately conservative. All class data and records\n  // remain local; Gemini is only used for the explanation or idea requested.\n      const HEAVY_MODEL = 'gemini-3.8-flash', LIGHT_MODEL = 'gemini-3-flash-preview', FALLBACK_MODEL = LIGHT_MODEL, WORKER_FALLBACK_URL = 'https://red-heart-c9c0.ssioojiu63.workers.dev/';\n    // The configured Worker currently returns a subscription-provider error, so Gemini stays the only analysis path.\n    const WORKER_FALLBACK_ENABL
+---
+count 1
+#### gemini-[0-9][^\'"`\s]{0,30}
+@ 4260052 : e explanation or idea requested.\n      const HEAVY_MODEL = 'gemini-3.8-flash', LIGHT_MODEL = 'gemini-3-flash-preview', FALLBACK_MODEL = 
+---
+@ 4260086 :      const HEAVY_MODEL = 'gemini-3.8-flash', LIGHT_MODEL = 'gemini-3-flash-preview', FALLBACK_MODEL = LIGHT_MODEL, WORKER_FALLBACK_URL = 'http
+---
+count 2
+#### ai-tools-access
+@ 4451889 : bled' : ''}>${icon('trash')}</button></div>\n         <div class="ai-tool-strip"><button type="button" id="ai-live-stats" class="btn btn-tinted-gray" ${busy||pendingAnnualBudget?'disabled':''}>آمار زندهٔ کلاس</button><label><input type="checkbox" id="ai-tools-access" ${useTools?'checked':''} ${busy||pendingAnnualBudget?'disabled':''}> دسترسی ابزارها</label><a href="#/outputs">ابزارها</a></div>\n        <div id="ai-log" class="ai-log" role="log" aria-label="پیام‌های گفت‌وگو" aria-live="polite" aria-relevant="addi
+---
+@ 4458770 : form').addEventListener('submit',e => { e.preventDefault(); void run(); });\n    get('ai-open-key').onclick = () => openKey();\n     get('ai-live-stats').onclick = () => { if(busy||pendingAnnualBudget)return; draft='آمار کلاس'; void run(); };\n    get('ai-tools-access').onchange = e => {\n      if(pendingAnnualBudget){e.target.checked=useTools;return;}\n      if(e.target.checked && !window.confirm('برای پیشنهاد متناسب، نام دانش‌آموزان، شواهد یادگیری و متن گزارش‌های آموزشی لازم به سرویس هوش مصنوعی ارسال می‌شود. فیلد
+---
+count 2
+#### getElementById\('ai-log'\)
+@ 4376539 : ent, id = focusComposer ? 'ai-message' : active?.id;\n    const selection = typeof active?.selectionStart === 'number' ? [active.selectionStart,active.selectionEnd] : null;\n    const scroll = document.getElementById('ai-log')?.scrollTop;\n    render();\n    const next = id && document.getElementById(id);\n    if (next && !next.disabled) { next.focus({preventScroll:true}); if (!focusComposer && selection) try { next.setSelect
+---
+@ 4376843 :    if (next && !next.disabled) { next.focus({preventScroll:true}); if (!focusComposer && selection) try { next.setSelectionRange(...selection); } catch (_) {} }\n    if (scroll !== undefined) document.getElementById('ai-log').scrollTop = scroll;\n  }\n  function scrollChat() { const log = document.getElementById('ai-log'); if (log) log.scrollTop = messages.length || busy || errorText ? log.scrollHeight : 0; }\n  function fri
+---
+@ 4376939 : on) try { next.setSelectionRange(...selection); } catch (_) {} }\n    if (scroll !== undefined) document.getElementById('ai-log').scrollTop = scroll;\n  }\n  function scrollChat() { const log = document.getElementById('ai-log'); if (log) log.scrollTop = messages.length || busy || errorText ? log.scrollHeight : 0; }\n  function friendlyError(code, reason, providerMessage, model) {\n    const source = String(reason || '')+' '+S
+---
+count 3
+#### id=\\?\"?ai-log
+@ 4452048 : ndingAnnualBudget?'disabled':''}>آمار زندهٔ کلاس</button><label><input type="checkbox" id="ai-tools-access" ${useTools?'checked':''} ${busy||pendingAnnualBudget?'disabled':''}> دسترسی ابزارها</label><a href="#/outputs">ابزارها</a></div>\n        <div id="ai-log" class="ai-log" role="log" aria-label="پیام‌های گفت‌وگو" aria-live="polite" aria-relevant="additions text" aria-busy="${busy}">\n           ${!messages.length && !pending ? `<div class="ai-welcome"><div class="ai-mark">${icon('assistantChat')}</div><
+---
+count 1
+#### ai-bubble|class=\\?\"ai-msg|'ai-msg|ai-msg-
+@ 4254385 : ight:auto;max-width:88%}\n.ai-author{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px}.ai-message.user .ai-author{text-align:left}\n.ai-bubble{font-size:14px;white-space:pre-wrap;line-height:1.95;border-radius:16px 4px 16px 16px;background:var(--card2);padding:13px 15px;unicode-bidi:plaintex
+---
+@ 4254565 : -space:pre-wrap;line-height:1.95;border-radius:16px 4px 16px 16px;background:var(--card2);padding:13px 15px;unicode-bidi:plaintext}\n.ai-message.user .ai-bubble{background:var(--ai-tint);border-radius:4px 16px 16px 16px}\n.ai-copy{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);paddin
+---
+@ 4450628 : rticle class="ai-message ${m.role === 'user' ? 'user' : 'assistant'}"><div class="ai-author">${m.role === 'user' ? 'شما' : 'مهریار'}</div><div class="ai-bubble">${formatted(m.role === 'model' ? hideComputedEvidence(m.text) : m.text)}</div>${m.role === 'model' ? `<button type="button" class="ai-copy" data-ai-
+---
+count 3

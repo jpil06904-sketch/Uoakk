@@ -1,0 +1,17 @@
+const fs=require('fs');
+const { JSDOM, VirtualConsole } = require('/workspaces/Uoakk/.mh/env/node_modules/jsdom');
+const html=fs.readFileSync('/workspaces/Uoakk/mehryar-v4-final (10).html','utf8');
+const vc=new VirtualConsole();const errs=[];vc.on('jsdomError',e=>errs.push(String(e.stack||e).slice(0,300)));
+const dom=new JSDOM(html,{url:'https://mehryar.local/index.html',runScripts:'dangerously',pretendToBeVisual:true,virtualConsole:vc,beforeParse(w){w.fetch=()=>Promise.reject(new TypeError('blocked'));w.matchMedia=q=>({matches:false,media:q,addListener(){},removeListener(){},addEventListener(){},removeEventListener(){}});w.IntersectionObserver=class{observe(){}unobserve(){}disconnect(){}};w.ResizeObserver=class{observe(){}unobserve(){}disconnect(){}};w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=function(){};w.Element.prototype.scrollTo=function(){};w.HTMLCanvasElement.prototype.getContext=()=>null;}});
+const w=dom.window;const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+(async()=>{await new Promise(r=>w.document.readyState==='complete'?r():w.addEventListener('load',r));await sleep(400);
+const o=[];const q=e=>{try{return JSON.stringify(w.eval(e))}catch(x){return 'ERR '+x.message}};
+o.push('before: demo='+q('typeof demoMode!=="undefined"?demoMode:"n/a"')+' students='+q('state.students&&state.students.length')+' grade='+q('state.klass&&state.klass.grade'));
+w.eval('loadSample()');await sleep(600);
+o.push('after: demo='+q('typeof demoMode!=="undefined"?demoMode:"n/a"')+' students='+q('state.students&&state.students.length')+' grade='+q('state.klass&&state.klass.grade')+' hash='+w.location.hash);
+o.push('sampleState students='+q('typeof sampleState==="function"?sampleState().students.length:"n/a"')+' keys='+q('typeof sampleState==="function"?Object.keys(sampleState()).slice(0,30):"n/a"'));
+w.location.hash='#/students';await sleep(200);o.push('students page: '+(w.document.getElementById('app').textContent||'').replace(/\s+/g,' ').trim().slice(0,200));
+w.location.hash='#/pulse';await sleep(200);o.push('pulse page: '+(w.document.getElementById('app').textContent||'').replace(/\s+/g,' ').trim().slice(0,300));
+o.push('ERRS '+errs.length+' '+errs.join(' | '));
+fs.writeFileSync('/workspaces/Uoakk/.mh/demo.txt',o.join('\n'));process.exit(0);})();
+setTimeout(()=>process.exit(2),120000);

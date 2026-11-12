@@ -1,0 +1,4 @@
+DATE 2026-11-12T11:04:39.488Z  FILE=/workspaces/Uoakk/mehryar-v4-final-fixed.html  panel.id match=true
+tools checkbox default: ai-tools-access=false
+tools turned ON
+welcome: امروز کجای کلاس کمکت کنم؟متن کامل بودجه‌بندی را بفرست؛ پیش‌نمایش را می‌بینی و فقط پس از تأیید معلم ذخیره می‌شود.آمار واقعی کلاسبدون مصرف درخواست آنلاینبرای فردا چه پیشنهادی داری؟ایدهٔ تدریس از شواهد ه

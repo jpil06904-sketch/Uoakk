@@ -1,0 +1,299 @@
+=== FUNCS 5582-8300
+5597 catalog
+5598 fail
+5599 text
+5604 choice
+5605 day
+5615 student
+5622 skill
+5628 domain
+5630 lessonContext
+5668 read
+5687 inRange
+5688 observations
+5689 page
+5751 bagItems
+5755 extraRead
+5767 extraPrepare
+5769 bounded
+5770 bool
+5771 patch
+5772 set
+5785 value
+5864 printOptions
+5880 outputConfig
+5884 printTextKeys
+5888 selectedForOutput
+5898 prepareOutput
+5920 viewOutput
+5922 current
+5928 currentUndo
+5933 draftContext
+5934 budgetPayload
+5943 isClassWideRecord
+5950 expandClassWideRecords
+5953 sameDate
+5958 explicitAbsence
+5959 absentOn
+5974 forceExplicitClasswideColor
+5984 prepare
+6037 edit
+6212 ensureCurrent
+6220 write
+6228 commit
+6252 undo
+6258 localAnswer
+6271 get_budget
+6277 budgetScheduleHint
+6281 order
+6282 parts
+6283 daysIn
+6313 get_budget_and_progress
+6315 cleanGrade
+6316 cleanYear
+6341 walk
+6347 subjectKey
+6357 flatten
+6375 str
+6442 assistantRevision
+6516 normActCode
+6517 isActCode
+6518 runSpeedTest
+6541 bad
+6553 activateCode
+6586 recordNotice
+6587 shortHash
+6592 stripInventedTopicNotes
+6601 hideComputedEvidence
+6604 transientAssistantStatus
+6605 loadAnswerCache
+6613 saveAnswerCache
+6617 clearAnswerCache
+6621 adviceOnly
+6626 isClarificationPrompt
+6633 shouldAllowToolCalls
+6648 cleanBudgetText
+6649 annualBudgetFold
+6650 annualBudgetMonthName
+6651 annualBudgetMonthsInText
+6652 normalizeAnnualBudgetGrade
+6653 extractAnnualBudgetGrade
+6657 extractAnnualBudgetYear
+6658 isAnnualBudgetPrompt
+6689 annualBudgetDigit
+6690 expandAnnualBudgetTopics
+6691 normalizeAnnualBudgetPayload
+6701 hasMonthlyBudgetTable
+6703 cells
+6704 hasMonth
+6712 hasBudgetPayload
+6716 isCurriculumBudgetPrompt
+6722 isBudgetInputPrompt
+6725 isBudgetQuestionPrompt
+6729 canonicalBudgetYear
+6733 budgetQueryIdentity
+6737 budgetHistoryIdentity
+6740 budgetScopesMatch
+6744 postBudgetExchange
+6748 answerBudgetQuestion
+6774 isTeacherBudgetApproval
+6778 confirm_teacher_report
+6789 budgetCommitStatus
+6797 budgetImportMode
+6801 prepareLocalBudgetPreview
+6804 isBudgetHistoryMessage
+6805 latestBudgetMessageFor
+6806 previousBudgetMessageFor
+6810 stageAnnualBudgetPreview
+6815 annualBudgetPreviewHtml
+6817 gf
+6820 saveAnnualBudgetPreview
+6827 cancelAnnualBudgetPreview
+6828 isCacheablePrompt
+6836 isLightRecordPrompt
+6840 isHeavyPrompt
+6844 isAggregateReportPrompt
+6848 classWidePromptIntent
+6856 modelForPrompt
+6859 modelLimit
+6860 answerCacheKey
+6864 cachedAnswer
+6868 rememberAnswer
+6876 rateState
+6893 saveRateState
+6897 waitAbortable
+6900 abort
+6901 done
+6905 reserveRequestSlot
+6921 quotaStatus
+6925 readResponseJson
+6936 fetchWithTimeout
+6939 forwardAbort
+6956 isTransientModelFailure
+6959 fetchJsonWithTimeout
+6962 forwardAbort
+6981 fetchModelWithRetry
+6986 makeOptions
+7015 quotaKind
+7019 retrySeconds
+7027 intentOf
+7029 classifyIntent
+7050 classifyPrompt
+7106 profile
+7130 inquiryKinds
+7147 usefulInquiryText
+7151 promptHasConcreteEvidence
+7155 buildTeachingInquiry
+7186 isSubjectBudgetQuestion
+7196 rawTomorrowPrompt
+7204 focusedFollowUp
+7218 isFollowUpPlanPrompt
+7223 isTomorrowPrompt
+7224 hintedSubjects
+7227 isGreetingOnly
+7231 greetingReply
+7235 threadContext
+7240 classProblemThread
+7245 stated
+7260 isProgramPrompt
+7266 tomorrowBudgetRows
+7268 add
+7277 sort
+7284 tomorrowBudgetMatches
+7290 tomorrowLessonContext
+7315 tomorrowBudgetContext
+7319 tomorrowLatestEvidence
+7325 tomorrowPriorPlans
+7329 tomorrowPlanWasUsed
+7333 tomorrowActivityPlan
+7335 pick
+7357 tomorrowPrerequisiteReason
+7363 tomorrowComparisonReason
+7373 tomorrowBudgetLine
+7378 tomorrowRecommendation
+7386 legacyTomorrowRecommendation
+7406 isLearnPrompt
+7414 isInstructionalIdeaPrompt
+7421 offlineAssistantResponse
+7427 recordOfflineAssistantReply
+7431 ideaBudgetRows
+7435 teachingPreflight
+7461 readHistory
+7481 saveHistory
+7495 paintStorage
+7501 refresh
+7511 scrollChat
+7512 friendlyError
+7525 compactClassIdentity
+7530 compactClassSnapshot
+7541 workerFallback
+7564 request
+7580 registerEvidence
+7637 send
+7728 cancelRequest
+7734 quotaCountdownText
+7740 quotaResumeAt
+7745 quotaRawNow
+7750 clearLocalBackoff
+7754 quotaKindNow
+7759 startQuotaCountdown
+7761 tick
+7774 run
+7777 runInner
+7904 openKey
+7938 enhanceBudgetPreview
+7959 render
+7963 messageHtml
+7985 get
+7986 sizeInput
+8081 fitViewport
+8105 dailyMessageTrim
+8109 dailyMessageData
+8115 add
+8131 dailyMessagePrompt
+8143 dailyMessagePanel
+8157 paint
+8224 topicIdOf
+8225 topicLabelOf
+8226 topicKeyOf
+8228 normalizeTopicData
+8232 set
+8235 findSkill
+8241 normalizeSession
+=== WORKERS / ENDPOINTS
+L3988 https://billowing-feather-ba20.ssioojiu63.workers.dev/panel
+L6512 https://red-heart-c9c0.ssioojiu63.workers.dev/
+L6985 https://generativelanguage.googleapis.com/v1beta/models/
+L8102 https://red-heart-c9c0.ssioojiu63.workers.dev/
+=== around 6930-6990
+6925|   async function readResponseJson(response, signal) {
+6926|     try {
+6927|       return await Promise.race([
+6928|         response.json().catch(error=>{if(error instanceof SyntaxError)return {};throw error;}),
+6929|         waitAbortable(RESPONSE_BODY_TIMEOUT_MS,signal).then(()=>({responseBodyTimeout:true}))
+6930|       ]);
+6931|     } catch (error) {
+6932|       if (error.name === 'AbortError') throw error;
+6933|       return {};
+6934|     }
+6935|   }
+6936|   async function fetchWithTimeout(url, options, signal, timeoutMs) {
+6937|     const controller = new AbortController();
+6938|     let timedOut = false;
+6939|     const forwardAbort = () => controller.abort();
+6940|     if (signal.aborted) controller.abort(); else signal.addEventListener('abort', forwardAbort, {once:true});
+6941|     const timer = setTimeout(() => { timedOut = true; controller.abort(); }, timeoutMs);
+6942|     try {
+6943|       return await fetch(url, {...options, signal:controller.signal});
+6944|     } catch (error) {
+6945|       if (timedOut && !signal.aborted) {
+6946|         const timeoutError = new Error('پاسخ سرویس مدل دیر رسید؛ اطلاعات ابزارها تغییر نکرده است. دوباره تلاش کن.');
+6947|         timeoutError.code = 'MODEL_TIMEOUT';
+6948|         throw timeoutError;
+6949|       }
+6950|       throw error;
+6951|     } finally {
+6952|       clearTimeout(timer);
+6953|       signal.removeEventListener('abort', forwardAbort);
+6954|     }
+6955|   }
+6956|   function isTransientModelFailure(error) {
+6957|     return error?.code === 'MODEL_TIMEOUT' || error?.code === 'MODEL_NETWORK' || error?.code === 'MODEL_UNAVAILABLE' || error?.code === 'MODEL_RATE_LIMIT' || error instanceof TypeError;
+6958|   }
+6959|   async function fetchJsonWithTimeout(url, options, signal, timeoutMs) {
+6960|     const controller = new AbortController();
+6961|     let timedOut = false;
+6962|     const forwardAbort = () => controller.abort();
+6963|     if (signal.aborted) controller.abort(); else signal.addEventListener('abort', forwardAbort, {once:true});
+6964|     const timer = setTimeout(() => { timedOut = true; controller.abort(); }, timeoutMs);
+6965|     try {
+6966|       const response = await fetch(url, {...options, signal:controller.signal});
+6967|       const data = await response.json().catch(error => { if (error instanceof SyntaxError) return {}; throw error; });
+6968|       return {response,data};
+6969|     } catch (error) {
+6970|       if (timedOut && !signal.aborted) {
+6971|         const timeoutError = new Error('پاسخ سرویس مدل دیر رسید؛ اطلاعات ابزارها تغییر نکرده است. دوباره تلاش کن.');
+6972|         timeoutError.code = 'MODEL_TIMEOUT';
+6973|         throw timeoutError;
+6974|       }
+6975|       throw error;
+6976|     } finally {
+6977|       clearTimeout(timer);
+6978|       signal.removeEventListener('abort', forwardAbort);
+6979|     }
+6980|   }
+6981|   async function fetchModelWithRetry(model, body, signal, timeoutMs, retries = MAX_MODEL_RETRIES) {
+6982|     await reserveRequestSlot(signal, model);
+6983|     if (isActCode(key) && !window.__mehryarPanel) { const e = new Error('اتصال به پنل در این نسخه روشن نیست.'); e.code = 'MODEL_NETWORK'; throw e; }
+6984|     const viaPanel = isActCode(key);
+6985|     const url = viaPanel ? window.__mehryarPanel.base+'/api.php?a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent';
+6986|     const makeOptions = () => viaPanel ? {method:'POST',headers:{'Content-Type':'text/plain'},body:key+'|'+window.__mehryarPanel.id+'\n'+JSON.stringify(body)} : {method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify
+6987|     let options = makeOptions();
+6988|     const waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? PANEL_FETCH_TIMEOUT_MS : timeoutMs;
+6989|     for (let attempt = 0; attempt <= retries; attempt++) {
+6990|       if (attempt) await waitAbortable(MODEL_RETRY_DELAY_MS * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 400), signal);
+6991|       try {
+6992|         let result = await fetchJsonWithTimeout(url, options, signal, waitMs);
+6993|         if (result.response.status === 400 && body.generationConfig && body.generationConfig.thinkingConfig && /think/i.test(JSON.stringify(result.data || {}))) {
+6994|           thinkingTrimBroken = true; delete body.generationConfig.thinkingConfig; options = makeOptions();
+6995|           result = await fetchJsonWithTimeout(url, options, signal, waitMs);

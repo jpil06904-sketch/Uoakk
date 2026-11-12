@@ -1,0 +1,39 @@
+### DID id gen 1
+  @L 3991 :: !PANEL_URL)return; ⏎  const OFF='mehryar_stats_off',DID='mehryar_did',base=(()=>{try{return new URL(PANEL_URL,location.href).href.replace(/\/+$/,'');}catch(_){return PANEL_URL.replace(/\/+$/,'');}})(),viewed=new Set(); ⏎  const ls=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);v===null?localStorage.removeItem(k):localStorage.setItem(k,v);}catch(_){}return null;}; ⏎  let id=ls(DID);if(!id){id=Array.from(crypto.getRandomValues(new Uint8Array(12)),b=>b.toString(16).padStart(2,'0')).join('');ls(DID,id);} ⏎  const Q='mehryar_q',qget=()=>{try{return JSON.parse(ls(Q)||'{}')||{};}catch(_){return {};}};let sending=false;const setPS=s=>ls('mehryar_ps',JSON.stringify({s,t:Date.now()})); ⏎  const flush=()=>{if(sending||!navigator.onLine)return;const q=qget();if(!Object.keys(q).length)return;sending=true;fetch(base+'/api.php?a=p',{method:'POST',body:JSON.stringify({id,v:APP_VERSION,ev:q}),keepalive:true,headers:{'Content-Type':'text/plain'}}).then(r=>r.text()).th
+### assistant route 0
+### routes table 8
+  @L 1987 :: ================= ⏎    JS — Router ⏎    ============================================================ */ ⏎ const ROUTES = [ ⏎   [/^#\/welcome$/, () => renderWelcome()], ⏎   [/^#\/home$/, () => renderHome()], ⏎   [/^#\/class$/, () => renderClass()], ⏎   [/^#\/students$/, () => renderStudents()], ⏎   [/^#\/students\/import$/, () => renderImport()], ⏎   [/^#\/students\/done$/, () => renderStudentsDone()], ⏎   [/^#\/students\/([a-zA-Z0-9_-]+)$/, m => renderStudent(m[1])], ⏎   [/^#\/settings$/, () => renderSettings()], ⏎   [/^#\/settings\/fields$/, () => renderFields()], ⏎   [/^#\/settings\/meeting$/, () => renderMeetingSettings()], ⏎   [/^#\/settings\/messages$/, () => renderMessagesList()], ⏎   [/^#\/settings\/messages\/([a-zA-Z0-9_-]+)
+  @L 2009 :: a-zA-Z0-9_-]+)$/, m => renderOutput(m[1])], ⏎ ]; ⏎ let currentHash = ''; ⏎ let currentFn = null; ⏎ function route() { ⏎   const h = location.hash || '#/home'; ⏎   for (const [re, fn] of ROUTES) { ⏎     const m = h.match(re); ⏎     if (m) { ⏎       if (h !== currentHash) { H.clear(); closeAllLayers(); currentHash = h; const app = $('#app'); if (app) app.scrollTop = 0; } ⏎       currentFn = () => fn(m); ⏎       fn(m); saveLastRoute(h); return; ⏎     } ⏎   } ⏎   location.hash = '#/home'; ⏎ } ⏎ window.addEventListener('hashchange', route); ⏎ function saveLastRoute(h) { if (h === '#/welcome') return; state.ui.lastRoute = h; dirty = true; persist(); } ⏎ let renderQueued = false; ⏎ function scheduleRender() { ⏎   if (renderQueued) return; rend
+  @L 3275 ::  || '#/home') : '#/welcome'; } ⏎   else if(!state.progress.pulseIntroSeen) {location.hash='#/welcome';route();} else route(); ⏎   // Storage status is rendered inline; no startup toast covers the introduction. ⏎   document.addEventListener('keydown', e => { ⏎     if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) { ⏎       e.preventDefault(); ⏎       const b = $('#btnPrint'); ⏎       if (b && !b.disabled) b.click(); else ui.toast('از دکمهٔ چاپ داخل هر ابزار استفاده کنید'); ⏎     } ⏎     if (e.key === 'Escape' && layers.length) layers[layers.length - 1].close(); ⏎   }); ⏎   window.addEventListener('beforeunload',e=>{if(!dirty||demoMode)return;flushSave();if(dirty){e.preventDefault();e.returnValue='';}}); ⏎ 
+### send handler 0
+### ai-form ids 26
+  @L 6818 :: id="ai-save-annual-budget"
+  @L 6818 :: id="ai-cancel-annual-budget"
+  @L 7906 :: id="ai-key-form"
+  @L 7906 :: id="ai-key"
+  @L 7906 :: id="ai-show-key"
+  @L 7906 :: id="ai-forget"
+  @L 7906 :: id="ai-speed"
+  @L 7906 :: id="ai-speed-box"
+  @L 7964 :: id="ai-open-key"
+  @L 7966 :: id="ai-clear"
+  @L 7967 :: id="ai-live-stats"
+  @L 7967 :: id="ai-tools-access"
+  @L 7968 :: id="ai-log"
+  @L 7974 :: id="ai-apply-report"
+  @L 7974 :: id="ai-dismiss-report"
+  @L 7976 :: id="ai-open-output"
+  @L 7977 :: id="ai-undo-report"
+  @L 7978 :: id="ai-retry"
+  @L 7980 :: id="ai-form"
+  @L 7980 :: id="ai-pending-confirm"
+  @L 7980 :: id="ai-pending-cancel"
+  @L 7980 :: id="ai-message"
+  @L 7980 :: id="ai-stop"
+  @L 7980 :: id="ai-send"
+  @L 7980 :: id="ai-storage"
+  @L 7980 :: id="ai-counter"
+### a=ai response parse 3
+  @L 7043 :: = rateState(); rate.backoffUntilByModel[LIGHT_MODEL] = Date.now() + seconds * 1000; rate.kindByModel = rate.kindByModel || {}; rate.kindByModel[LIGHT_MODEL] = quotaKind(data); saveRateState(rate); } ⏎         return; ⏎       } ⏎       const answer = (data.candidates?.[0]?.content?.parts || []).filter(x => !x.thought && typeof x.text === 'string').map(x => x.text).join(' ').trim().toUpperCase(); ⏎       const label = (answer.match(/\b(NEXT|IDEA|STUDENT|RECORD|OTHER|LEARN)\b/) || [])[1]; ⏎       if (!label) return; ⏎       intentCache.set(key, label); if (intentCache.size > 60) intentCache.delete(intentCache.keys().next().value); ⏎       routeCache.set(prompt, label === 'R
+  @L 7061 :: {};rate.kindByModel[LIGHT_MODEL]=quotaKind(data);saveRateState(rate);} ⏎         throw new Error(friendlyError(response.status,(data.error?.details||[]).map(d=>d.reason||'').join(' '),data.error?.message,LIGHT_MODEL)); ⏎       } ⏎       const answer=(data.candidates?.[0]?.content?.parts||[]).filter(p=>!p.thought&&typeof p.text==='string').map(p=>p.text).join(' ').trim().toUpperCase(); ⏎       const model=/\bHARD\b/.test(answer)?HEAVY_MODEL:LIGHT_MODEL; ⏎       routeCache.set(prompt,model); if(routeCache.size>40)routeCache.delete(routeCache.keys().next().value); ⏎       return model; ⏎     } catch(error) { ⏎       if(error.name==='AbortError')throw error; ⏎       return model
+  @L 7663 :: providerError.status=response.status;} ⏎             throw providerError; ⏎       } ⏎       if(data.promptFeedback?.blockReason)throw new Error('این درخواست قابل پاسخ‌گویی نیست. سؤال را آموزشی و بدون اطلاعات حساس بازنویسی کن.'); ⏎       const candidate=data.candidates?.[0], content=candidate?.content; ⏎       if(candidate?.finishReason&&!['STOP','MAX_TOKENS'].includes(candidate.finishReason))throw new Error('پاسخ کامل نشد؛ هیچ تغییری ثبت نشده است.'); ⏎       const calls=(content?.parts||[]).filter(p=>p.functionCall); ⏎        if(calls.length) { ⏎          if(annualBudgetMode&&candidate.finishReason==='MAX_TOKENS')throw new Error('خروجی ابزار کامل نشد؛ هیچ داده‌ای ذخیره نشد

@@ -1,0 +1,53 @@
+.mh/live_did.txt
+.mh/live_did2.txt
+3987:PANEL_URL = fully off. ===== */
+3988:PANEL_URL='https://billowing-feather-ba20.ssioojiu63.workers.dev/panel';
+3990:PANEL_URL)return;
+3991:PANEL_URL,location.href).href.replace(/\/+$/,'');}catch(_){return PANEL_URL.replace(/\/+$/,'');}})(),viewed=new Set();
+6985:a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent';
+6512:      const LIGHT_MODEL = 'gemini-3-flash-preview', HEAVY_MODEL = LIGHT_MODEL, FALLBACK_MODEL = LIGHT_MODEL, WORKER_FALLBACK_URL = 'https://red-heart-c9c0.ssioojiu63.workers.dev/';
+6857:    return isHeavyPrompt(prompt)||isAggregateReportPrompt(prompt) ? HEAVY_MODEL : LIGHT_MODEL;
+6859:  function modelLimit(model) { return model === HEAVY_MODEL ? HEAVY_REQUESTS_PER_DAY : LIGHT_REQUESTS_PER_DAY; }
+6886:    if (legacyCount && !Number.isInteger(saved.dayCountByModel[HEAVY_MODEL])) saved.dayCountByModel[HEAVY_MODEL] = legacyCount;
+6887:     for (const model of [HEAVY_MODEL,LIGHT_MODEL,FALLBACK_MODEL]) saved.dayCountByModel[model] = Number.isInteger(saved.dayCountByModel[model]) ? saved.dayCountByModel[model] : 0;
+6908:    if (backoffUntil > now) { const error=new Error('برای محافظت از سهمیهٔ '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+'، درخواست آنلاین موقتاً متوقف است. چند ثانیه بعد دوباره تلاش کن. ثبت اطلاعات محلی همچنان فعال است.'); error.code='MODEL_RATE_LIMIT'
+6909:    if (count >= limit) { const error=new Error('برای پر نشدن سهمیهٔ مدل '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+'، سقف روزانهٔ برنامه رسید. اطلاعات محلی و ثبت گزارش‌ها فعال‌اند.'); error.code='MODEL_RATE_LIMIT'; throw error; }
+6923:    return 'تحلیلی: '+fa(rate.dayCountByModel[HEAVY_MODEL]||0)+' از '+fa(HEAVY_REQUESTS_PER_DAY)+' · سریع: '+fa(rate.dayCountByModel[LIGHT_MODEL]||0)+' از '+fa(LIGHT_REQUESTS_PER_DAY);
+6988:    const waitMs = viaPanel && timeoutMs === MODEL_FETCH_TIMEOUT_MS ? (model === HEAVY_MODEL ? 20000 : PANEL_FETCH_TIMEOUT_MS) : timeoutMs;
+6989:    if (viaPanel) retries = Math.min(retries, model === HEAVY_MODEL ? 0 : 1);
+7049:      routeCache.set(prompt, label === 'RECORD' || label === 'OTHER' ? LIGHT_MODEL : HEAVY_MODEL);
+7053:    if (isHeavyPrompt(prompt) || isAggregateReportPrompt(prompt) || isTomorrowPrompt(prompt)) { routeCache.set(prompt,HEAVY_MODEL); return HEAVY_MODEL; }
+7065:      const model=/\bHARD\b/.test(answer)?HEAVY_MODEL:LIGHT_MODEL;
+7519:    const modelLabel = model === HEAVY_MODEL ? 'مدل تحلیلی Gemini' : 'مدل سریع Gemini';
+7572:    const model=options.model===HEAVY_MODEL&&!options.annualBudget&&Date.now()<heavyDownUntil?LIGHT_MODEL:(options.model||LIGHT_MODEL);
+7649:          if(model===HEAVY_MODEL&&isTransientModelFailure(error))heavyDownUntil=Date.now()+600000;
+7651:ModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:error.code==='MODEL_RATE_LIMIT'&&Date.now()>=heavyDownUntil?HEAVY_MODEL:FALLBACK_MODEL,triedHeavy:true});
+7652:            if (!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&model===HEAVY_MODEL&&fallbackPrompt&&/سهمیه|سقف روزانه|موقتاً متوقف|quota|rate limit/i.test(error.message||'')) return workerFallback(fallbackPrompt,signal);
+7660:          if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&response.status===400&&model===HEAVY_MODEL&&fallbackPrompt)return workerFallback(fallbackPrompt,signal);
+7661:le,{...options,model:FALLBACK_MODEL});if(!options.triedHeavy&&!annualBudgetMode)return request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&fallbackPrompt)return workerFallback(fallbackPrompt,signal);con
+7661:st quotaError=new Error('سهمیه یا سرعت مجاز مدل '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+' پر شده است. طبق پاسخ سرویس، '+fa(seconds)+' ثانیه صبر کن؛ ثبت اطلاعات محلی همچنان فعال است.');quotaError.code='MODEL_RATE_LIMIT';t
+7662:           if(model===HEAVY_MODEL&&RETRYABLE_MODEL_STATUSES.has(response.status))heavyDownUntil=Date.now()+600000;
+7663:&&!options.triedHeavy&&!annualBudgetMode&&Date.now()>=heavyDownUntil){try{return await request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});}catch(altError){if(altError?.name==='AbortError')throw altError;altNote=' مدل تحلیلی را هم امتحان کردم ولی جواب نداد: '+String(alt
+7747:    const rate = rateState(), now = Date.now(), h = Number(rate.backoffUntilByModel[HEAVY_MODEL]) || 0, l = Number(rate.backoffUntilByModel[LIGHT_MODEL]) || 0;
+7752:    const rate = rateState(), now = Date.now(), h = Number(rate.backoffUntilByModel[HEAVY_MODEL]) || 0, l = Number(rate.backoffUntilByModel[LIGHT_MODEL]) || 0;
+7753:    const m = h > now && l > now ? (h < l ? HEAVY_MODEL : LIGHT_MODEL) : (l > now ? LIGHT_MODEL : HEAVY_MODEL);
+7761:    const rate = rateState(), now = Date.now(), k = rate.kindByModel || {}, h = Number(rate.backoffUntilByModel[HEAVY_MODEL]) || 0, l = Number(rate.backoffUntilByModel[LIGHT_MODEL]) || 0;
+7762:    if (h > now && l > now) return k[HEAVY_MODEL] === 'day' && k[LIGHT_MODEL] === 'day' ? 'day' : (k[h < l ? HEAVY_MODEL : LIGHT_MODEL] || '');
+7763:    return (l > now ? k[LIGHT_MODEL] : k[HEAVY_MODEL]) || '';
+7862:    if (cacheable) for (const candidate of [...new Set([modelForPrompt(prompt),HEAVY_MODEL,LIGHT_MODEL])]) {
+start 10:02:00
+== gemini-3.8-flash
+HTTP 504 total=81.101661
+non-json: error code: 504
+
+== gemini-3.5-flash
+HTTP 200 total=3.986979
+OK thoughts= 381 out= 15
+TEXT: علت اصلی معمولاً **عدم درک کامل مفهوم ارزش مکانی
+== gemini-3-pro-preview
+HTTP 404 total=1.154700
+ERR 404 This model models/gemini-3-pro-preview is no longer available. Please update your code to use models/gemini-3.1-pro-preview for the latest features and improvements. We recommend you to use the Interactions API (https://
+== gemini-pro-latest
+HTTP 429 total=1.099221
+ERR 429 ظرفیت فعلی این مدل پر است؛ کمی بعد دوباره امتحان کن. (per day)
+FINISHED 10:03:29

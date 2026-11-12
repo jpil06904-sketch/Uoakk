@@ -1,0 +1,14 @@
+5:=== Q1 greeting  TOTAL 0.3s  firstVisible 0.3s
+10:=== Q2 list students  TOTAL 3.3s  firstVisible 3.3s
+14:   ai gemini-3-flash-preview st=200 1242ms req=815B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=8 think={"thinkingBudget":0} usage(in/out/think)=188/2/ finish=STOP
+15:   ai gemini-3-flash-preview st=200 1865ms req=9764B keys=systemInstruction,contents,generationConfig tools=0 cont=3 maxOut=3072 think={"thinkingBudget":512} usage(in/out/think)=2940/134/ finish=STOP
+18:=== Q3 heavy advice  TOTAL 0.3s  firstVisible 0.3s
+23:=== Q4 record attendance  TOTAL 5.8s  firstVisible 5.8s
+27:   ai gemini-3-flash-preview st=200 5666ms req=10513B keys=systemInstruction,contents,generationConfig tools=0 cont=7 maxOut=3072 think=null usage(in/out/think)=3149/161/709 finish=STOP
+30:=== Q5 parent message  TOTAL 27.3s  firstVisible 0.0s
+32:RETRY BUTTON SHOWN
+34:   ai gemini-3-flash-preview st=200 1412ms req=852B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=8 think={"thinkingBudget":0} usage(in/out/think)=197/2/ finish=STOP
+35:   ai gemini-3-flash-preview st=520 25679ms req=10909B keys=systemInstruction,contents,generationConfig tools=0 cont=7 maxOut=3072 think=null PARSE=SyntaxError: Unexpected token 'e', "error code: 520
+39:=== Q6 follow-up  TOTAL 56.2s  firstVisible 56.2s
+43:   ai gemini-3-flash-preview st=503 6610ms req=798B keys=systemInstruction,contents,generationConfig tools=0 cont=1 maxOut=8 think={"thinkingBudget":0} PARSE=SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+44:   ai gemini-3-flash-preview st=200 49438ms req=10895B keys=systemInstruction,contents,generationConfig tools=0 cont=7 maxOut=3072 think={"thinkingBudget":512} usage(in/out/think)=3269/62/ finish=STOP

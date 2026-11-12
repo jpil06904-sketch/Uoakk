@@ -1,0 +1,23 @@
+LINE 8816
+const classScopedKeys = ['klass','classContexts','fields','students','lists','meeting','plan7','messages','outputSettings','progress','learning','curriculum'];
+   const classScopeSnapshot = data => { const out={}; for(const key of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };
+   
+=====
+function ensureClassScope(data) {
+     if(!data||typeof data!=='object')return data;
+     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');
+     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}
+     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}
+     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;
+     const target=contexts[activeKey];
+     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}
+     else if(currentKey!=='unassigned'){
+       const blank=migrate({klass:clone(data.klass)});
+       for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(blank,key))data[key]=clone(blank[key]);
+     }
+     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;
+   }
+    
+===== sampleState tail
+onIds:['sample-session-0'],action:'آموزش با ده‌تایی و یکی',activityId:'a-m-carry',createdOn:plusDays(localISO(),-3),dueOn:localISO(),status:'planned',outcome:'unchecked',note:'',completedOn:''},{id:'sample-fu-2',studentId:'sample-1',subject:'ریاضی',skillId:'m-carry',sourceSessionIds:['sample-session-1'],recheckSessionId:'sample-session-4',action:'تمرین ارزش مکانی',activityId:'a-m-place',createdOn:plusDays(localISO(),-3),dueOn:plusDays(localISO(),-1),status:'done',outcome:'improved',note:'در مشاهدهٔ مرتبط بعدی سبز ثبت شده؛ علیت قطعی نیست.',completedOn:plusDays(localISO(),-1)},{id:'sample-fu-3',studentId:'sample-0',subject:'فارسی',skillId:'f-fluency',sourceSessionIds:['sample-session-3'],action:'روخوانی کوتاه دونفره',activityId:'a-f-fluency',createdOn:plusDays(localISO(),-1),dueOn:localISO(),status:'done',outcome:'unchecked',note:'',completedOn:plusDays(localISO(),-1)}];s.learning.responsibilityHistory=[{id:'sample-role',studentId:'sample-8',role:'کتابخانه',date:plusDays(localISO(),-3),undone:false}];s.progress={...s.progress,welcomeSeen:true,pulseIntroSeen:true,classDone:true,studentsDone:true};return s;}
+loadSample=function(){if(demoMode){location.hash='#/pulse';return;}if(dirty&&!flushSave()){ui.toast('ابتدا پشتیبان بگیرید؛ ورود به نمونه تا رفع خطای ذخیره انجام نشد.');return;}clearTimeout(saveTimer2);saveEpoch++;realSnapshot=state;demoMode=true;state=sampleState();quickDraft=null;quickKey='';planDraft=null;dirty=false;location.hash='#/pulse';applyTheme();scheduleRender();};

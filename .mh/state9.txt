@@ -1,0 +1,22 @@
+=== backups
+-rw-rw-rw- 1 codespace codespace 4851065 11-09_16:54 backup-before-scope-fix.html
+-rw-rw-rw- 1 codespace codespace 4850421 11-08_17:27 backup-original.html
+f2293543b251d8fe07a15ff344b3371a  backup-before-scope-fix.html
+0b40689d4d3e7566819236ee45d20df0  backup-original.html
+=== git
+?? .mh/
+?? "mehryar-v4-final (10).html"
+?? mehryar-v4-final-fixed.html
+?? package-lock.json
+510263b feat: Initialize project structure and dependencies
+6d582d1 Initial commit
+d41d8cd98f00b204e9800998ecf8427e  /dev/fd/63
+=== chat_mock args
+5:const FILE = process.argv[2] || '/workspaces/Uoakk/mehryar-v4-final-fixed.html';
+6:const OUT = process.argv[3] || '/workspaces/Uoakk/.mh/chat_mock.txt';
+8:const html = fs.readFileSync(FILE, 'utf8');
+=== f_done
+done
+0b40689d4d3e7566819236ee45d20df0  /workspaces/Uoakk/mehryar-v4-final (10).html
+0b40689d4d3e7566819236ee45d20df0  .mh/backup-original.html
+89096129599b2e24e2ce4bf81d571373  /workspaces/Uoakk/mehryar-v4-final-fixed.html

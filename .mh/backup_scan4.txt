@@ -1,0 +1,47 @@
+== dossier
+3330:const STUDENT_DOSSIER_KEY='mehryar_student_dossiers_v1';
+== indexKey
+6822:       const json=preview.json,key=`mehyar_budget_${json.grade}_${json.academicYear}`,indexKey='mehyar_last_budget_key';let previousBudget=null,previousIndex=null,writesStarted=false;
+== attendance where
+     42 learning.studentMeta
+     29 learning.missions
+     25 learning.skills
+     20 learning.sessions
+     20 learning.followups
+     14 learning.dailyPlans
+     11 learning.attendanceDays
+     10 learning.hypotheses
+      9 learning.evidenceLog
+      8 learning.drafts
+      7 learning.customActivities
+      6 learning.settings
+      6 learning.classAgreements
+      5 learning.responsibilityHistory
+      5 learning.parentMeetings
+      4 learning.teachingReports
+      4 learning.responsibilityRoles
+      4 learning.pathOverrides
+      4 learning.bagChecks
+      4 learning.assistantAudit
+      3 learning.trackingStartedOn
+      1 learning.schemaVersion
+761:.intro-attendance-row{display:flex;align-items:center;justify-content:space-b
+761:px;padding:10px 0;border-bottom:1px solid var(--sep)}.intro-attendance-row b{font-size:14px}.intro-attendance-row .input{width:150
+1454: داد', unable:'نتوانست', avoided:'از انجام کار اجتناب کرد', absent:'غایب بود', access:'مانع دسترسی داشت', explained:'توضیح جدی
+1516:  function attendanceForStudent(id) {
+1517:    const counts={present:0,late:0,absent:0,unknown:0};
+1518:    for (const rows of Object.values(state.learning.attendanceDays||{})) { const x=rows?.[id]; counts[x||'unknown']=(count
+1587:      else if (['absent','unknown'].includes(result)) h.status='needs_review';
+1595:=3?'نیازمند حمایت والدین یا مشاور':'نیازمند بررسی بیشتر'):['absent','unknown'].includes(result)?'اطلاعات کافی نیست':'نیازمند ب
+== localStorage key literal ids
+== data page buttons
+  mount({
+    title: 'داده‌ها', help: 'data', backHref: '#/settings',
+    content: `${ui.banner({ icon: 'swap', gradient: 'blue', color: 'blue', title: 'انتقال بین دستگاه‌ها', text: 'با «ذخیرهٔ فایل کلاس» یک فایل JSON می‌گیرید؛ آن را به گوشی یا رایانهٔ دیگر بفرستید و آنجا «بارگذاری» کنید. فایل حاوی شمارهٔ والدین است؛ در گروه‌ها ارسال نکنید.' })}
+      ${ui.list(ui.row({ icon: 'download', gradient: 'green', title: 'ذخیرهٔ فایل کلاس', subtitle: `مهریار-${esc(className() || 'کلاس')}-${esc(state.klass.year || '')}.json`, onClick: exportJSON }) + ui.row({ icon: 'upload', gradient: 'blue', title: 'بارگذاری فایل', subtitle: 'انتخاب فایل JSON ذخیره‌شده', onClick: importFile }) + ui.row({ icon: 'sparkles', gradient: 'orange', title: 'نمونهٔ آزمایشی', subtitle: '۱۲ دانش‌آموز، شماره‌ها، کمبودها و سنجش فرضی', onClick: async () => {  loadSample(); ui.toast('نمونهٔ آزمایشی بارگذاری شد', { icon: 'sparkles' }); location.hash = '#/home'; } }) + ui.row({ icon: 'trash', gradient: 'red', title: 'پاک کردن همه', subtitle: 'دو مرحله‌ای، با پیشنهاد پشتیبان', onClick: clearAll }))}
+      <input type="file" id="file-in" class="file-input" accept="application/json,.json" data-change="${h(onFile)}">
+      ${!storageOk ? ui.banner({ color: 'orange', icon: 'warning', gradient: 'orange', text: 'ذخیره‌سازی محلی در این مرورگر در دسترس نیست؛ با بستن صفحه داده‌ها از بین می‌روند. حتماً فایل کلاس را ذخیره کنید.' }) : ''}`
+  });
+== migrate keeps unknown keys?
+1873:function migrate(saved) {
+DONE

@@ -1,0 +1,5 @@
+done
+   6799 map.txt
+  12446 functions.txt
+1375119 stripped.html
+1394364 total

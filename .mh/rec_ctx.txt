@@ -1,0 +1,11 @@
+7975:ai-tools-access" ${useTools?'checked':''} ${busy||pendingAnnualBudget?'disabled':''}> دسترسی ابزارها</label><a href="#/outputs">ابزارها</a></div>
+8004:ai-tools-access').onchange = e => {
+----
+6606:  const transientAssistantStatus = text => /\[پاسخ کامل نشد؛ برای ادامه پیام بده\.\]|\[این پاسخ فقط خواندنی است؛ داده‌های کلاس تغییر نکرده‌اند\.\]/.test(String(text||''));
+7730:ه.]')?'\n\n[پاسخ کامل نشد؛ برای ادامه پیام بده.]':'',readonlyNotice=useTools&&!isBudgetInputPrompt(fallbackPrompt)&&!safeGrounded.includes('[این پاسخ فقط خواندنی است؛ داده‌های کلاس تغییر نکرده‌اند.]')?'\n\n[این پاسخ فقط خواندنی ا
+----
+6433:it selection after teacher confirmation; read outputSettings/outputKey for supported text keys. Use prepare_output_preview instead for a temporary preview without changing saved settings.';
+6438:  declarations.push({name:'prepare_output_preview',description:'Prepare a LOCAL print or parent-message preview from live data; does not save settings, print, copy or send. Read tools/outputSettings/students first. Individual outputs require explici
+7596:امل بازسازی و prepare_teacher_report را فراخوانی کن؛ متن به‌تنهایی پیش‌نمایش نیست. برای چاپ یا پیام prepare_output_preview، برای تنظیم چاپ outputSettings؛ هیچ‌کدام خودکار چاپ یا ارسال نمی‌کنند. برای بودجه
+7685:        if(calls.some(p=>p.functionCall.name==='prepare_output_preview')) {
+7688:          catch(error){contents.push(content,{role:'user',parts:[{functionResponse:{name:'prepare_output_preview',response:{error:error.message,nothingSaved:true}}}]});continue;}

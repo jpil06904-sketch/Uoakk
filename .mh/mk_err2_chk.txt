@@ -1,0 +1,4 @@
+ok
+SYNTAX_OK
+24:      if (MODE === 'net') return Promise.reject(new dom.window.TypeError('Failed to fetch'));
+27:      if (MODE === '500') { const W = dom.window; return Promise.resolve({ ok: false, status: 500, statusText: 'Internal Server Error', headers: new Headers({ 'Content-Type': 'text/html' }), json: () => Promise.reject(new W.SyntaxError("Unexpected token '<', \"<html>error</html>\" is not valid JSON")), text: () => Promise.resolve('<html>error</html>'), clone() { return this; } }); }

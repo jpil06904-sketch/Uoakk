@@ -1,0 +1,22 @@
+  loadSample = function() {
+    if (!demoMode) { cancelRequest(); saveHistory(); demoSnapshot = {messages,draft,historyWarning,historyBlocked,lastStored,lastSnapshot}; messages = []; draft = ''; errorText = ''; historyWarning = ''; historyBlocked = false; }
+    return previousDemo();
+  };
+  exitDemo = function() {
+    if (demoMode) { cancelRequest(); if (demoSnapshot) { ({messages,draft,historyWarning,historyBlocked,lastStored,lastSnapshot} = demoSnapshot); demoSnapshot = null; } errorText = ''; }
+    return previousExitDemo();
+  };
+  window.addEventListener('mehryar:reset',() => {
+     cancelRequest(); clearTimeout(saveTimer); messages = []; draft = ''; errorText = ''; historyWarning = ''; historyBlocked = false; key = ''; verified = false;
+    lastStored = null; lastSnapshot = JSON.stringify({version:1,messages:[],draft:''});
+    clearAnswerCache();
+    useTools=false; try {sessionStorage.removeItem('mehryar_tools_consent');} catch (_) {}
+     try { localStorage.removeItem(CODE_SLOT); } catch (_) {} try { sessionStorage.removeItem(KEY_SLOT); } catch (_) { ui.toast('برای حذف کامل رمز، این برگه را هم ببند.'); }
+  });
+  window.addEventListener('hashchange',() => {
+    if (location.hash !== '#/class') { returnToAssistant = false; try { sessionStorage.removeItem('mehryar_assistant_return'); } catch (_) {} }
+    saveHistory();
+  });
+  window.addEventListener('storage',e => {
+    if (e.key !== HISTORY_KEY || demoMode) return;
+    const changed = JSON.stringify({version:1,messages:

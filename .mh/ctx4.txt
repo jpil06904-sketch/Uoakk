@@ -1,0 +1,27 @@
+### progressPreview\s*=\s*\(|function progressPreview count=1
+-- line 9463: function progressPreview(bookId,nodeId,exceptions=[]) { const book=curriculumBook(bookId),nodes=curriculumNodes(book),at=nodes.findIndex(node=>node.id===nodeId),skip=new Set(exceptions),changes=nodes.map((node,index)=>({id:node.id,title:node.title,old:currentProgress(bookId).statuses?.[node.id]||'not_started',next:skip.has(node.id)?(currentProgress(bookId).statuses?.[node.id]||'not_started'):index<at?'taught':index===at?'in_progress':'not_started'})); return {bookId,nodeId,changes,changed:changes.filter(change=>change.old!==change.next)}; }
+  function renderProgress() {
+     ensureCurriculum(state); const books=activeCurriculumBooks(), selected=books.find(book=>book.id===progressEditor.bookId)||books.find(book=>curriculumNodes(book).length)||books[0], bookId=selected?.id||''; progressEditor.bookId=bookId; const nodes=curriculumNodes(selected), progress=currentProgress(bookId), summary=bo
+### teachingProgress\s*: count=2
+-- line 8837: teachingProgress: {},
+    assets: {}
+  });
+  const normalizeNode = (node, bookId, index, parentId='') => {
+    if (!node || typeof node !== 'object') return null;
+    const title = String(node.title || node.name || '').trim(); if (!title) return null;
+    const id = String(node.id || `${bookId}-${slug(title)}-${index+1}`);
+    const children = Array.isArray(node.children) ? node.children.map((child,i)=>normalizeNode(child,bookId,i,id)).filter(Boolean) : [];
+     const sourceType=node.sourceType===CURRICULUM_SOURCE.official?CURRICULUM_SOURCE.official:CURRICULUM_SOURCE.teacher;
+     const out = { id, type:String(node.type || node.kind || 'item'), title, parentId:String(node.parentId || parentId || ''), pageStart:node.pageStart ?? node.from ?? '', pageEnd:node.pageEnd ?? node.to ?? '', pages:String(node.pages || ''), content:String(node.content || '').slice(0,12000), sourceType, sourceLabel
+-- line 8863: teachingProgress:{...(current.teachingProgress||{})},assets:{...(current.assets||{})}};
+    const existing = new Map((Array.isArray(current.books)?current.books:[]).map(book=>[book.id,book]));
+     const official = OFFICIAL_BOOKS.map(book=>normalizeBook(existing.get(book.id),{...book,sourceType:CURRICULUM_SOURCE.official,sourceLabel:CURRICULUM_SOURCE_LABEL.official}));
+     const extras = (Array.isArray(current.books)?current.books:[]).filter(book=>!officialById(book.id)).map(book=>normalizeBook(book,{id:String(book.id||'custom-'+slug(book.title)),title:String(book.title||'کتاب واردشده'),subject:String(book.subject||''),grade:String(book.grade||data.klass?.grade||''),academicYear:String(book.academicYear||data.klass?.year||''),officialPage:'',pdfUrl:'',sourceType:CURRICULUM_SOURCE.teacher,sourceLabel:CURRICULUM_SOURCE_LABEL.teacher}));
+       data.curriculum.books = [...official,...extra
+### const flattenNodes count=1
+-- line 8850: const flattenNodes = (nodes, out=[]) => { for (const node of Array.isArray(nodes)?nodes:[]) { out.push(node); if (node.children) flattenNodes(node.children,out); } return out; };
+  const normalizeBook = (book, fallback) => {
+    const source = {...fallback,...(book || {})};
+    const nodes = Array.isArray(source.nodes) ? source.nodes.map((node,i)=>normalizeNode(node,source.id,i)).filter(Boolean) : [];
+     const sourceType=source.sourceType===CURRICULUM_SOURCE.official?CURRICULUM_SOURCE.official:CURRICULUM_SOURCE.teacher;
+     return {...fallback,...source,id:fallback?.id || source.id,nodes,sourceType,sourceLabel:String(source.sourceLabel || CURRICULUM_SOURCE_LABEL[sourceType===CURRICULUM_SOURCE.official?'official':'teacher']),contentStatus:BOOK_STATUS[source.contentStatus]?source.contentStatus:(nodes.length?'outline_ready':source.contentRef||source.contentExcerpt?'content_ready':'metada

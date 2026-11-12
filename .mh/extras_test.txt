@@ -1,0 +1,16 @@
+PASS real class loaded (not demo)
+PASS export produced a file
+file name: مهریار-دوم نمونه-2026-11-12.json
+PASS students in backup (12)
+PASS attendance (absent/late) in backup
+PASS chat history in backup
+PASS budget in backup
+PASS student dossiers in backup
+PASS import accepted (validateImport + replaceState)
+PASS chat history restored
+PASS budget restored
+PASS class data restored
+PASS attendance restored
+PASS extras key not stored inside class state
+PASS old backup (without extras) still imports
+errors: []EXIT=0

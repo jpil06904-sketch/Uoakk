@@ -1,0 +1,181 @@
+=== labels/actions types
+5590|     return true;
+5591|   };
+5592|   let proposal = null, undoRecord = null;
+5593|   const labels = {observation:'مشاهدهٔ یادگیری',homework:'تکلیف',attendance:'حضور و غیاب',followup:'پیگیری',shortage:'وسایل',assessment:'سنجش آغازین',responsibility:'مسئولیت',agreement:'قول کلاس',parentMeeting:'جلسهٔ اولیا',studentNote:'یادداشت معلم',studentAdd:'افزودن دانش‌آموز',studentUpdate:'ویرایش دانش‌آموز',followupUpdate:'
+5594|   const sections = ['summary','students','skills','observations','latestLearning','attendance','followups','shortages','assessments','studentNotes','activities','plans','responsibilities','agreements','parentMeetings','lists','messages','tools','sessions','lessonContext','teachingReports','homework'];
+5595|   Object.assign(labels,{dailyPlan:'طرح درس و برنامهٔ فردا',activity:'فعالیت آموزشی',teachingReport:'گزارش تجربهٔ تدریس'});
+5596|   const routes = [['#/students','دانش‌آموزان'],['#/pulse','نبض‌کلاس'],['#/pulse/quick','ثبت مشاهده'],['#/pulse/attendance','حضور و غیاب روزانه'],['#/pulse/att-stats','آمار ماهانه'],['#/pulse/followups','پیگیری'],['#/pulse/activities','بانک فعالیت'],['#/pulse/tomorrow','برنامهٔ فردا'],['#/pulse/paths','گروه‌های یادگیری'],['#/puls
+=== prepare
+5984|   function prepare(changes, options={}) {
+5985|     draftContext();
+5986|     if(planDraft)fail('ابتدا پیش‌نویس دستی طرح درس را ذخیره یا لغو کن؛ سپس درخواست ثبت را دوباره بده.');
+5987|     assertSafeTree(changes);
+5988|     if(!Array.isArray(changes)||!changes.length||changes.length>50) fail('هر گزارش باید ۱ تا ۵۰ تغییر روشن داشته باشد.');
+5989|     if(savingBlocked||!storageOk) fail('ابتدا مشکل حافظهٔ برنامه را رفع و از اطلاعات پشتیبان بگیر.');
+5990|     const base=domain(state), next=clone(state), items=[], sessions=new Map(), touched=new Set(),canonical=[];
+5991|     changes=forceExplicitClasswideColor(changes,options);
+5992|     changes=expandClassWideRecords(changes,next,options);
+=== commit/undo
+6220|    function write(next) {
+6221|      if(typeof window.__mehryarValidateCurriculum==='function')window.__mehryarValidateCurriculum(next);
+6222|      validateImport(next);
+6223|     if(!demoMode) {
+6224|       try {localStorage.setItem(STORAGE_KEY,JSON.stringify(next));}catch(_){fail('ثبت انجام نشد؛ حافظه کافی نیست. هیچ بخشی از گزارش اعمال نشد.');}
+6225|     }
+6226|      clearTimeout(saveTimer2);saveEpoch++;state=next;if(typeof window.__mehryarSyncCurriculumBudgetBaseline==='function')window.__mehryarSyncCurriculumBudgetBaseline();syncStudentDossiers(next,[],true);dirty=false;showSaved();
+6227|   }
+6228|   function commit() {
+6229|     if(!proposal)fail('پیشنهادی برای ثبت وجود ندارد.');
+6230|     const p=proposal;if(p.demo!==demoMode)fail('حالت نمونه تغییر کرده؛ دوباره گزارش بده.');ensureCurrent(p.base);
+6231|     if(p.planDraft!==JSON.stringify(planDraft))fail('پیش‌نویس برنامه در این فاصله تغییر کرد؛ ابتدا آن را ذخیره یا لغو کن و دوباره درخواست بده.');
+6232|     const hasBudget=p.changes.some(change=>change.type==='curriculumBudget'),pendingBudget=p.next.curriculum?.budget?.draft;
+6233|     if(hasBudget&&(!pendingBudget||Number(pendingBudget.counts?.ready||0)<1))fail('هیچ ردیف کامل و آماده‌ای برای ثبت نهایی وجود ندارد.');
+6234|     if(hasBudget&&pendingBudget.parseIssues?.length)fail('پیش‌نویس بودجه خطای استخراج دارد؛ تا رفع آن‌ها هیچ ردیفی ثبت نمی‌شود.');
+6235|     if(hasBudget&&pendingBudget.mode==='replace'&&Number(pendingBudget.counts?.ready||0)!==Number(pendingBudget.counts?.total||0))fail('جایگزینی فقط وقتی مجاز است که همهٔ ردیف‌ها کامل باشند؛ بودجهٔ فعلی دست‌نخورده ماند.');
+6236|       const previous=clone(state),next={...p.next,ui:clone(state.ui),progress:clone(state.progress)};
+6237|       if(hasBudget) {
+6238|        const budgetDraft=next.curriculum?.budget?.draft,readyCount=Number(budgetDraft?.counts?.ready)||0;
+6239|         if(readyCount){const approvedAt=new Date().toISOString();next.curriculum.budget.sourceText=String(budgetDraft?.rawText||next.curriculum.budget.sourceText||'');next.curriculum.budget.approvedAt=approvedAt;next.curriculum.budget.entries=next.curriculum.budget.entries.map(entry=>({...entry,approvedAt:entry.approvedAt||appro
+6240|           if(budgetDraft){const remaining=budgetDraft.rows.filter(row=>row.status!=='matched'),dependencies=budgetDraft.dependencies||{},counts={total:remaining.length,ready:remaining.filter(row=>row.status==='matched'&&row.bookId&&validDay(row.startDate)&&validDay(row.endDate)&&Number.isInteger(row.sessions)&&row.sessions>=1&&r
+6241|       }
+6242|       const receiptItems=p.items.map(item=>{if(item.title!==labels.curriculumBudget)return item;const detail=String(item.detail||''),duplicate=detail.includes('این بودجه‌بندی قبلاً با همین مشخصات ثبت شده است');return {...item,detail:detail.replace('پیش‌نویس نگه داشته شد و هنوز ثبت نهایی نشده است.',duplicate?'\nداده‌ها بدون تغییر
+6243|      next.learning.assistantAudit ||= [];
+6244|      next.learning.assistantAudit.push({id:p.id,at:new Date().toISOString(),items:receiptItems});
+6245|     next.learning.assistantAudit=next.learning.assistantAudit.slice(-30);
+6246|     delete previous.assistantUndo;
+6247|     const record={version:1,previous,after:domain(next),demo:demoMode,planDraft:JSON.stringify(planDraft)};
+6248|     if(!demoMode)next.assistantUndo=record;
+6249|     write(next);syncStudentDossiers(next,p.changes,true);undoRecord=record;proposal=null;outputPreview=null;
+6250|      return receiptItems;
+6251|   }
+6252|   function undo() {
+6253|     const r=currentUndo();if(!r)fail('ثبت قابل واگردی وجود ندارد.');
+6254|     ensureCurrent(r.after);
+6255|     if(r.planDraft!==JSON.stringify(planDraft))fail('پیش‌نویس دستی تغییر کرده؛ ابتدا آن را ذخیره یا لغو کن.');
+6256|     write({...r.previous,ui:clone(state.ui),progress:clone(state.progress)});undoRecord=null;proposal=null;outputPreview=null;
+6257|   }
+6258|   function localAnswer(prompt) {
+6259|     const q=normKey(prompt).replace(/[؟?!!.،]/g,'');
+6260|     if (!/(ثبت|ذخیره|اصلاح|ویرایش|حذف|اضافه|ایجاد)/.test(q) && /(?:امروز|همین.?امروز)/.test(q) && /(?:کی|چه.?کسی|کدام|کیا|فهرست|لیست)/.test(q) && /(?:تاخیر|تأخیر|غیبت|حاضر)/.test(q)) {
+6261|       const status=/(?:تاخیر|تأخیر)/.test(q)?'late':/(?:غیبت)/.test(q)?'absent':'present';
+6262|       const labels={late:'تأخیر',absent:'غیبت',present:'حضور'};
+=== offline/ preflight
+7421|   function offlineAssistantResponse(prompt) {
+7422|     const opening = 'سرویس هوش مصنوعی موقتا قطع است، این ایده آفلاین رو امتحان کن';
+7423|     if (isTomorrowPrompt(prompt)) return 'برای پیشنهاد دقیق فردا باید بودجهٔ ذخیره‌شده، مشاهده‌ها و آخرین مبحث تدریس‌شده را بخوانم؛ سرویس آنلاین فعلاً در دسترس نیست، پس موضوعی را حدس نمی‌زنم.';
+7424|     if (isInstructionalIdeaPrompt(prompt)) return `${opening}\n\nسه ایدهٔ خلاقانهٔ آفلاین برای دبستان:\n۱) کارآگاه اشتباه، ۱۰ دقیقه: یک پاسخ یا جملهٔ کوتاه با یک خطای عمدی روی تخته بنویس؛ گروه‌ها با یک سرنخ خطا را پیدا کنند و دلیل اصلاحشان را بگویند.\n۲) ایستگاه‌های کشف، ۱۲ دقیقه: سه ایستگاه بساز؛ کارت واژه/تصویر، تمرین دست‌ورزی
+7425|     return '';
+7426|   }
+7427|   function recordOfflineAssistantReply(prompt, p, text, userMessage = null) {
+7428|     messages.push(userMessage || {role:'user',text:prompt,profile:p.id,tools:useTools},{role:'model',text,profile:p.id,tools:useTools});
+7429|     messages=messages.slice(-200);draft='';pending=null;errorText='';saveHistory();refresh();scrollChat();
+7430|   }
+=== workerFallback/request
+7541|   async function workerFallback(prompt, signal) {
+7542|     try {
+7543|       const compactClassData = compactClassSnapshot(), classIdentity = compactClassIdentity();
+7544|       const workerPrompt = 'شناسنامه کلاس:\n'+JSON.stringify(classIdentity)+'\n\nاطلاعات کلاس و دانش‌آموزان:\n'+JSON.stringify(compactClassData)+'\n\nدرخواست معلم:\n'+prompt;
+7545|       for (let attempt=0; attempt<3; attempt++) {
+7546|         const response = await fetchWithTimeout(WORKER_FALLBACK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:workerPrompt})},signal,HEAVY_FETCH_TIMEOUT_MS);
+7547|         const data = await readResponseJson(response,signal);
+7548|         if (!response.ok || typeof data.text !== 'string' || !data.text.trim()) throw new Error('پاسخ پشتیبان معتبر نبود.');
+7549|          const text = data.text.trim();
+7550|          if (/subscription|buy a subscription|apinex\.bond|ارور از سمت سرور/i.test(text)) {
+7551|            const providerError = new Error('پشتیبان ابری مدل اشتراکی دارد و پاسخ تحلیل نداد؛ تحلیل باید از مسیر مستقیم Gemini انجام شود.');
+7552|            providerError.code = 'WORKER_PROVIDER_ERROR';
+7553|            throw providerError;
+7554|          }
+7555|          if (attempt===0 && /پاسخ موقتاً با کندی مواجه شد|مجدداً امتحان کنید/.test(text)) { await waitAbortable(1200,signal); continue; }
+7556|          return text;
+7557|       }
+7558|       throw new Error('پاسخ پشتیبان معتبر نبود.');
+7559|     } catch (error) {
+7560|          if (error.name === 'AbortError' || error.code === 'WORKER_PROVIDER_ERROR') throw error;
+7561|          throw new Error('پشتیبان ابری فعلاً پاسخ نداد؛ متن سؤال حفظ شد و دوباره می‌توانی تلاش کنی.');
+7562|     }
+7563|   }
+7564|   async function request(contents, info, signal, expectedProfile, options={}) {
+7565|     const allowToolCalls=!!options.allowToolCalls;
+7566|     const annualBudgetMode=!!options.annualBudget;
+7567|     const tomorrowBudgetMode=!!options.tomorrowBudgetMode;
+7568|     const model=options.model||LIGHT_MODEL;
+7569|     const fallbackPrompt=options.fallbackPrompt||'';
+7570|     const aggregateOnly=!!options.aggregateOnly;
+7571|      const budgetYearAssumptionRules='\n\nاگر خروجی ابزار get_budget_and_progress شامل budgetYearAssumed=true است، روشن بگو بودجهٔ ثبت‌شده برای پایه وجود دارد اما سالش مشخص نبوده؛ پیشنهاد را فقط با فرض انطباق آن با سال فعال ارائه کن و این فرض را تأییدنشده معرفی کن.';
+7572|      const clarificationModeRules=isClarificationPrompt(fallbackPrompt)?'\n\nاین پیام پیگیری و رفع ابهام است، نه درخواست تشخیص یا ایدهٔ تازه. با توجه به آخرین پاسخ مرتبط در تاریخچه، همان نکته را با فارسی ساده و خودمانی توضیح بده؛ در صورت نیاز فقط یک مثال روشن بزن. اگر معلم در پیام خودش موضوع مشخصی گفته، همان را توضیح بده؛ اگر مو
+7573|       const ideaMode=!annualBudgetMode&&!tomorrowBudgetMode&&isInstructionalIdeaPrompt(fallbackPrompt), ideaModeRules=ideaMode?'\n\nقانون نهایی همین درخواست: حالت «طراح ایده‌های درسی خفن مهریار» فعال است. پاسخ تشخیصی چندبخشی، فهرست فرضیه‌ها یا توصیهٔ عمومی ممنوع است. برای اولویت شمارهٔ ۱ هر پایه دقیقاً ۳ ایده بده، نه کمتر و نه ب
+7574|        const learnMode=!annualBudgetMode&&!tomorrowBudgetMode&&!ideaMode&&isLearnPrompt(fallbackPrompt),learnModeRules=learnMode?'\n\nقانون نهایی همین درخواست (حالت «بفهمم و یاد بگیرم»): معلم می‌خواهد خودش مطلب را بفهمد. قالب ثابت «۳ ایده»، چرخهٔ تشخیصی ۱۰ بخشی، فهرست فرضیه‌ها و پیشنهاد بازی فعلاً ممنوع است. اول دقیقاً به پرسش پ
+7575|        const tomorrowBudgetRules=tomorrowBudgetMode?'\n\nقانون اجباری پیشنهاد درس فردا (برای «امروز» یا بدون روز مشخص هم همین قانون است و همان مبحث بعدی را برای همان روز بگو؛ هرگز جواب «گزارش ضعیف است کافی نیست» یا درخواست نمونهٔ خطا نده): اگر نام درسی نگفته و scheduleBySubject پر است، وضعیت هر درس را جداگانه با همان status بگو 
+7576|       let tomorrowBudgetRead=false,tomorrowBudgetNextOffset=null,tomorrowToolText='';
+7577|        const context=annualBudgetMode?null:aggregateOnly ? (useTools ? {mode:'student_dossier_only',dossierContext:studentDossierContext(options.fallbackPrompt,state)} : null) : useTools ? (ideaMode ? {today:localISO(),todayPersian:formatPersianDate(localISO()),tomorrow:plusDays(localISO(),1),tomorrowPersian:displayDay(plusDays(
+7578|        if(context?.lessonContext&&!ideaMode&&!learnMode&&!isClarificationPrompt(fallbackPrompt)){context.teachingInquiry=buildTeachingInquiry(context.lessonContext,fallbackPrompt);}
+7579|      const evidenceRefs=new Map();
+7580|      const registerEvidence=item=>{
+=== send
+7637|           const send=async()=>fetchModelWithRetry(model,{systemInstruction:{parts:[{text:system+(annualBudgetMode?'':useTools&&!ideaMode&&!isClarificationPrompt(fallbackPrompt)?toolRules+(tomorrowBudgetMode?'':COLOR_MAP_RULES)+(tomorrowBudgetMode?'':budgetGuardRules):'')+(useTools&&!annualBudgetMode&&!ideaMode&&!learnMode&&!aggr
+7638|             ...(allowToolCalls?{tools:[{functionDeclarations:annualBudgetMode?[ANNUAL_BUDGET_FUNCTION_DECLARATION]:MehryarTools.declarations}]}:{}),
+7639|               ...(tomorrowBudgetMode?{toolConfig:{functionCallingConfig:{mode:tomorrowBudgetRead?'AUTO':'ANY',...(tomorrowBudgetRead?{}:{allowedFunctionNames:['get_budget_and_progress']})}}}:annualBudgetMode?{toolConfig:{functionCallingConfig:{mode:'ANY',allowedFunctionNames:['save_annual_budget']}}}:{}),
+7640|              generationConfig:{temperature:annualBudgetMode?0:tomorrowBudgetMode?0.4:ideaMode?0.95:0.45,maxOutputTokens:annualBudgetMode?32768:ideaMode?8192:learnMode?6144:isTomorrowPrompt(fallbackPrompt)?2048:3072,...(annualBudgetMode?{thinkingConfig:{thinkingBudget:0}}:ideaMode?{thinkingConfig:{thinkingBudget:3072}}:learnMode?
+7641|        let response,data;
+7642|        try {
+7643|          ({response,data}=await send());
+7644|         } catch (error) {
+7645|           if(model!==FALLBACK_MODEL&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL});
+7646|             if(model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});
+7647|             if (!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&model===HEAVY_MODEL&&fallbackPrompt&&/سهمیه|سقف روزانه|موقتاً متوقف|quota|rate limit/i.test(error.message||'')) return workerFallback(fallbackPrompt,signal);
+7648|           throw error;
+7649|         }
+7650|         if(!response.ok) {
+7651|         const reason=(data.error?.details||[]).map(d=>d.reason||'').join(' ');
+7652|         if([401,403].includes(response.status)||/API_KEY_INVALID|API_KEY_EXPIRED/.test(reason))verified=false;
+7653|         const toolSchemaError=response.status===400&&/function_declarations|parameters|toolConfig|function_calling|schema/i.test(data.error?.message||'');
+7654|         if(toolSchemaError)throw new Error('ساختار درخواست ابزارها توسط سرویس پذیرفته نشد (HTTP 400). این خطا از طرح ابزار است، نه لزوماً رمز یا سهمیه. هیچ تغییری ثبت نشده است.');
+7655|           if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&response.status===400&&model===HEAVY_MODEL&&fallbackPrompt)return workerFallback(fallbackPrompt,signal);
+7656|              if(response.status===429){const seconds=retrySeconds(response,data),rate=rateState();rate.backoffUntilByModel[model]=Date.now()+seconds*1000;rate.kindByModel=rate.kindByModel||{};rate.kindByModel[model]=quotaKind(data);rate.secondsByModel=rate.secondsByModel||{};rate.secondsByModel[model]=seconds;rate.rawByModel=rat
+7657|            if((RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404)&&model!==FALLBACK_MODEL&&!options.triedHeavy)return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL,triedHeavy:true});let altNote='';if((RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404)&&model==
+7658|             const providerError=new Error(friendlyError(response.status,reason,data.error?.message,model)+altNote);
+7659|             if(RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404){providerError.code='MODEL_UNAVAILABLE';providerError.status=response.status;}
+7660|             throw providerError;
+=== openKey
+7904|   function openKey(resume = false) {
+7905|     if (keyDialog || busy) return;
+7906|      keyDialog = ui.sheet({title:'کد فعال‌سازی',body:`<form id="ai-key-form"><label for="ai-key">کد فعال‌سازی را وارد کن (یا رمز Google خودت را)</label><div class="ai-key-row"><input id="ai-key" class="input ltr" type="password" autocomplete="off" spellcheck="false" autocapitalize="none" maxlength="512" placeholder="MH-XXXX-XXXX
+7907|     keyDialog.el.classList.add('ai-key-dialog'); keyDialog.el.setAttribute('aria-label','ورود رمز');
+7908|     const input = document.getElementById('ai-key'); input.value = key;
+7909|     document.getElementById('ai-show-key').onclick = e => {
+7910|       const show = input.type === 'password'; input.type = show ? 'text' : 'password';
+7911|       e.currentTarget.setAttribute('aria-pressed',String(show)); e.currentTarget.setAttribute('aria-label',show ? 'پنهان کردن رمز' : 'نمایش رمز');
+7912|     };
+7913|     const speedBtn = document.getElementById('ai-speed'); if (speedBtn) speedBtn.onclick = () => runSpeedTest(document.getElementById('ai-speed-box'), speedBtn);
+7914|     document.getElementById('ai-key-form').onsubmit = async e => {
+7915|       e.preventDefault();
+7916|       if (!input.value.trim()) { input.focus(); return; }
+7917|       let newKey = input.value.trim();
+7918|       const actCode = normActCode(newKey);
+7919|       if (actCode) {
+7920|         const btn = document.querySelector('#ai-key-form button[type=submit]'); if (btn) btn.disabled = true;
+7921|         const res = await activateCode(actCode);
+7922|         if (btn) btn.disabled = false;
+7923|         if (!res.ok) { ui.toast(res.msg); return; }
+7924|         newKey = actCode; try { localStorage.setItem(CODE_SLOT,actCode); } catch (_) {}
+7925|         ui.toast('فعال شد.');
+7926|       } else { try { localStorage.removeItem(CODE_SLOT); } catch (_) {} }
+7927|       if (newKey !== key) { clearLocalBackoff(); if (/سهمیه|Gemini/.test(errorText)) errorText = ''; } key = newKey; verified = false; if (newKey && window.__mehryarStat) window.__mehryarStat('ai_key');
+7928|       try { sessionStorage.setItem(KEY_SLOT,key); } catch (_) { ui.toast('رمز فقط تا بارگذاری مجدد این صفحه نگه داشته می‌شود.'); }
+7929|       keyDialog.close(true); refresh(true);
+7930|       if (resume) void run();
+7931|     };
+7932|     document.getElementById('ai-forget')?.addEventListener('click',() => {
+7933|       try { localStorage.removeItem(CODE_SLOT); } catch (_) {} try { sessionStorage.removeItem(KEY_SLOT); } catch (_) { ui.toast('حذف رمز ذخیره‌شده ممکن نشد. این برگه را ببند.'); }
+7934|       key = ''; verified = false; keyDialog.close(true); refresh();
+7935|     });
+7936|     setTimeout(() => { if (input.isConnected) input.focus(); },50);
+7937|   }
+=== systemInstruction hits
+L3439 هده[ٔۀ‌ ]*مرتبط\s+(?:کافی|لازم)|studentId|skillId|functionCall|functionResponse|systemInstruction|localStorage|JSON|state\.|عمومی\s*\/\s*مشارکت)/i.test(x)).join('؛ ').replace(/[آ-یA-Za-z][آ-یA-Za-z‌]*\s*\/\s*[آ-یA-Za-z][آ-یA-Za-z‌]*/g,' ').replace(/\s+/g,' ').trim(),obs=getDirectObservations(state,{...f,studentId:id}),positive=[...new Set
+L7038 oller(); ⏎       const {response, data} = await fetchModelWithRetry(LIGHT_MODEL, {systemInstruction:{parts:[{text:INTENT_SYSTEM_PROMPT + (names.size ? ' درس‌های موجود در بودجهٔ معلم: ' + [...names].slice(0, 20).join('، ') + '.' : '')}]}, contents:[{role:'user', parts:[{text:prompt}]}], generationConfig:{temperature:0, maxOutputTokens:12, th
+L7056 d; ⏎     try { ⏎       const {response,data}=await fetchModelWithRetry(LIGHT_MODEL,{systemInstruction:{parts:[{text:ROUTER_SYSTEM_PROMPT}]},contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0,maxOutputTokens:8,...(thinkingTrimBroken?{}:{thinkingConfig:{thinkingBudget:0}})}},signal,ROUTER_FETCH_TIMEOUT_MS,0); ⏎       i
+L7637 gnal.throwIfAborted(); ⏎           const send=async()=>fetchModelWithRetry(model,{systemInstruction:{parts:[{text:system+(annualBudgetMode?'':useTools&&!ideaMode&&!isClarificationPrompt(fallbackPrompt)?toolRules+(tomorrowBudgetMode?'':COLOR_MAP_RULES)+(tomorrowBudgetMode?'':budgetGuardRules):'')+(useTools&&!annualBudgetMode&&!ideaMode&&!lea
+L7638 '')+clarificationModeRules}]},contents, ⏎             ...(allowToolCalls?{tools:[{functionDeclarations:annualBudgetMode?[ANNUAL_BUDGET_FUNCTION_DECLARATION]:MehryarTools.declarations}]}:{}), ⏎               ...(tomorrowBudgetMode?{toolConfig:{functionCallingConfig:{mode:tomorrowBudgetRead?'AUTO':'ANY',...(tomorrowBudgetRead?{}:{allowedFunctio
+L7653 t(reason))verified=false; ⏎         const toolSchemaError=response.status===400&&/function_declarations|parameters|toolConfig|function_calling|schema/i.test(data.error?.message||''); ⏎         if(toolSchemaError)throw new Error('ساختار درخواست ابزارها توسط سرویس پذیرفته نشد (HTTP 400). این خطا از طرح ابزار است، نه لزوماً رمز یا سهمیه. هیچ تغی

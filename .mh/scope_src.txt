@@ -1,0 +1,86 @@
+=== DEF ensureClassScope L8816 off 4532317
+function ensureClassScope(data) {
+     if(!data||typeof data!=='object')return data;
+     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');
+     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}
+     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}
+     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;
+     const target=contexts[activeKey];
+     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}
+     else if(currentKey!=='unassigned'){
+       const blank=migrate({klass:clone(data.klass)});
+       for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(blank,key))data[key]=clone(blank[key]);
+     }
+     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;
+   }
+    const curriculumDefaults = () => ({
+      schemaVersion: CURRICULUM_VERSION,
+      scopeKey:'',
+      contexts:{},
+      catalog: { grade:'', academicYear:'', source:'', sourceLabel:'کاتالوگ پایهٔ کلاس هنوز مشخص نشده است' },
+     books: OFFICIAL_BOOKS.map(book => ({...book,sourceType:CURRICULUM_SOURCE.official,sourceLabel:CURRICULUM_SOURCE_LABEL.official,nodes:[],contentStatus:'metadata_only',contentRef:null,contentExcerpt:'',contentLength:0,contentFileName:'',importedAt:''})),
+      budget: { version:0, history:[], schoolDays:[6,0,1,2,3], weekStart:6, holidays:[], entries:[], source:'', sourceText:'', importedAt:'', approvedAt:'', pending:null, draft:null },
+    teachingProgress: {},
+    assets: {}
+  });
+  const normalizeNode = (node, bookId, index, parentId='') => {
+    if (!node || typeof node !== 'object') return null;
+    const title = String(node.title || node.name || '').trim(); if (!title) return null;
+    const id = String(node.id || `${bookId}-${slug(title)}-${index+1}`);
+    const children = Array.isArray(node.children) ? node.children.map((child,i)=>normalizeNode(child,bookId,i,id)).filter(Boolean) : [];
+     const sourceType=node.sourceType===CURRICULUM_SOURCE.official?CURRICULUM_SOURCE.official:CURRICULUM_SOURCE.teacher;
+     const out = { id, type:String(node.type || node.kind || 'item'), title, parentId:String(node.parentId || parentId || ''), pageStart:node.pageStart ?? node.from ?? '', pageEnd:node.pageEnd ?? node.to ?? '', pages:String(node.pages || ''), content:String(node.content || '').slice(0,12000), sourceType, sourceLabel:String(node.sourceLabel || CURRICULUM_SOURCE_LABEL[sourceType===CURRICULUM_SOURCE.official?'official':'teacher']), sourceText:String(node.sourceText || '').slice(0,2000) };
+    if (children.length) out.children = children;
+    return out;
+  };
+  const flattenNodes = (nodes, out=[]) => { for (const node of Array.isArray(nodes)?nodes:[]) { out.push(node); if (node.children) flattenNodes(node.children,out); } return out; };
+  const normalizeBook = (book, fallback) => {
+    const source = {...fallback,...(book || {})};
+    const nodes = Array.isArray(source.nodes) ? source.nodes.map((node,i)=>normalizeNode(node,source.id,i)).filter(Boolean) : [];
+     const sourceType=source.sourceType===CURRICULUM_SOURCE.official?CURRICULUM_SOURCE.off
+
+=== DEF classScopeSnapshot L8815 off 4532101
+const classScopeSnapshot = data => { const out={}; for(const key of classScopedKeys) if(Object.hasOwn(data,key)) out[key]=data[key]===undefined?undefined:clone(data[key]); delete out.classContexts; return out; };
+   function ensureClassScope(data) {
+     if(!data||typeof data!=='object')return data;
+     const contexts=isObj(data.classContexts)?data.classContexts:{},activeKey=curriculumScopeKey(data),currentKey=String(data.classScopeKey||'');
+     if(!currentKey){data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;}
+     if(currentKey===activeKey){data.classContexts=contexts;data.classScopeKlass=clone(data.klass);return data;}
+     const snapshot=classScopeSnapshot(data);snapshot.klass=clone(data.classScopeKlass||data.klass);contexts[currentKey]=snapshot;
+     const target=contexts[activeKey];
+     if(target){for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(target,key))data[key]=clone(target[key]);}
+     else if(currentKey!=='unassigned'){
+       const blank=migrate({klass:clone(data.klass)});
+       for(const key of classScopedKeys)if(key!=='classContexts'&&Object.hasOwn(blank,key))data[key]=clone(blank[key]);
+     }
+     data.klass=target?.klass?clone(target.klass):clone(data.klass);data.classContexts=contexts;data.classScopeKey=activeKey;data.classScopeKlass=clone(data.klass);return data;
+   }
+    const curriculumDefaults = () => ({
+      schemaVersion: CURRICULUM_VERSION,
+      scopeKey:'',
+      contexts:{},
+      catalog: { grade:'', academicYear:'', source:'', sourceLabel:'کاتالوگ پایهٔ کلاس هنوز مشخص نشده است' },
+     books: OFFICIAL_BOOKS.map(book => ({...book,sourceType:CURRICULUM_SOURCE.official,sourceLabel:CURRICULUM_SOURCE_LABEL.official,nodes:[],contentStatus:'metadata_only',contentRef:null,contentExcerpt:'',contentLength:0,contentFileName:'',importedAt:''})),
+      budget: { version:0, history:[], schoolDays:[6,0,1,2,3], weekStart:6, holidays:[], entries:[], source:'', sourceText:'', importedAt:'', approvedAt:'', pending:null, draft:null },
+    teachingProgress: {},
+    assets: {}
+  });
+  const normalizeNode = (node, bookId, index, parentId='') => {
+    if (!node || typeof node !== 'object') return null;
+    const title = String(node.title || node.name || '').trim(); if (!title) return null;
+    const id = String(node.id || `${bookId}-${slug(title)}-${index+1}`);
+    const children = Array.isArray(node.children) ? node.children.map((child,i)=>normalizeNode(child,bookId,i,id)).filter(Boolean) : [];
+     const sourceType=node.sourceType===CURRICULUM_SOURCE.official?CURRICULUM_SOURCE.official:CURRICULUM_SOURCE.teacher;
+     const out = { id, type:String(node.type || node.kind || 'item'), title, parentId:String(node.parentId || parentId || ''), pageStart:node.pageStart ?? node.from ?? '', pageEnd:node.pageEnd ?? node.to ?? '', pages:String(node.pages || ''), content:String(node.content || '').slice(0,12000), sourceType, sourceLabel:String(node.sourceLabel || CURRICULUM_SOURCE_LABEL[sourceType===CURRICULUM_SOURCE.official?'official':'teacher']), sourceText:String(node.sourceText || '').slice(0,2000) };
+    if (children.length) out.children = children;
+    return out;
+  };
+  const flattenNodes = (nodes, out=[]) => { for (const node of Array.isArray(nodes)?nodes:[]) { out.push(node); if (node.children) flattenNodes(node.children,out); } return out; };
+  const normalizeBook = (book, fallback) => {
+    const source = {...fallback,...(book || {})};
+    
+
+=== refs ensureClassScope 7
+=== refs classScopeKey 4
+=== refs classContexts 10
+=== refs scopeKey 32

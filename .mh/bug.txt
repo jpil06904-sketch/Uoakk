@@ -1,0 +1,14 @@
+=== CALLERS
+9376:ength)}</strong><small>${dateFa(range.from)} تا ${dateFa(range.to)}</small></a></section><section class="curriculum-book-grid">${activeBooks.map(book=>{const p=bookProgressSummary(book);return `<article class="curriculum-book-card"><div class="book-card-head"><div><span class="book-code">کد ${esc(book.code||'بدون کد')}</span><h3>${esc(boo
+9465:ook).length)||books[0], bookId=selected?.id||''; progressEditor.bookId=bookId; const nodes=curriculumNodes(selected), progress=currentProgress(bookId), summary=bookProgressSummary(selected);
+9469:  const weekProgressLabel = entry => { const book=curriculumBook(entry.bookId), summary=bookProgressSummary(book), status=summary.statuses?.[entry.nodeId]||''; if(status==='taught')return ['تدریس‌شده','green']; if(status==='in_progress')return ['در حال تدریس','blue'];
+=== renderProgress
+9464:function renderProgress() {
+=== assessCriteria list route
+2547:function renderSettingsList(key) {
+=== loadSample
+1955:function loadSample() {
+3510:loadSample=function(){if(demoMode){location.hash='#/pulse';return;}if(dirty&&!flushSave()){ui.toast('ابتدا پشتیبان بگیرید؛ ورود به نمونه تا رفع خطای ذخیره انجام نشد.');return;}clearTimeout(saveTimer2);saveEpoch++;realSnapshot=state;demoMode=true;state=sampleState();quickDraft=null;quickKey='';planDraft=null;di
+3713:loadSample=function(){if(!demoMode)storageRuntime.realDirty=dirty;enterDemoBeforeStorage();$('#save-ind')?.classList.remove('show');queueMicrotask(renderStorageNotice);};
+8052:  loadSample = function() {
+1

@@ -1,0 +1,42 @@
+=== activateCode
+async function activateCode(code) {
+      const P = window.__mehryarPanel;
+      if (!P) return {ok:false,msg:'اتصال به پنل در این نسخه روشن نیست.'};
+      const c = new AbortController(), t = setTimeout(() => c.abort(), 15000);
+      try {
+        const r = await fetch(P.base+'/api.php?a=act',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({c:code,id:P.id}),signal:c.signal,cache:'no-store'});
+        const d = await r.json().catch(() => ({}));
+        if (d && d.ok) return {ok:true};
+        const m = {invalid:'کد درست نیست. دوباره بررسی کن.',used:'این کد روی گوشی دیگری فعال شده است. به مدیر بگو گوشی کد را آزاد کند.',off:'این کد غیرفعال شده است.',rate:'تلاش‌های ناموفق زیاد بود؛ چند دقیقه بعد دوباره امتحان کن.'};
+        return {ok:false,msg:m[d && d.err] || 'فعال‌سازی ناموفق بود؛ دوباره تلاش کن.'};
+      } catch (_) {
+        return {ok:false,msg:'ارتباط با پنل برقرار نشد. اینترنت را بررسی کن و دوباره تلاش کن.'};
+      } finally { clearTimeout(t); }
+    }
+   const CACHE_KEY = 'mehryar_assistant_answer_cache_v1', RATE_KEY = 'mehryar_assistant_rate_v1';
+    const MAX_MODEL_RETRIES = 3, MODEL_RETRY_DELAY_MS = 2000, MODEL_FETCH_TIMEOUT_MS = 30000, RESPONSE_BODY_TIMEOUT_MS = 30000;
+    const RETRYABLE_MODEL_STATUSES = new Set([408,500,502,503,504]);
+     const PANEL_MIN_REQUEST_GAP = 400, PANEL_MAX_REQUESTS_PER_MINUTE = 30, PANEL_FETCH_TIMEOUT_MS = 80000; let thinkingTrimBroken = false;
+     const MIN_REQUEST_GAP = 4500, MAX_REQUESTS_PER_MINUTE = 6, HEAVY_REQUESTS_PER_DAY = 50, LIGHT_REQUESTS_PER_DAY = 1500, MAX_TOOL_ROUNDS = 3, MAX_BUDGET_IMPORT_CHARS 
+=== isActCode uses
+@ 6521 ^MH[A-Z0-9]{8}$/.test(s) ? 'MH-'+s.slice(2,6)+'-'+s.slice(6) : ''; }; ⏎     const isActCode = v => !!v && normActCode(v) === v; ⏎     async function runSpeedTest(box, btn) { ⏎       if (!box) return; ⏎       const P = window.__mehryarPanel; ⏎       if (!P || !isActCode(key)) { box.textContent = 'این تست فقط با کد فعال‌سازی کار می‌کند.'; return; } ⏎       btn.disabled = true; ⏎       const lines = [], sec = ms => fa((Math.round(Number(ms) / 100) / 10).toString()).replace('.', '٫'), show = () => { box.innerHTML = lines.map(l => '<div>' + esc(l) + '</div>').join(''); }; ⏎       try { ⏎         lines.push('در حال اندازه‌گیری اتصال…'); show(); ⏎         const times = []; ⏎         for (let i = 0; i < 5; i++) { const t
+---
+@ 6910     if (count >= limit) { const error=new Error('برای پر نشدن سهمیهٔ مدل '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+'، سقف روزانهٔ برنامه رسید. اطلاعات محلی و ثبت گزارش‌ها فعال‌اند.'); error.code='MODEL_RATE_LIMIT'; throw error; } ⏎     const panelMode = isActCode(key), maxPerMinute = panelMode ? PANEL_MAX_REQUESTS_PER_MINUTE : MAX_REQUESTS_PER_MINUTE, minGap = panelMode ? PANEL_MIN_REQUEST_GAP : MIN_REQUEST_GAP; ⏎     const oldest = rate.minute[0] || 0, minuteWait = oldest + 60000 - now; ⏎     if (rate.minute.length >= maxPerMinute && minuteWait > 0) { await waitAbortable(minuteWait, signal); return reserveRequestSlot(signal, model); } ⏎     const last = rate.minute.at(-1) || 0, gap = last + minGap - 
+---
+@ 6983  { ⏎       clearTimeout(timer); ⏎       signal.removeEventListener('abort', forwardAbort); ⏎     } ⏎   } ⏎   async function fetchModelWithRetry(model, body, signal, timeoutMs, retries = MAX_MODEL_RETRIES) { ⏎     await reserveRequestSlot(signal, model); ⏎     if (isActCode(key) && !window.__mehryarPanel) { const e = new Error('اتصال به پنل در این نسخه روشن نیست.'); e.code = 'MODEL_NETWORK'; throw e; } ⏎     const viaPanel = isActCode(key); ⏎     const url = viaPanel ? window.__mehryarPanel.base+'/api.php?a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent'; ⏎     const makeOptions = () => viaPanel ? {method:'POST',headers:{'Content-Type':'text/
+---
+@ 6984 Ms, retries = MAX_MODEL_RETRIES) { ⏎     await reserveRequestSlot(signal, model); ⏎     if (isActCode(key) && !window.__mehryarPanel) { const e = new Error('اتصال به پنل در این نسخه روشن نیست.'); e.code = 'MODEL_NETWORK'; throw e; } ⏎     const viaPanel = isActCode(key); ⏎     const url = viaPanel ? window.__mehryarPanel.base+'/api.php?a=ai&m='+encodeURIComponent(model) : 'https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent'; ⏎     const makeOptions = () => viaPanel ? {method:'POST',headers:{'Content-Type':'text/plain'},body:key+'|'+window.__mehryarPanel.id+'\n'+JSON.stringify(body)} : {method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JS
+---
+@ 7906 -label="نمایش رمز" aria-pressed="false">${icon('eye')}</button></div><div class="ai-key-actions"><button type="submit" class="btn btn-primary">ثبت</button>${key ? '<button type="button" id="ai-forget" class="btn btn-tinted-gray">حذف</button>' : ''}${isActCode(key) ? '<button type="button" id="ai-speed" class="btn btn-tinted-gray">تست سرعت</button>' : ''}</div><div id="ai-speed-box" style="margin-top:10px;font-size:13px;line-height:1.9"></div><p>اگر کد فعال‌سازی بزنی، درخواست از طریق سرور پنل مهریار به Google Gemini می‌رسد؛ متن گفتگو در پنل ذخیره نمی‌شود و فقط تعداد درخواست‌های هر کد شمرده می‌شود. کد روی همین گوشی می‌ماند و به همین گوشی گره می‌خورد. اگر رمز Google خودت را بزنی، درخواست‌ها مست
+---
+=== __mehryarPanel def
+@ 3997 rk');}).finally(()=>{sending=false;});}; ⏎  const beacon=e=>{if(ls(OFF)==='1')return;const q=qget();q[e]=Math.min((q[e]||0)+1,500);ls(Q,JSON.stringify(q));flush();}; ⏎  window.__mehryarStat=beacon;window.__mehryarPanel={base,id};window.addEventListener('online',flush); ⏎  const okHref=u=>/^https:\/\//i.test(u||''),okImg=u=>{try{return new URL(u).origin===new URL(base).origin;}catch(_){return false;}}; ⏎  let cfg=null,t0=0; ⏎  const load=async()=>{if(cfg&&Date.now()-t0<6e5)return cfg;if(!navigator.onLine)return null;try{const c=new AbortController();const to=setTimeout(()=>c.abort(),4000);const r=await fetch(base+'/api.php?a=cfg',{signal:c.signal,cache:'no-store'});clearTimeout(to);cfg=await r.json();t
+=== a=g endpoints
+@ 3995 api.php?a=p
+@ 4000 api.php?a=cfg
+@ 4030 api.php?a=diag
+@ 4032 api.php?a=diag
+@ 6527 api.php?a=ping
+@ 6534 api.php?a=gping
+@ 6558 api.php?a=act
+@ 6985 api.php?a=ai

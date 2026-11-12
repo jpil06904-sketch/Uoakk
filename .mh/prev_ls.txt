@@ -1,0 +1,26 @@
+-rw-rw-rw- 1 codespace codespace 10645 12:53:48 after_empty.json
+-rw-rw-rw- 1 codespace codespace    19 12:53:48 after_run1.txt
+-rw-rw-rw- 1 codespace codespace    19 12:53:58 after_run2.txt
+-rw-rw-rw- 1 codespace codespace 10677 12:53:58 after_seed.json
+-rw-rw-rw- 1 codespace codespace     4 12:54:01 fin_all.txt
+-rw-rw-rw- 1 codespace codespace 11434 03:25:10 smoke_empty.json
+-rw-rw-rw- 1 codespace codespace 10677 12:34:22 smoke_seed.json
+-rw-rw-rw- 1 codespace codespace   955 03:29:59 summary.py
+import json, os, sys
+os.chdir('/workspaces/Uoakk/.mh')
+out = []
+for f in sys.argv[1:] or ['smoke_empty.json', 'smoke_seed.json']:
+    if not os.path.exists(f):
+        out.append(f'{f} MISSING'); continue
+    r = json.load(open(f))
+    out.append(f"===== {f} seed={r.get('seed')} routes={len(r['routes'])} totalErrors={r['totalErrors']} bootErrors={r['bootErrors']}")
+    out.append('blocked: ' + str(r['blockedRequests']))
+    for e in r['errors']:
+        out.append(f"ERR {e['route']} {e['type']} " + e['msg'][:900].replace('\n', ' | '))
+    for x in r['routes']:
+        flag = '' if x['final'] == x['route'] else '  -> ' + x['final']
+        if x['errors'] or x['textLen'] < 20 or flag:
+            out.append(f"ROUTE {x['route']} len={x['textLen']} err={x['errors']}{flag}")
+    out.append('ALL ROUTES: ' + ', '.join(f"{x['route']}({x['textLen']})" for x in r['routes']))
+open('summary.txt', 'w', encoding='utf-8').write('\n'.join(out))
+print('ok')
