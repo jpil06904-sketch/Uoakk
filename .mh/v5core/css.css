@@ -1,0 +1,102 @@
+
+/* ===== Mehryar V5 ===== */
+.v5-strip{display:flex;flex-wrap:wrap;gap:6px;padding:6px max(16px,calc((100% - 840px)/2));border-bottom:1px solid var(--sep)}
+.v5-strip .btn{font-size:12.5px;padding:6px 10px;min-height:0}
+.v5-menu,.ai-options{flex-shrink:0;border-bottom:1px solid var(--sep);max-height:44px;overflow:hidden;overscroll-behavior:contain}
+.v5-menu[open],.ai-options[open]{max-height:60vh;overflow-y:auto}
+.v5-menu>summary,.ai-options>summary{cursor:pointer;padding:10px 16px;color:var(--ai-green);font-size:13px;font-weight:700;min-height:44px;box-sizing:border-box;list-style:none}
+.v5-menu>summary::-webkit-details-marker,.ai-options>summary::-webkit-details-marker{display:none}.v5-menu>summary::after,.ai-options>summary::after{content:' ＋';float:left}.v5-menu[open]>summary::after,.ai-options[open]>summary::after{content:' −'}
+.v5-menu>summary:focus-visible,.ai-options>summary:focus-visible{outline:3px solid var(--ai-green);outline-offset:-3px}
+.ai-options .ai-tool-strip{gap:8px}.ai-options .ai-tool-strip label,.ai-options .ai-tool-strip a{min-height:44px;display:inline-flex;align-items:center}
+.v5-menu .v5-panel{margin:8px 12px}
+.v5-route{display:inline-block;font-size:11px;opacity:.65;margin-top:4px}
+/* ---------- compact chat: one toolbar popover replaces the two stacked bars ---------- */
+.ai-tools-pop{position:relative;flex-shrink:0;margin-inline-start:auto}
+.ai-tools-pop>summary{list-style:none;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;margin-right:0;border:1px solid var(--sep);border-radius:11px;background:var(--card2);color:var(--muted);font-size:17px}
+.ai-tools-pop>summary::-webkit-details-marker{display:none}
+.ai-tools-pop>summary svg{display:block;flex-shrink:0;width:20px;height:20px}
+.ai-toolbar{min-width:0;max-width:100%;overflow-x:hidden}
+.ai-tools-pop[open]>summary{border-color:var(--ai-green);color:var(--ai-green)}
+.ai-tools-pop-label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.ai-tools-pop-body{position:absolute;top:calc(100% + 8px);right:0;left:auto;z-index:60;width:min(300px,92vw);max-width:92vw;box-sizing:border-box;min-width:0;max-height:72vh;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;display:grid;gap:8px;padding:12px;border:1px solid var(--sep);border-radius:16px;background:var(--card);box-shadow:0 20px 44px rgba(15,23,42,.24)}
+.ai-tools-pop-body>*{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.ai-tools-pop-body select,.ai-tools-pop-body input{min-width:0;max-width:100%;box-sizing:border-box}
+.ai-tools-pop-body .ai-options,.ai-tools-pop-body .v5-menu{max-height:none;overflow:visible;border:1px solid var(--sep);border-radius:12px;background:var(--card2)}
+.ai-tools-pop-body .ai-options>summary,.ai-tools-pop-body .v5-menu>summary{padding:9px 12px;min-height:40px;font-size:12.5px}
+.ai-tools-pop-body .ai-options[open],.ai-tools-pop-body .v5-menu[open]{max-height:none}
+.ai-tools-pop-body .ai-tool-strip,.ai-tools-pop-body .v5-strip{border-bottom:0;padding:0 12px 10px}
+.ai-tools-pop-body .v5-panel{margin:8px 10px}
+.ai-tools-pop + .icon-btn{margin-right:0}
+/* ---------- slim composer footer: one line, almost invisible ---------- */
+.ai-compose-meta{margin-top:3px;font-size:9px;line-height:1.35}
+.ai-disclaimer{margin-top:2px;font-size:9px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v5-stage{display:flex;align-items:center;gap:8px;font-size:13.5px;padding:10px 4px;opacity:.9;animation:v5fade .5s ease}
+.v5-stage .ai-spinner{flex-shrink:0;width:14px;height:14px;border:2px solid var(--sep);border-top-color:var(--ai-green);border-radius:50%;animation:ai-spin 1s linear infinite}
+@keyframes v5fade{from{opacity:.2}to{opacity:.9}}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-typing-dots{display:inline-flex;gap:4px;align-items:center}
+.ai-typing-dots span{width:8px;height:8px;border-radius:50%;background:var(--ai-green);animation:ai-pulse 1.4s infinite ease-in-out both}
+.ai-typing-dots span:nth-child(1){animation-delay:0s}
+.ai-typing-dots span:nth-child(2){animation-delay:0.2s}
+.ai-typing-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes ai-pulse{0%,80%,100%{transform:scale(0.4);opacity:0.5}40%{transform:scale(1);opacity:1}}
+.v5-receipt{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 2px;font-size:12.5px}
+.v5-receipt.undone{opacity:.55;text-decoration:line-through}
+.v5-chip{border-radius:999px;padding:4px 10px;background:var(--card2);border:1px solid var(--sep)}
+.v5-chip.ok{border-color:rgba(52,199,89,.5)}.v5-chip.warn{border-color:rgba(255,149,0,.7)}
+.v5-link{background:none;border:0;color:var(--accent,#0a84ff);font:inherit;font-size:12px;padding:0 4px;cursor:pointer;text-decoration:underline}
+.v5-link.danger{color:#ff3b30}
+.v5-mic{flex-shrink:0;width:40px;height:40px;border-radius:50%;border:1px solid var(--sep);background:var(--card2);color:inherit;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.v5-mic.rec{background:#ff3b30;color:#fff;border-color:#ff3b30;animation:v5pulse 1.2s infinite}
+@keyframes v5pulse{0%{box-shadow:0 0 0 0 rgba(255,59,48,.55)}70%{box-shadow:0 0 0 10px rgba(255,59,48,0)}100%{box-shadow:0 0 0 0 rgba(255,59,48,0)}}
+.v5-interim{font-size:12.5px;opacity:.5;padding:4px 6px 0;font-style:italic}
+.v5-panel{display:grid;gap:8px;border:1px solid var(--sep);border-radius:14px;padding:12px;margin:8px 0;background:var(--card);font-size:13.5px}
+.v5-panel label{display:grid;gap:4px}.v5-panel select,.v5-panel input:not([type=checkbox]){font:inherit;padding:7px;border-radius:9px;border:1px solid var(--sep);background:var(--card2);color:inherit}
+.v5-facs{display:flex;flex-wrap:wrap;gap:6px 14px}.v5-facs label{display:flex;gap:4px;align-items:center}
+.v5-state{white-space:pre-wrap;font:inherit;font-size:12.5px;background:var(--card2);padding:8px;border-radius:9px}
+.v5-row{display:flex;gap:8px;flex-wrap:wrap}
+.v5-pulse{border:1px solid var(--sep);border-radius:16px;padding:14px;margin:12px 0;background:var(--card)}
+.v5-pulse h3{margin:0 0 8px;font-size:15px}.v5-pulse ul{margin:0 0 8px;padding:0 18px}.v5-pulse li{margin:3px 0}.v5-pulse li span{font-weight:600}
+.v5-pulse p{margin:4px 0;font-size:13.5px}
+.v5-link{display:inline-flex;align-items:center;min-height:44px}
+.v5-facs label{min-height:44px;padding:6px 10px;border:1px solid var(--sep);border-radius:10px}
+/* ---------- Chat bubbles: clean, readable, mobile-first ---------- */
+.ai-message{margin:8px 4px;max-width:100%;overflow-wrap:anywhere;animation:v5fade .3s ease}
+.ai-message.user{margin-right:auto}
+.ai-message.assistant{margin-left:auto}
+.ai-author{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;display:block}
+.ai-bubble{font-size:15px;white-space:pre-wrap;line-height:1.8;border-radius:14px;background:var(--card2);padding:10px 14px;unicode-bidi:plaintext;border:1px solid var(--sep)}
+.ai-message.user .ai-bubble{background:var(--ai-tint);border-color:var(--ai-green)}
+.ai-message.assistant .ai-bubble{background:var(--card);border-color:var(--sep)}
+/* ---------- Composer: 1 line (~46px) normal, 15px font, expands to max 4 lines ---------- */
+.ai-input-row textarea{flex:1;min-width:0;width:100%;border:1px solid var(--sep);border-radius:16px;background:var(--card2);padding:10px 12px;resize:none;min-height:46px;max-height:120px;outline:none;font-size:15px;line-height:1.6}
+.ai-input-row textarea:focus{border-color:var(--ai-green);box-shadow:0 0 0 1px var(--ai-green)}
+.ai-send{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:var(--ai-green);color:var(--card);flex-shrink:0}
+/* The original radar remains in its original position, with a compact visual track. */
+.budget-radar .br-item{--radar-color:#828b97;background:linear-gradient(135deg,rgba(125,104,210,.09),rgba(125,104,210,.015));box-shadow:0 4px 14px rgba(37,42,65,.06);padding:14px}
+.budget-radar .br-ok{--radar-color:#21a756;background:linear-gradient(135deg,rgba(52,199,89,.15),rgba(52,199,89,.025))}
+.budget-radar .br-ahead{--radar-color:#1683e8;background:linear-gradient(135deg,rgba(10,132,255,.15),rgba(10,132,255,.025))}
+/* Behind schedule: muted red — #fef2f2 background, #fecaca border. */
+.budget-radar .br-warn{--radar-color:#e8878b;background:#fef2f2;border:1px solid #fecaca;border-radius:14px}
+html[data-theme=dark] .budget-radar .br-warn{background:#450a0a;border-color:#7f1d1d}
+/* A large gap (3+ topics) keeps a clearly stronger red so urgency still shows. */
+.budget-radar .br-alert{--radar-color:#e5484d;background:#fef2f2;border-color:#fca5a5;border-radius:14px}
+html[data-theme=dark] .budget-radar .br-alert{background:#3f0d10;border-color:#b91c1c}
+.budget-radar .br-head b{font-size:15px;line-height:1.6}
+.budget-radar .br-text{font-size:13px;line-height:1.8}
+.budget-radar .br-track{direction:ltr;position:relative;height:12px;margin:17px 3px 14px;background:rgba(130,145,160,.22);border-radius:999px}
+.budget-radar .br-actual{position:absolute;left:0;top:0;height:100%;border-radius:999px;background:var(--radar-color);transition:width .45s ease}
+.budget-radar .br-planned{position:absolute;top:-4px;height:20px;box-sizing:border-box;border:2px solid #7560c8;border-radius:7px;background:rgba(128,112,204,.2)}
+.budget-radar .br-legend{font-size:12px;color:var(--muted);line-height:1.8;margin:4px 0 10px}
+.budget-radar .br-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;vertical-align:middle;margin-left:4px;background:#8070cc}
+.budget-radar .br-legend i:first-child{background:#34b875}
+.budget-radar .br-item{overflow-wrap:anywhere}
+.budget-radar .br-planned{border-style:dashed}
+.budget-radar .br-actions .btn,.budget-radar .br-actions .br-link{min-height:44px}
+.budget-radar .br-actions .btn:focus-visible,.budget-radar .br-link:focus-visible{outline:3px solid var(--accent,#0a84ff);outline-offset:2px}
+html[data-theme=dark] .budget-radar .br-planned{border-color:#c4b8ff;background:rgba(177,159,255,.3)}
+@media(max-width:600px){.v5-strip{padding:6px 12px;gap:6px}.v5-pulse{padding:14px}.ai-log{padding-top:12px;padding-bottom:12px}.ai-compose{padding-top:7px;padding-bottom:7px}.ai-message{max-width:100%}.ai-input-row{gap:6px}.ai-compose-meta{flex-wrap:wrap}
+  /* The tools popover keeps its width inside the screen on phones */
+  .ai-tools-pop-body{width:min(300px,92vw)}}
+@media(max-height:600px){.v5-menu,.ai-options{max-height:30%}.ai-toolbar{padding-top:5px;padding-bottom:5px}.ai-compose{padding-top:6px;padding-bottom:6px}}
+@media(prefers-reduced-motion:reduce){.v5-stage,.v5-mic.rec,.ai-typing-dots span{animation:none}.budget-radar .br-actual{transition:none}}

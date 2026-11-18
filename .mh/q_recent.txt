@@ -1,0 +1,88 @@
+total 55380
+-rw-rw-rw-  1 codespace codespace       0 11-14_02:20 q_recent.txt
+-rw-rw-rw-  1 codespace codespace    3620 11-14_02:19 q_anchors.txt
+-rw-rw-rw-  1 codespace codespace    7022 11-14_02:19 _ls.txt
+-rw-rw-rw-  1 codespace codespace     675 11-13_09:27 anchors.sh
+-rw-rw-rw-  1 codespace codespace    1707 11-13_07:12 gc_test.sh
+-rw-rw-rw-  1 codespace codespace 4861445 11-13_06:23 after-quality-fix.html
+-rw-rw-rw-  1 codespace codespace     279 11-13_06:23 syntax_extract.py
+-rw-rw-rw-  1 codespace codespace    3670 11-12_16:49 hedge_test.cjs
+-rw-rw-rw-  1 codespace codespace 4861264 11-12_15:29 after-hedge-fix.html
+-rw-rw-rw-  1 codespace codespace    3331 11-12_15:25 hedge_test_v1.cjs
+-rw-rw-rw-  1 codespace codespace    1938 11-12_15:14 speedtest_ssyp.sh
+-rw-rw-rw-  1 codespace codespace      22 11-12_14:59 test_did_ssyp.txt
+-rw-rw-rw-  1 codespace codespace 4857650 11-12_14:49 backup-before-thinking-fix.html
+-rw-rw-rw-  1 codespace root      4857090 11-12_14:20 variant_heavyrec.html
+-rw-rw-rw-  1 codespace root         1012 11-12_14:20 verify.py
+-rw-rw-rw-  1 codespace root         1740 11-12_14:20 verify.txt
+-rw-rw-rw-  1 codespace root            5 11-12_14:20 verify_log.txt
+-rw-rw-rw-  1 codespace root          504 11-12_14:20 wait2.txt
+-rw-rw-rw-  1 codespace root         1195 11-12_14:20 t_s2.txt
+-rw-rw-rw-  1 codespace root            0 11-12_14:20 t_s2_log.txt
+-rw-rw-rw-  1 codespace root         1849 11-12_14:20 texts.cjs
+-rw-rw-rw-  1 codespace root            4 11-12_14:20 texts_done.txt
+-rw-rw-rw-  1 codespace root         2553 11-12_14:20 texts_empty.txt
+-rw-rw-rw-  1 codespace root            0 11-12_14:20 texts_empty_log.txt
+-rw-rw-rw-  1 codespace root         2555 11-12_14:20 texts_seed.txt
+-rw-rw-rw-  1 codespace root            0 11-12_14:20 texts_seed_log.txt
+-rw-rw-rw-  1 codespace root         2358 11-12_14:20 think_ctx.txt
+-rw-rw-rw-  1 codespace root          626 11-12_14:20 toolcfg.txt
+-rw-rw-rw-  1 codespace root          186 11-12_14:20 tools_ctx2.txt
+#!/bin/bash
+# تست سرعت واقعی مدل‌ها از مسیر پنل با کد MH-SSYP-TP35
+# استفاده: bash speedtest_ssyp.sh MODEL BUDGET "سؤال"
+cd /workspaces/Uoakk/.mh
+DID=$(tr -d '\n\r ' < test_did_ssyp.txt)
+CODE='MH-SSYP-TP35'
+M="$1"; BUD="$2"; Q="$3"
+U="https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=ai&m=$M"
+MAXT="${MAXT:-3072}" M="$M" BUD="$BUD" Q="$Q" CODE="$CODE" DID="$DID" python3 - > /tmp/st_body.txt <<'EOF'
+import json,os
+sys_t='تو مهریار، دستیار معلم ابتدایی ایرانی هستی. کوتاه، عملی و دقیق جواب بده.'
+gc={"temperature":0.45,"maxOutputTokens":int(os.environ.get("MAXT","3072"))}
+b=int(os.environ['BUD'])
+if b!=-2: gc["thinkingConfig"]={"thinkingBudget":b}
+body={"systemInstruction":{"parts":[{"text":sys_t}]},"contents":[{"role":"user","parts":[{"text":os.environ['Q']}]}],"generationConfig":gc}
+print(os.environ['CODE']+'|'+os.environ['DID']+'\n'+json.dumps(body,ensure_ascii=False),end='')
+EOF
+curl -s -m ${TMO:-130} -o /tmp/st_resp.txt -w "%{http_code} %{time_total}" -X POST -H 'Content-Type: text/plain' --data-binary @/tmp/st_body.txt "$U" > /tmp/st_meta.txt
+read HC TT < /tmp/st_meta.txt
+python3 - "$M" "$BUD" "$HC" "$TT" <<'EOF'
+import json,sys
+m,b,hc,tt=sys.argv[1:]
+raw=open('/tmp/st_resp.txt',encoding='utf-8',errors='ignore').read()
+try:d=json.loads(raw)
+except Exception:print(f'{m} budget={b} HTTP {hc} {float(tt):.1f}s non-json {raw[:120]!r}');sys.exit()
+if 'error' in d:print(f'{m} budget={b} HTTP {hc} {float(tt):.1f}s ERR {str(d["error"].get("message",""))[:150]}');sys.exit()
+u=d.get('usageMetadata',{});c=d['candidates'][0]
+t=''.join(p.get('text','') for p in c.get('content',{}).get('parts',[]) if not p.get('thought'))
+print(f'{m} budget={b} HTTP {hc} {float(tt):.1f}s thoughts={u.get("thoughtsTokenCount",0)} out={u.get("candidatesTokenCount",0)} chars={len(t)} finish={c.get("finishReason")}')
+EOF
+#!/bin/bash
+# تست زندهٔ پنل با generationConfig دلخواه
+# استفاده: TMO=60 bash gc_test.sh MODEL 'GENCONFIG_JSON' "سؤال" ["system"]
+cd /workspaces/Uoakk/.mh
+DID=$(tr -d '\n\r ' < test_did_ssyp.txt)
+M="$1"; GC="$2"; Q="$3"; SYS="${4:-تو مهریار، دستیار معلم ابتدایی ایرانی هستی. کوتاه، عملی و دقیق جواب بده.}"
+U="https://billowing-feather-ba20.ssioojiu63.workers.dev/panel/api.php?a=ai&m=$M"
+OUT=/tmp/gc_resp_$$.txt; BODY=/tmp/gc_body_$$.txt
+GC="$GC" Q="$Q" SYS="$SYS" DID="$DID" python3 - > $BODY <<'EOF'
+import json,os
+body={"systemInstruction":{"parts":[{"text":os.environ['SYS']}]},"contents":[{"role":"user","parts":[{"text":os.environ['Q']}]}],"generationConfig":json.loads(os.environ['GC'])}
+print('MH-SSYP-TP35|'+os.environ['DID']+'\n'+json.dumps(body,ensure_ascii=False),end='')
+EOF
+META=$(curl -s -m ${TMO:-90} -o $OUT -w "%{http_code} %{time_total}" -X POST -H 'Content-Type: text/plain' --data-binary @$BODY "$U")
+python3 - "$M" "$META" "$OUT" "$GC" <<'EOF'
+import json,sys
+m,meta,out,gc=sys.argv[1:]
+hc,tt=meta.split()
+raw=open(out,encoding='utf-8',errors='ignore').read()
+tag=f'{m} {gc} HTTP {hc} {float(tt):.1f}s'
+try:d=json.loads(raw)
+except Exception:print(tag,'non-json',repr(raw[:150]));sys.exit()
+if 'error' in d:print(tag,'ERR',str(d['error'].get('message',''))[:220]);sys.exit()
+u=d.get('usageMetadata',{});c=(d.get('candidates') or [{}])[0]
+t=''.join(p.get('text','') for p in c.get('content',{}).get('parts',[]) if not p.get('thought'))
+print(tag,f'thoughts={u.get("thoughtsTokenCount",0)} out={u.get("candidatesTokenCount",0)} finish={c.get("finishReason")} text={t[:160]!r}')
+EOF
+rm -f $OUT $BODY

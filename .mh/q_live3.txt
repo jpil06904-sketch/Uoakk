@@ -1,0 +1,8 @@
+nohup: ignoring input
+gemini-3.8-flash {"maxOutputTokens":900,"thinkingConfig":{"thinkingLevel":"HIGH"}} HTTP 504 80.8s non-json 'error code: 504\n'
+gemini-3.8-flash {"maxOutputTokens":900,"thinkingConfig":{"thinkingLevel":"HIGH"}} HTTP 504 80.6s non-json 'error code: 504\n'
+gemini-3.8-flash {"maxOutputTokens":20,"thinkingConfig":{"thinkingLevel":"MINIMAL"}} HTTP 400 0.6s ERR Thinking level MINIMAL is not supported for this model. Please retry with other thinking level.
+gemini-3-flash-preview {"maxOutputTokens":400,"thinkingConfig":{"thinkingLevel":"MINIMAL"}} HTTP 200 2.3s thoughts=0 out=62 finish=STOP text='سلام. ممنون که اطلاع دادی.\n\nنام خانوادگی علی چیست؟ و آیا علت غیبتش (بیماری یا شخصی) مشخص شده؟\n\nمن یادداشت می\u200cکنم تا در لیست حضور و غیاب ثبت شود و تکالیف امروز ر'
+gemini-3-flash-preview {"maxOutputTokens":900,"thinkingConfig":{"thinkingLevel":"HIGH"}} HTTP 200 6.8s thoughts=656 out=158 finish=STOP text='سلام همکار گرامی. برای رفع حواس\u200cپرتی در آموزش ضرب، از **«یادگیری حرکتی و بازی»** استفاده کنید:\n\n۱. **بازی پرش:** پاسخ\u200cها را روی کاغذ بنویسید و کف زمین پخش کنید.'
+gemini-3.5-flash {"maxOutputTokens":900,"thinkingConfig":{"thinkingLevel":"HIGH"}} HTTP 200 6.0s thoughts=785 out=111 finish=MAX_TOKENS text='سلام همکار عزیز! \n\nبرای بچه\u200cهای ۸-۹ ساله، آموزش ضرب نباید حفظی و نشسته\u200cای باشد. ضرب را **دیداری و حرکتی** کن:\n\n۱. **بازی «دست و پا و ضرب» (حرکتی):** \nبرای ضرب «'
+ALLDONE

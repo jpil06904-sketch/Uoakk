@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/gc_resp_15447.txt'
+gemini-3-flash-preview {"maxOutputTokens":400,"thinkingConfig":{"thinkingLevel":"MINIMAL"}} HTTP 503 7.2s non-json '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">\n<html><head>\n<title>503 Service Unavailable</title>\n</head>'
+gemini-3.8-flash {"maxOutputTokens":20,"thinkingConfig":{"thinkingLevel":"MINIMAL"}} HTTP 503 7.1s non-json '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">\n<html><head>\n<title>503 Service Unavailable</title>\n</head>'

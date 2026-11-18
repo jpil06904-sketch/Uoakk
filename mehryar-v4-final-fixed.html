@@ -6570,6 +6570,7 @@ html.ai-short .ai-key-dialog.overlay{padding-top:8px}html.ai-short .ai-key-dialo
     const MAX_MODEL_RETRIES = 3, MODEL_RETRY_DELAY_MS = 1000, MODEL_FETCH_TIMEOUT_MS = 30000, RESPONSE_BODY_TIMEOUT_MS = 30000;
     const RETRYABLE_MODEL_STATUSES = new Set([408,500,502,503,504,520,522,524]);
      const PANEL_MIN_REQUEST_GAP = 0, PANEL_MAX_REQUESTS_PER_MINUTE = 100000, PANEL_FETCH_TIMEOUT_MS = 40000; let heavyDownUntil = 0; let thinkingTrimBroken = false;
+     const HEAVY_HEDGE_MS = 15000, LIGHT_HEDGE_MS = 28000, hedgeSticky = new WeakSet();
      const MIN_REQUEST_GAP = 0, MAX_REQUESTS_PER_MINUTE = 100000, HEAVY_REQUESTS_PER_DAY = 1000000, LIGHT_REQUESTS_PER_DAY = 1000000, MAX_TOOL_ROUNDS = 3, MAX_BUDGET_IMPORT_CHARS = 1000000, REQUEST_TIMEOUT_MS = 300000, LIGHT_FETCH_TIMEOUT_MS = 30000, HEAVY_FETCH_TIMEOUT_MS = 30000, ROUTER_FETCH_TIMEOUT_MS = 8000;
    const HEAVY_TRIGGERS = ['ایده','راهکار','راه حل','بلخره چکار کنم','بالاخره چکار کنم','چکار کنم','چیکار کنم','چه کار کنم','چی کار کنم','چکار کنیم','چیکار کنیم','چه کار کنیم','چی کار کنیم','چه کنیم','چی کنیم','حالا چکار کنم','حالا چیکار کنم','حالا چه کنم','حالا چی کنم','حالا چکار کنیم','حالا چیکار کنیم','حالا چه کنیم','حالا چی کنیم','قدم بعدی','چه پیشنهادی','تحلیل','تحلیل کن','بررسی','بررسی کن','فکر','فکر می کنی','نظر','نظرت','قضاوت','قضاوت کن','استدلال','استنتاج','نتیجه گیری','ارزیابی','مقایسه','علت','دلیل','چرا','پیش بینی','تفسیر','تصمیم','تشخیص','برداشت','با توجه به','تدریس','طرح درس','طراحی سوال','نمونه سوال','روش','روش تدریس','چطور توضیح بدم','بازی آموزشی','مدیریت کلاس','فعالیت گروهی','افت تحصیلی','تکلیف','پروژه'].map(normKey);
    const NEXT_DAY_TRIGGERS = ['فردا','فردا صبح','برای فردا','فردا چکار کنم','فردا چیکار کنم','فردا چه کار کنم','فردا چی کار کنم','فردا چه کنم','فردا چی کنم','فردا چی بدم','فردا چه درسی بدم','فردا چه درس بدهم','درس فردا','برنامه فردا','پیشنهاد فردا'].map(normKey);
@@ -6980,7 +6981,55 @@ html.ai-short .ai-key-dialog.overlay{padding-top:8px}html.ai-short .ai-key-dialo
       signal.removeEventListener('abort', forwardAbort);
     }
   }
+  // سرعت: مدل تحلیلی گاهی بی‌دلیل تا ۸۰ ثانیه گیر می‌کند (تست زنده با کد پنل). اگر تا HEAVY_HEDGE_MS جواب نداد،
+  // همان درخواست موازی به مدل سریع می‌رود و هر کدام زودتر جواب درست داد استفاده می‌شود؛ بقیهٔ منطق دست‌نخورده است.
   async function fetchModelWithRetry(model, body, signal, timeoutMs, retries = MAX_MODEL_RETRIES) {
+    if (model === HEAVY_MODEL && hedgeSticky.has(signal)) model = LIGHT_MODEL; // فقط در ادامهٔ همین پیام؛ با همان بودجهٔ فکر کامل
+    const bigOutput = !!(body && body.generationConfig && body.generationConfig.maxOutputTokens > 8192);
+    if (model === HEAVY_MODEL && HEAVY_HEDGE_MS > 0 && !bigOutput) return hedgedHeavyFetch(body, signal, timeoutMs, retries);
+    return fetchModelOnce(model, body, signal, timeoutMs, retries);
+  }
+  // کیفیت اول: ۱) مدل قوی  ۲) اگر گیر کرد، همان مدل قوی دوباره (پنل کلید دیگری برمی‌دارد)  ۳) فقط اگر باز گیر بود، مدل سریع با همان فکر کامل.
+  function hedgedHeavyFetch(body, signal, timeoutMs, retries) {
+    return new Promise((resolve, reject) => {
+      if (signal.aborted) { reject(new DOMException('درخواست متوقف شد','AbortError')); return; }
+      const stages = [{model:HEAVY_MODEL, at:0}, {model:HEAVY_MODEL, at:HEAVY_HEDGE_MS}, {model:LIGHT_MODEL, at:LIGHT_HEDGE_MS}];
+      const ctls = stages.map(() => new AbortController()), outcomes = stages.map(() => null);
+      let settled = false, started = 0;
+      const timers = stages.map((s, i) => i ? setTimeout(() => start(i), s.at) : null);
+      const finish = (ok, value) => { if (settled) return; settled = true; timers.forEach(t => t && clearTimeout(t)); signal.removeEventListener('abort', onAbort); ok ? resolve(value) : reject(value); };
+      const onAbort = () => { ctls.forEach(c => c.abort()); finish(false, new DOMException('درخواست متوقف شد','AbortError')); };
+      signal.addEventListener('abort', onAbort, {once:true});
+      const isGood = o => o && !o.error && o.result && o.result.response && o.result.response.ok;
+      const settleFrom = o => o.error ? finish(false, o.error) : finish(true, o.result);
+      const decide = i => {
+        if (settled) return;
+        const o = outcomes[i];
+        if (isGood(o)) {
+          ctls.forEach((c, j) => { if (j !== i) c.abort(); });
+          if (stages[i].model !== HEAVY_MODEL) hedgeSticky.add(signal);
+          return settleFrom(o);
+        }
+        if (i === 0 && started === 1) { // مدل قوی زود خطا داد
+          const busy = o.error ? isTransientModelFailure(o.error) && o.error.code !== 'MODEL_RATE_LIMIT' : RETRYABLE_MODEL_STATUSES.has(o.result.response.status);
+          if (busy) { clearTimeout(timers[1]); return start(1); } // شلوغی موقت: یک بار دیگر مدل قوی (کلید دیگر)
+          return settleFrom(o); // خطای دیگر: همان مسیر قبلی برنامه
+        }
+        const running = outcomes.slice(0, started).some(x => !x);
+        if (started < stages.length) { if (!running) start(started); return; }
+        if (!running) settleFrom(outcomes[0]);
+      };
+      function start(i) {
+        if (settled || i !== started || i >= stages.length) return;
+        started = i + 1;
+        fetchModelOnce(stages[i].model, body, ctls[i].signal, timeoutMs, retries)
+          .then(result => ({result}), error => ({error}))
+          .then(o => { outcomes[i] = o; decide(i); });
+      }
+      start(0);
+    });
+  }
+  async function fetchModelOnce(model, body, signal, timeoutMs, retries = MAX_MODEL_RETRIES) {
     await reserveRequestSlot(signal, model);
     if (isActCode(key) && !window.__mehryarPanel) { const e = new Error('اتصال به پنل در این نسخه روشن نیست.'); e.code = 'MODEL_NETWORK'; throw e; }
     const viaPanel = isActCode(key);
@@ -7650,7 +7699,7 @@ html.ai-short .ai-key-dialog.overlay{padding-top:8px}html.ai-short .ai-key-dialo
        try {
          ({response,data}=await send());
         } catch (error) {
-          if(model===HEAVY_MODEL&&isTransientModelFailure(error))heavyDownUntil=Date.now()+600000;
+          if(model===HEAVY_MODEL&&isTransientModelFailure(error))heavyDownUntil=Date.now()+120000;
            if(model!==FALLBACK_MODEL&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL,triedHeavy:true});
             if(model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:error.code==='MODEL_RATE_LIMIT'&&Date.now()>=heavyDownUntil?HEAVY_MODEL:FALLBACK_MODEL,triedHeavy:true});
             if (!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&model===HEAVY_MODEL&&fallbackPrompt&&/سهمیه|سقف روزانه|موقتاً متوقف|quota|rate limit/i.test(error.message||'')) return workerFallback(fallbackPrompt,signal);
@@ -7663,7 +7712,7 @@ html.ai-short .ai-key-dialog.overlay{padding-top:8px}html.ai-short .ai-key-dialo
         if(toolSchemaError)throw new Error('ساختار درخواست ابزارها توسط سرویس پذیرفته نشد (HTTP 400). این خطا از طرح ابزار است، نه لزوماً رمز یا سهمیه. هیچ تغییری ثبت نشده است.');
           if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&response.status===400&&model===HEAVY_MODEL&&fallbackPrompt)return workerFallback(fallbackPrompt,signal);
              if(response.status===429){const seconds=retrySeconds(response,data),rate=rateState();rate.backoffUntilByModel[model]=Date.now()+seconds*1000;rate.kindByModel=rate.kindByModel||{};rate.kindByModel[model]=quotaKind(data);rate.secondsByModel=rate.secondsByModel||{};rate.secondsByModel[model]=seconds;rate.rawByModel=rate.rawByModel||{};rate.rawByModel[model]=response.status+': '+String(data.error?.message||'').replace(/\s+/g,' ').slice(0,200)+' (انتظار پیشنهادی: '+seconds+' ثانیه)';saveRateState(rate);if(model!==FALLBACK_MODEL)return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL});if(!options.triedHeavy&&!annualBudgetMode)return request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&fallbackPrompt)return workerFallback(fallbackPrompt,signal);const quotaError=new Error('سهمیه یا سرعت مجاز مدل '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+' پر شده است. طبق پاسخ سرویس، '+fa(seconds)+' ثانیه صبر کن؛ ثبت اطلاعات محلی همچنان فعال است.');quotaError.code='MODEL_RATE_LIMIT';throw quotaError;}
-           if(model===HEAVY_MODEL&&RETRYABLE_MODEL_STATUSES.has(response.status))heavyDownUntil=Date.now()+600000;
+           if(model===HEAVY_MODEL&&RETRYABLE_MODEL_STATUSES.has(response.status))heavyDownUntil=Date.now()+120000;
            if((RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404)&&model!==FALLBACK_MODEL&&!options.triedHeavy)return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL,triedHeavy:true});let altNote='';if(response.status===404&&model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode&&Date.now()>=heavyDownUntil){try{return await request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});}catch(altError){if(altError?.name==='AbortError')throw altError;altNote=' مدل تحلیلی را هم امتحان کردم ولی جواب نداد: '+String(altError?.message||altError).slice(0,180);}}
             const providerError=new Error(friendlyError(response.status,reason,data.error?.message,model)+altNote);
             if(RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404){providerError.code='MODEL_UNAVAILABLE';providerError.status=response.status;}

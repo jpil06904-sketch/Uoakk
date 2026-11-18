@@ -1,0 +1,2 @@
+gemini-3-flash-preview {"maxOutputTokens":15,"temperature":0,"thinkingConfig":{"thinkingLevel":"MINIMAL"}} HTTP 200 1.9s thoughts=0 out=5 finish=STOP text='{"route":"FAST"}'
+gemini-3.8-flash {"maxOutputTokens":900,"thinkingConfig":{"thinkingLevel":"HIGH"}} HTTP 503 2.8s ERR This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.

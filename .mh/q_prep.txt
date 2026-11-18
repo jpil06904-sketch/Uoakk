@@ -1,0 +1,163 @@
+  function prepare(changes, options={}) {
+    draftContext();
+    if(planDraft)fail('ابتدا پیش‌نویس دستی طرح درس را ذخیره یا لغو کن؛ سپس درخواست ثبت را دوباره بده.');
+    assertSafeTree(changes);
+    if(!Array.isArray(changes)||!changes.length||changes.length>50) fail('هر گزارش باید ۱ تا ۵۰ تغییر روشن داشته باشد.');
+    if(savingBlocked||!storageOk) fail('ابتدا مشکل حافظهٔ برنامه را رفع و از اطلاعات پشتیبان بگیر.');
+    const base=domain(state), next=clone(state), items=[], sessions=new Map(), touched=new Set(),canonical=[];
+    changes=forceExplicitClasswideColor(changes,options);
+    changes=expandClassWideRecords(changes,next,options);
+    const stamp=new Date().toISOString();
+    for(const c of changes) {
+      if(!isObj(c)) fail('ساختار تغییر معتبر نیست.');
+      const type=choice(c.type,Object.keys(labels),'نوع ثبت'), l=next.learning;
+      const st=['agreement','studentAdd','skillAdd','plan7Task','dailyPlan','activity',...extraTypes.filter(t=>t!=='pathMove')].includes(type)||(type==='teachingReport'&&!c.studentId)?null:student(c.studentId,next);
+      if(st&&type!=='studentUpdate'&&l.studentMeta[st.id]?.archived) fail(st.name+' بایگانی است؛ ابتدا از بایگانی خارج شود.');
+      let date=day(c.date,localISO());
+      if(st&&type!=='studentUpdate'&&validDay(l.studentMeta[st.id]?.enrolledOn)&&date<l.studentMeta[st.id].enrolledOn) fail('تاریخ گزارش قبل از ورود '+st.name+' است.');
+      if(['observation','attendance','homework','assessment','parentMeeting'].includes(type)&&date>localISO()) fail('گزارش انجام‌شده را نمی‌توان برای آینده ثبت کرد.');
+      const sk=['observation','homework','followup','teachingReport'].includes(type)?skill(c.skillId,c.subject,next):null;
+      const normalized=clone(c);canonical.push(normalized);
+      if(st)normalized.studentId=st.id;if(sk)normalized.skillId=sk.id;
+      if(c.date!==undefined||['observation','homework','attendance','followup','teachingReport','dailyPlan','activity','studentNote','assessment','shortage','responsibility','agreement','parentMeeting','studentAdd'].includes(type))normalized.date=date;
+      if(c.dueOn!==undefined)normalized.dueOn=day(c.dueOn);
+      if(type==='teachingReport'){
+        const reportKey=JSON.stringify([type,date,sk.id,c.grade||'',c.planId||'',c.activityId||'']);
+        if(touched.has(reportKey))fail('گزارش تدریس تکراری در یک بسته است.');touched.add(reportKey);
+      }
+      const duplicateKey=JSON.stringify(extraTypes.includes(type)?[type,st?.id,c.skillId,c.listKey,c.item||c.text,c.recordId,c.outputKey]:type.endsWith('Update')?[type,st?.id,c.recordId]:type==='studentAdd'?[type,normKey(c.name||'')]:type==='skillAdd'?[type,c.subject,normKey(c.text||'')]:type==='plan7Task'?[type,c.recordId||[c.dayIndex,c.text]]:['dailyPlan','activity'].includes(type)?[type,c.recordId||[date,c.skillId,c.activity?.title]]:[type,st?.id,date,sk?.id,c.item,c.assessmentSkill,c.role]);
+      if(type!=='teachingReport'){
+        if(touched.has(duplicateKey)) fail('دو تغییر تکراری یا متناقض در یک گزارش است؛ گزارش را جدا یا اصلاح کن.');
+        touched.add(duplicateKey);
+      }
+      let detail='', href=st?'#/pulse/student/'+st.id:'#/pulse/class-agreements';
+      if(extraTypes.includes(type)) { ({detail,href}=extraPrepare(c,next,st,date));
+      } else if(type==='studentAdd') {
+        const name=normalizeName(text(c.name,'نام کامل')),grade=choice(c.grade,PD_GRADES,'پایه');
+        detail=(existing?'ویرایش فعالیت: ':'فعالیت جدید: ')+out.title+'؛ '+sk.subject+' / '+sk.label+'؛ پایه‌های '+out.grades.join('، ')+'؛ '+fa(out.durationMinutes)+' دقیقه\nوسایل: '+(out.materials.join('، ')||'ندارد')+'\nبررسی اولیه: '+out.diagnosticPrompt+'\nراهنمای مشاهده: '+out.observationGuide+'\nمراحل: '+out.steps.join('\n')+'\nتمرین ساده: '+out.practice.simple+'\nمتوسط: '+out.practice.medium+'\nچالشی: '+out.practice.challenge+'\nدستور مستقل: '+out.independentInstructions+'\nسنجش خروجی: '+out.exitCheck+'\nراهنمای معلم: '+out.teacherNote;
+        href='#/pulse/activities/'+out.id;
+      } else if(type==='observation'||type==='homework') {
+        const k=date+'|'+sk.id;
+         let s=sessions.get(k);
+         if(!s) {s={id:uid(),date,sequence:Date.now()+sessions.size,subject:sk.subject,skillId:sk.id,skillLabel:sk.label,lessonTitle:'گزارش معلم از چت‌بات',rosterIds:[],records:{},createdAt:stamp,updatedAt:stamp};sessions.set(k,s);l.sessions.push(s);}
+        if(!s.rosterIds.includes(st.id)) s.rosterIds.push(st.id);
+        const r=s.records[st.id] ||= emptyRec();
+        if(type==='observation') {
+          r.status=choice(c.status,['red','yellow','green'],'رنگ یادگیری');r.observed=true;
+           if(c.errors!==undefined) {if(!Array.isArray(c.errors)||c.errors.length>10) fail('حداکثر ۱۰ خطا مجاز است.');r.errors=c.errors.map(e=>text(e,'خطا'));}
+          detail=sk.subject+' / '+sk.label+'؛ '+STATUS_TEXT[r.status]+(r.errors.length?'؛ خطا: '+r.errors.join('، '):'');
+        } else {r.homework=choice(c.status,['complete','partial','missing'],'وضعیت تکلیف');detail=sk.label+'؛ '+({complete:'کامل',partial:'ناقص',missing:'انجام‌نشده'})[r.homework];}
+          const note=text(c.note,'یادداشت',true);if(note){r.note=[r.note,note].filter(Boolean).join('\n');detail+='؛ یادداشت: '+note;}
+        href='#/pulse/session/'+s.id;
+      } else if(type==='attendance') {
+         const value=choice(c.status,['present','absent','late'],'حضور');
+        l.attendanceDays ||= {};l.attendanceDays[date] ||= {};
+        const previous=l.attendanceDays[date][st.id];l.attendanceDays[date][st.id]=value;
+        const names={present:'حاضر',absent:'غایب',late:'تأخیر'};
+        detail=(previous?'تغییر '+names[previous]+' به ':'')+names[value];href='#/pulse/attendance';
+      } else if(type==='followup') {
+        const action=text(c.text,'اقدام'), dueOn=day(c.dueOn);
+        l.followups.push({id:uid(),studentId:st.id,subject:sk.subject,skillId:sk.id,sourceSessionIds:[],action,activityId:'',createdOn:date,dueOn,status:'planned',outcome:'unchecked',note:text(c.note,'یادداشت',true),completedOn:''});
+        detail=sk.label+'؛ '+action+'؛ موعد '+displayDay(dueOn)+(c.note?'؛ یادداشت: '+c.note:'');href='#/pulse/followups';
+      } else if(type==='shortage') {
+        const item=text(c.item,'نام وسیله');if(!next.lists.firstDayItems.includes(item))fail('وسیله در فهرست کمبودیار نیست؛ ابتدا در تنظیمات فهرست اضافه شود.');
+        st.shortage[item]=choice(c.status,['has','missing','unknown'],'وضعیت وسیله');detail=item+'؛ '+({has:'دارد',missing:'ندارد',unknown:'نامشخص'})[c.status];href='#/output/shortage';
+      } else if(type==='assessment') {
+        const key=choice(c.assessmentSkill,ASSESS_SKILLS.map(x=>x[0]),'مهارت سنجش');
+        st.assess[key]=choice(c.level,[0,1,2,3],'سطح سنجش');detail=ASSESS_SKILLS.find(x=>x[0]===key)[1]+'؛ '+LEVELS[c.level];href='#/output/assessment';
+      } else if(type==='studentNote') {
+        const note=text(c.text,'یادداشت');st.data.note=[st.data.note,displayDay(date)+': '+note].filter(Boolean).join('\n');detail=note;href='#/students/'+st.id;
+      } else if(type==='responsibility') {
+        const role=choice(c.role,l.responsibilityRoles,'نقش');
+        if(l.responsibilityHistory.some(r=>!r.undone&&r.date===date&&(r.role===role||r.studentId===st.id)))fail('این نقش یا دانش‌آموز در این روز مسئولیت دارد.');
+        if(l.studentMeta[st.id]?.exemptUntil>=date||l.attendanceDays?.[date]?.[st.id]==='absent')fail('دانش‌آموز معاف یا غایب است.');
+        l.responsibilityHistory.push({id:uid(),role,studentId:st.id,date,undone:false});detail=role;href='#/pulse/responsibilities';
+      } else if(type==='agreement') {
+        const value=text(c.text,'قول'),practice=text(c.practice,'تمرین عملی'),reviewOn=day(c.dueOn);
+        l.classAgreements.push({id:uid(),text:value,practice,reviewOn});detail=value+'؛ تمرین '+practice+'؛ مرور '+displayDay(reviewOn);
+      } else if(type==='parentMeeting') {
+        const agreement=text(c.text,'توافق'),dueOn=day(c.dueOn);
+        l.parentMeetings.push({id:uid(),studentId:st.id,date,question:text(c.question,'پرسش',true),agreement,owner:text(c.owner,'مسئول اقدام'),dueOn,nextResult:''});
+        detail=agreement+'؛ مسئول '+c.owner+'؛ موعد '+displayDay(dueOn)+(c.question?'؛ پرسش: '+c.question:'');href='#/pulse/parent-meeting';
+      }
+       items.push({title:labels[type],student:st?.name||(type==='studentAdd'?normalizeName(c.name):'کل کلاس'),date,detail,href});
+    }
+    for(const s of sessions.values())for(const id of s.rosterIds)if(s.records[id].observed&&next.learning.attendanceDays?.[s.date]?.[id]==='absent')fail('غیبت روزانه با مشاهدهٔ یادگیری در همان روز ناسازگار است؛ ابتدا گزارش را روشن کن.');
+    for(const c of changes)if(c.type==='attendance'&&c.status==='absent') {
+      const st=student(c.studentId,next),date=day(c.date,localISO());
+      if(next.learning.sessions.some(s=>s.date===date&&s.records[st.id]?.observed))fail('برای این روز مشاهدهٔ یادگیری ثبت شده؛ غیبت کامل را بدون اصلاح آن ثبت نکن.');
+    }
+     if(JSON.stringify(items).length>45000)fail('پیش‌نمایش خیلی بزرگ است؛ گزارش را به بسته‌های کوچک‌تر تقسیم کن.');
+     validateImport(next);
+     proposal={id:uid(),version:(proposal?.version||0)+1,changes:canonical,base,next,items,demo:demoMode,planDraft:JSON.stringify(planDraft)};
+    return {status:'awaiting_teacher_confirmation',version:proposal.version,items};
+  }
+  function ensureCurrent(expected) {
+    if(domain(state)!==expected) fail('داده‌ها از زمان تهیهٔ پیشنهاد تغییر کرده‌اند؛ درخواست را با اطلاعات تازه دوباره بفرست.');
+    if(!demoMode) {
+      if(savingBlocked||!storageOk)fail('ذخیره‌سازی مسدود است؛ ابتدا از اطلاعات پشتیبان بگیر.');
+      let saved;try {saved=JSON.parse(localStorage.getItem(STORAGE_KEY));}catch(_){fail('حافظه خوانده نشد.');}
+      if(saved&&domain(saved)!==expected) fail('اطلاعات ذخیره‌شده با این برگه فرق دارد. ابتدا تغییرات را ذخیره یا صفحه را دوباره باز کن.');
+    }
+  }
+   function write(next) {
+     if(typeof window.__mehryarValidateCurriculum==='function')window.__mehryarValidateCurriculum(next);
+     validateImport(next);
+    if(!demoMode) {
+      try {localStorage.setItem(STORAGE_KEY,JSON.stringify(next));}catch(_){fail('ثبت انجام نشد؛ حافظه کافی نیست. هیچ بخشی از گزارش اعمال نشد.');}
+    }
+     clearTimeout(saveTimer2);saveEpoch++;state=next;if(typeof window.__mehryarSyncCurriculumBudgetBaseline==='function')window.__mehryarSyncCurriculumBudgetBaseline();syncStudentDossiers(next,[],true);dirty=false;showSaved();
+  }
+  function commit() {
+    if(!proposal)fail('پیشنهادی برای ثبت وجود ندارد.');
+    const p=proposal;if(p.demo!==demoMode)fail('حالت نمونه تغییر کرده؛ دوباره گزارش بده.');ensureCurrent(p.base);
+    if(p.planDraft!==JSON.stringify(planDraft))fail('پیش‌نویس برنامه در این فاصله تغییر کرد؛ ابتدا آن را ذخیره یا لغو کن و دوباره درخواست بده.');
+    const hasBudget=p.changes.some(change=>change.type==='curriculumBudget'),pendingBudget=p.next.curriculum?.budget?.draft;
+    if(hasBudget&&(!pendingBudget||Number(pendingBudget.counts?.ready||0)<1))fail('هیچ ردیف کامل و آماده‌ای برای ثبت نهایی وجود ندارد.');
+    if(hasBudget&&pendingBudget.parseIssues?.length)fail('پیش‌نویس بودجه خطای استخراج دارد؛ تا رفع آن‌ها هیچ ردیفی ثبت نمی‌شود.');
+    if(hasBudget&&pendingBudget.mode==='replace'&&Number(pendingBudget.counts?.ready||0)!==Number(pendingBudget.counts?.total||0))fail('جایگزینی فقط وقتی مجاز است که همهٔ ردیف‌ها کامل باشند؛ بودجهٔ فعلی دست‌نخورده ماند.');
+      const previous=clone(state),next={...p.next,ui:clone(state.ui),progress:clone(state.progress)};
+      if(hasBudget) {
+       const budgetDraft=next.curriculum?.budget?.draft,readyCount=Number(budgetDraft?.counts?.ready)||0;
+        if(readyCount){const approvedAt=new Date().toISOString();next.curriculum.budget.sourceText=String(budgetDraft?.rawText||next.curriculum.budget.sourceText||'');next.curriculum.budget.approvedAt=approvedAt;next.curriculum.budget.entries=next.curriculum.budget.entries.map(entry=>({...entry,approvedAt:entry.approvedAt||approvedAt}));next.curriculum.budget.history ||= [];next.curriculum.budget.history=next.curriculum.budget.history.slice(-12);}
+          if(budgetDraft){const remaining=budgetDraft.rows.filter(row=>row.status!=='matched'),dependencies=budgetDraft.dependencies||{},counts={total:remaining.length,ready:remaining.filter(row=>row.status==='matched'&&row.bookId&&validDay(row.startDate)&&validDay(row.endDate)&&Number.isInteger(row.sessions)&&row.sessions>=1&&row.sessions<=99).length,matched:remaining.filter(row=>row.status==='matched').length,ambiguous:remaining.filter(row=>row.status==='ambiguous').length,unresolved:remaining.filter(row=>row.status==='unresolved').length,needsReview:remaining.filter(row=>row.status==='needs_review').length,missingBooks:Array.isArray(dependencies.books)?dependencies.books.length:0,missingNodes:Array.isArray(dependencies.nodes)?dependencies.nodes.length:0};next.curriculum.budget.draft=remaining.length?{...budgetDraft,rows:remaining,counts,updatedAt:new Date().toISOString()}:null;}
+      }
+      const receiptItems=p.items.map(item=>{if(item.title!==labels.curriculumBudget)return item;const detail=String(item.detail||''),duplicate=detail.includes('این بودجه‌بندی قبلاً با همین مشخصات ثبت شده است');return {...item,detail:detail.replace('پیش‌نویس نگه داشته شد و هنوز ثبت نهایی نشده است.',duplicate?'\nداده‌ها بدون تغییر باقی ماندند.':'ثبت اتمیک انجام شد؛ کتاب‌ها، مباحث و ردیف‌های بودجه با هم ذخیره شدند.')}});
+     next.learning.assistantAudit ||= [];
+     next.learning.assistantAudit.push({id:p.id,at:new Date().toISOString(),items:receiptItems});
+    next.learning.assistantAudit=next.learning.assistantAudit.slice(-30);
+    delete previous.assistantUndo;
+    const record={version:1,previous,after:domain(next),demo:demoMode,planDraft:JSON.stringify(planDraft)};
+    if(!demoMode)next.assistantUndo=record;
+    write(next);syncStudentDossiers(next,p.changes,true);undoRecord=record;proposal=null;outputPreview=null;
+     return receiptItems;
+  }
+  function undo() {
+    const r=currentUndo();if(!r)fail('ثبت قابل واگردی وجود ندارد.');
+    ensureCurrent(r.after);
+    if(r.planDraft!==JSON.stringify(planDraft))fail('پیش‌نویس دستی تغییر کرده؛ ابتدا آن را ذخیره یا لغو کن.');
+    write({...r.previous,ui:clone(state.ui),progress:clone(state.progress)});undoRecord=null;proposal=null;outputPreview=null;
+  }
+  function localAnswer(prompt) {
+    const q=normKey(prompt).replace(/[؟?!!.،]/g,'');
+    if (!/(ثبت|ذخیره|اصلاح|ویرایش|حذف|اضافه|ایجاد)/.test(q) && /(?:امروز|همین.?امروز)/.test(q) && /(?:کی|چه.?کسی|کدام|کیا|فهرست|لیست)/.test(q) && /(?:تاخیر|تأخیر|غیبت|حاضر)/.test(q)) {
+      const status=/(?:تاخیر|تأخیر)/.test(q)?'late':/(?:غیبت)/.test(q)?'absent':'present';
+      const labels={late:'تأخیر',absent:'غیبت',present:'حضور'};
+      const rows=read({section:'attendance',from:localISO(),to:localISO(),limit:100}).items.filter(row=>row.status===status);
+      return rows.length ? `${labels[status]}های امروز (${displayDay(localISO())}): ${rows.map(row=>row.name).join('، ')}.\nاین پاسخ مستقیماً از ثبت محلی حضور و غیاب خوانده شد و درخواست آنلاین مصرف نکرد.` : `برای امروز (${displayDay(localISO())}) موردی از ${labels[status]} ثبت نشده است.\nاین پاسخ مستقیماً از ثبت محلی حضور و غیاب خوانده شد و درخواست آنلاین مصرف نکرد.`;
+    }
+    if(!['چندتادانشآموزدارم','چنددانشآموزدارم','تعداددانشآموزان','چندنفرقرمزدارم','چندتاقرمزدارم','چندتاقرمز','تعدادقرمزها','آمارکلاس','آمارکلاسم'].includes(q))return null;
+    const s=read({section:'summary'});
+    if(q.includes('دانشآموز'))return `تعداد دانش‌آموزان فعال: ${fa(s.activeStudents)} نفر در همهٔ پایه‌ها.\nبایگانی: ${fa(s.archived)} نفر.\nمنبع: فهرست واقعی همین برنامه${demoMode?' (نمونهٔ فرضی)':''}.`;
+    return `آمار همهٔ پایه‌ها تا ${displayDay(localISO())}${demoMode?' (نمونهٔ فرضی)':''}:\nدانش‌آموز فعال: ${fa(s.activeStudents)} نفر\nدارای حداقل یک مهارت قرمز: ${fa(s.colors.red.students)} نفر، در ${fa(s.colors.red.skillRecords)} ثبتِ آخرِ مهارت\nدارای مهارت زرد: ${fa(s.colors.yellow.students)} نفر\nدارای مهارت سبز: ${fa(s.colors.green.students)} نفر\nبدون مشاهدهٔ مستقیم: ${fa(s.unobservedStudents)} نفر\nرنگ‌ها بر اساس آخرین مشاهدهٔ هر مهارت در کل سابقه‌اند؛ یک نفر می‌تواند در درس‌های مختلف چند رنگ داشته باشد. نداشتن مشاهده به معنی ضعف نیست.\nاین پاسخ محلی است و درخواست آنلاین مصرف نکرد.`;
+  }
+     function get_budget({grade, year}) {
+       const cleanGrade=String(grade||'').replace(/\s*ابتدایی\s*$/,'').trim();
+       const cleanYear=String(year||'').trim();
+       try{const annual=localStorage.getItem(`mehyar_budget_${cleanGrade}_${cleanYear}`)||localStorage.getItem(`mehyar_budget_${cleanYear}_${cleanGrade}`);if(annual)return JSON.parse(annual);}catch(_){}
+       try{return JSON.parse(localStorage.getItem(`budget_${grade}_${year}`));}catch(_){return null;}
+    }
+     function budgetScheduleHint(sequenceTopics,lastIndex,monthKey,now=new Date(),dayOffset=1) {
+       try{
+         if(!Array.isArray(sequenceTopics)||!sequenceTopics.length)return null;
+869:    return {read,prepare,commit,undo,localAnswer,get_budget,get_budget_and_progress,catalog,declarations,draftContext,revision:assistantRevision,get proposal(){return proposal;},get canUndo(){const r=currentUndo();return !!r&&domain(state)===r.after&&r.planDraft===JSON.stringify(planDraft);},prepareOutput,viewOutput,get outputPreview(){return outputPreview;},clear(){proposal=null;undoRecord=nu

@@ -1,0 +1,44 @@
+=== paintStorage(); sizeInput(); scrollChat();
+8093:    paintStorage(); sizeInput(); scrollChat();
+=== ${pending ? messageHtml(pending,-1)
+8032:          ${pending ? messageHtml(pending,-1) + '<div class="ai-pending" role="status"><span class="ai-spinner" aria-hidden="true"></span>در حال آماده کردن پاسخ…</div>' : ''}
+=== async function run() {
+7833:  async function run() {
+=== const messageHtml
+8022:      const messageHtml = (m,i) => `<article class="ai-message ${m.role === 'user' ? 'user' : 'assistant'}"><div class="ai-author">${m.role === 'user' ? 'شما' : 'مهریار'}</div><div class="ai-bubble">${forma
+=== <div class="ai-input-row"><textarea
+8039:            <form id="ai-form" class="ai-compose">${pendingAnnualBudget?'<div role="status" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 10px;margin-bottom:8px;border:1px solid currentCo
+=== function persist(
+=== function save(
+=== async function callGemini
+=== async function callModel
+=== function systemPrompt
+=== function buildSystem
+=== const HEAVY_MODEL
+=== const LIGHT_MODEL
+6514:      const LIGHT_MODEL = 'gemini-3-flash-preview', HEAVY_MODEL = 'gemini-3.5-flash', FALLBACK_MODEL = LIGHT_MODEL, HEAVY_THINKING_BUDGET = 2048, WORKER_FALLBACK_URL = 'https://red-heart-c9c0.ssioojiu63.workers.dev/
+=== function chooseModel
+=== function classifyIntent
+7082:  async function classifyIntent(prompt) {
+=== async function ask(
+=== async function sendToModel
+=== generationConfig
+6988:    const bigOutput = !!(body && body.generationConfig && body.generationConfig.maxOutputTokens > 8192);
+7045:        if (result.response.status === 400 && body.generationConfig && body.generationConfig.thinkingConfig && /think/i.test(JSON.stringify(result.data || {}))) {
+7046:          thinkingTrimBroken = true; delete body.generationConfig.thinkingConfig; options = makeOptions();
+7091:      const {response, data} = await fetchModelWithRetry(LIGHT_MODEL, {systemInstruction:{parts:[{text:INTENT_SYSTEM_PROMPT + (names.size ? ' درس‌های موجود در بودجهٔ معلم: ' + [...names].sli
+7110:      const {response,data}=await fetchModelWithRetry(LIGHT_MODEL,{systemInstruction:{parts:[{text:ROUTER_SYSTEM_PROMPT}]},contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0,maxOutputToke
+7697:             generationConfig:{temperature:annualBudgetMode?0:tomorrowBudgetMode?0.4:ideaMode?0.95:0.45,maxOutputTokens:annualBudgetMode?32768:ideaMode?8192:learnMode?6144:isTomorrowPrompt(fallbackPrompt)?2048:3072,
+=== PANEL_URL
+3987:/* ===== Optional remote panel: banners, popup, anonymous counters. Empty PANEL_URL = fully off. ===== */
+3988:const APP_VERSION='4.1',PANEL_URL='https://billowing-feather-ba20.ssioojiu63.workers.dev/panel';
+3990: if(!PANEL_URL)return;
+3991: const OFF='mehryar_stats_off',DID='mehryar_did',base=(()=>{try{return new URL(PANEL_URL,location.href).href.replace(/\/+$/,'');}catch(_){return PANEL_URL.replace(/\/+$/,'');}})(),viewed=new Set();
+=== MehryarTools.prepare(
+6805:       return MehryarTools.prepare([{type:'curriculumBudget',budget:{mode:budgetImportMode(prompt),text:String(prompt||''),source:'teacher-chat'}}]);
+7746:             const prepared=MehryarTools.prepare(calls[0].functionCall.args?.changes,intent);
+9646:     window.__mehryarCurriculumApi={ensureCurriculum,getActiveClassContext,listBooksByGrade,getBookStructure:(data=state,bookId='')=>{const book=curriculumBookFor(data,bookId);return book?{...compactBook(book,{nodes
+=== function hedged
+6993:  function hedgedHeavyFetch(body, signal, timeoutMs, retries) {
+=== raceStrong
+=== <brain>

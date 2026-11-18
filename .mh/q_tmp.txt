@@ -1,0 +1,17 @@
+cline
+codespaces_logs
+containerd.log
+dockerd.log
+node-compile-cache
+sshd.log
+storage_version.txt
+vscode-git-d97dd66221.sock
+vscode-git-ddca79df7b.sock
+vscode-ipc-32d0b4d2-cd68-4cfc-b181-0193e54bcfb4.sock
+vscode-ipc-35b12e85-4c82-41cb-8ca5-38ce7c2dd445.sock
+vscode-ipc-471db8f1-e9bb-4ae0-b43d-8fb941869f68.sock
+vscode-ipc-64a33fb7-6869-41e6-9cf7-7e1d3da5d6aa.sock
+vscode-ipc-8108efd1-08cb-4bc7-af4c-007ea30369d2.sock
+vscode-ipc-cb277173-508c-4d78-ae8e-17bb740f65e7.sock
+vscode-ipc-e4c13c78-fd6c-4f73-b1ac-28f9defb9937.sock
+vscode-ipc-fb670613-a41b-42e8-bf53-f6c0744ababf.sock

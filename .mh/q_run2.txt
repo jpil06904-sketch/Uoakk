@@ -1,0 +1,80 @@
+            if(budgetDraft.parseIssues?.length){MehryarTools.dismiss();tomorrowDraftNotice='[متن بودجهٔ قبلی در گفت‌وگو هست ولی ثبت نشده؛ خواندن خودکار آن کامل نبود ('+fa(budgetDraft.parseIssues.length)+' مورد). برای ثبت، همان متن را دوباره بفرست تا با Gemini استخراج و پیش‌نمایش داده شود. نمونه: '+budgetDraft.parseIssues.slice(0,2).join(' | ')+']';}else{const saveDraft=window.__mehryarCurriculumApi?.saveBudgetDraft;if(!saveDraft||!saveDraft(state,budgetDraft))throw new Error('پیش‌نویس در حافظهٔ کلاس ذخیره نشد.');MehryarTools.dismiss();tomorrowDraftNotice='[متن بودجهٔ قبلی گفت‌وگو را به‌صورت پیش‌نویسِ تأییدنشده آماده کردم؛ در صفحهٔ «بودجه‌بندی» بررسی و تأیید کن. تا آن موقع از آن استفاده نشد.]';}
+            
+          }catch(error){if(MehryarTools.proposal)MehryarTools.dismiss();tomorrowDraftNotice='[متن بودجهٔ قبلی را پیدا کردم ولی پیش‌نویس امنی از آن ساخته نشد: '+String(error.message||error)+' چیزی ثبت نشد؛ برای ثبت، همان متن را دوباره بفرست.]';}
+        }
+        if(!activeBudget.budget&&!existingDraft&&!previousBudgetMessage&&!otherBudgets.length){
+          const previous=latestBudgetMessageFor(p.id);
+          if(previous){
+            const previousIdentity=budgetHistoryIdentity(previous,p.info.grade,p.info.year),previousScope=previousIdentity.grade&&previousIdentity.year?`پایهٔ ${previousIdentity.grade}، سال ${previousIdentity.year}`:'پایه یا سال نامشخص';
+            postBudgetExchange(prompt,p,`برای پایهٔ ${budgetIdentity.grade||'نامشخص'}، سال ${budgetIdentity.year||'نامشخص'} بودجه‌ای پیدا نشد. متن بودجهٔ موجود در این گفت‌وگو مربوط به ${previousScope} است؛ آن را به درخواست فعلی تعمیم ندادم و هیچ داده‌ای تغییر نکرد.`);return;
+          }
+        }
+      }
+     if(pendingAnnualBudget){errorText='پیش‌نمایش بودجهٔ سالانه باز است؛ برای ادامه، دکمهٔ تأیید یا لغو همان پیش‌نمایش را بزن.';refresh();return;}
+    if (MehryarTools.proposal && isTeacherBudgetApproval(prompt)) {
+      messages.push({role:'user',text:prompt,profile:p.id,tools:useTools});
+      messages=messages.slice(-200);draft='';errorText='';
+      try {
+        const committed=confirm_teacher_report(),status=budgetCommitStatus(committed),text=status?status.text:'در ابزارها با موفقیت ثبت شد.';
+        if (status&&!status.success&&!status.duplicate) throw new Error(status.text);
+        messages.push({role:'model',text,profile:p.id,tools:useTools});messages=messages.slice(-200);
+      } catch(error) { draft=prompt;errorText=error.message; }
+      saveHistory();refresh();scrollChat();return;
+    }
+      if(annualBudgetMode&&!annualBudgetMonthsInText(prompt).length){errorText='برای بودجهٔ سالانه، دست‌کم یک ماه از مهر تا خرداد را در متن یا جدول بیاور.';refresh();return;}
+      if(annualBudgetMode&&MehryarTools.proposal){errorText='ابتدا پیش‌نویس فعلی را تأیید یا لغو کن؛ پیش‌نمایش بودجهٔ سالانه جایگزین آن نشد.';refresh();return;}
+      if(annualBudgetMode&&!key){openKey(true);return;}
+      if(annualBudgetMode&&!navigator.onLine){errorText='برای استخراج بودجهٔ سالانه، اینترنت لازم است؛ متن سؤال حفظ شده است.';refresh();return;}
+      if(tomorrowBudgetMode&&!useTools){postBudgetExchange(prompt,p,'برای پیشنهاد فردا، «دسترسی ابزارها» را روشن کن تا بودجهٔ ذخیره‌شده، مشاهده‌ها و آخرین مبحث تدریس‌شده را بخوانم؛ بدون آن موضوع تازه‌ای حدس نمی‌زنم.');return;}
+      if(isBudgetQuestionPrompt(prompt)&&!tomorrowBudgetMode) { answerBudgetQuestion(prompt,p); return; }
+      if(!annualBudgetMode&&isBudgetInputPrompt(prompt)&&hasBudgetPayload(prompt)) {
+       if(!p.ready){errorText='اول اطلاعات اولیهٔ معلم و کلاس را وارد کن.';refresh();return;}
+       if(prompt.length>MAX_BUDGET_IMPORT_CHARS){errorText=`متن بودجه بیش از حد مجاز است (${fa(MAX_BUDGET_IMPORT_CHARS)} نویسه). چیزی کوتاه یا ثبت نشد؛ آن را در چند بخش جداگانه بفرست.`;refresh();return;}
+       if(MehryarTools.proposal){draft=prompt;errorText='ابتدا پیش‌نویس فعلی را تأیید یا لغو کن؛ پیش‌نویس بودجهٔ تازه جایگزین آن نشد.';refresh();return;}
+       messages.push({role:'user',text:prompt,profile:p.id,tools:useTools});messages=messages.slice(-200);draft='';errorText='';
+       try {
+         const prepared=prepareLocalBudgetPreview(prompt);
+         if(!prepared||prepared.status!=='awaiting_teacher_confirmation')throw new Error('پیش‌نمایش بودجه‌بندی آماده نشد؛ هیچ داده‌ای ذخیره نشده است.');
+         const summary=MehryarTools.proposal?.items?.find(item=>item.title==='بودجه‌بندی آموزشی')?.detail||'پیش‌نویس کامل در ابزار بودجه‌بندی آماده شد.';
+         messages.push({role:'model',text:summary+'\n\n'+BUDGET_READONLY_NOTICE,profile:p.id,tools:useTools});messages=messages.slice(-200);
+       } catch(error) { draft=prompt;errorText=error.message; }
+       saveHistory();refresh();scrollChat();return;
+     }
+      const local = annualBudgetMode?null:MehryarTools.localAnswer(prompt);
+      if (local) { messages.push({role:'user',text:prompt,profile:p.id,tools:true},{role:'model',text:local,profile:p.id,tools:true}); messages=messages.slice(-200); draft=''; errorText=''; saveHistory(); refresh(); scrollChat(); return; }
+       if (!p.ready&&!annualBudgetMode) { errorText = 'اول اطلاعات اولیهٔ معلم و کلاس را وارد کن.'; refresh(); return; }
+       if (prompt.length > 6000&&!annualBudgetMode) { errorText = 'هر پیام عادی حداکثر ۶۰۰۰ نویسه است؛ متن بودجه را با عنوان یا جدول بودجه‌بندی بفرست تا در مسیر کامل محلی پردازش شود.'; refresh(); return; }
+        if (!annualBudgetMode&&!useTools && isCurriculumBudgetPrompt(prompt)) { const notice='برای خواندن زمینهٔ واقعی کلاس و ساخت پیش‌نمایش بودجه‌بندی، «دسترسی ابزارها» خاموش است. آن را روشن کن تا کتاب‌های فعال و دادهٔ جدول خوانده شوند؛ بدون آن هیچ کتاب، مبحث یا ردیف بودجه‌ای ساخته یا ثبت نمی‌شود.'; messages.push({role:'user',text:prompt,profile:p.id,tools:false},{role:'model',text:notice,profile:p.id,tools:false});messages=messages.slice(-200);draft='';errorText='';saveHistory();refresh();scrollChat();return; }
+       const offlineReply=annualBudgetMode?null:offlineAssistantResponse(prompt);
+       if(offlineReply&&(!key||!navigator.onLine)){recordOfflineAssistantReply(prompt,p,offlineReply);return;}
+        const preflight=annualBudgetMode?'':teachingPreflight(prompt);
+      if(preflight){messages.push({role:'user',text:prompt,profile:p.id,tools:useTools},{role:'model',text:preflight,profile:p.id,tools:useTools});messages=messages.slice(-200);draft='';errorText='';saveHistory();refresh();scrollChat();return;}
+      const aggregateOnly = isAggregateReportPrompt(prompt);
+       const allowToolCalls = annualBudgetMode?true:aggregateOnly ? false : tomorrowBudgetMode?true:shouldAllowToolCalls(prompt);
+     const cacheable = !annualBudgetMode&&isCacheablePrompt(prompt);
+    let cacheKey = null, cached = null;
+    if (cacheable) for (const candidate of [...new Set([modelForPrompt(prompt),HEAVY_MODEL,LIGHT_MODEL])]) {
+      const candidateKey = answerCacheKey(prompt,p,allowToolCalls,candidate), value = cachedAnswer(candidateKey);
+      if (value) { cacheKey = candidateKey; cached = value; break; }
+    }
+    if (cached) {
+      messages.push({role:'user',text:prompt,profile:p.id,tools:useTools},{role:'model',text:cached,profile:p.id,tools:useTools});
+      messages=messages.slice(-200); draft=''; errorText=''; verified=true; saveHistory(); refresh(); scrollChat(); return;
+    }
+    if (!key) { const offline=offlineAssistantResponse(prompt); if(offline){recordOfflineAssistantReply(prompt,p,offline);return;} openKey(true); return; }
+    if (!navigator.onLine) { const offline=offlineAssistantResponse(prompt); if(offline){recordOfflineAssistantReply(prompt,p,offline);return;} errorText = 'اینترنت قطع است. پس از اتصال دوباره تلاش کن.'; refresh(); return; }
+    // Only the latest exchanges from the current class enter a request.
+     const start = messages.findLastIndex(m => m.profile !== p.id) + 1;
+      const contents = annualBudgetMode?[]:aggregateOnly ? [] : isTomorrowPrompt(prompt) ? [] : messages.slice(Math.max(start,messages.length - (isFollowUpPlanPrompt(prompt)||isProgramPrompt(prompt)?10:4))).filter(m=>useTools||m.tools===false).map(m => ({role:m.role,parts:[{text:m.text.length>1500?m.text.slice(0,1500)+' …':m.text}]}));
+     contents.push({role:'user',parts:[{text:annualBudgetMode?cleanBudgetText(prompt):prompt}]});
+    const id = ++requestId, abort = new AbortController();
+    controller = abort; pending = {role:'user',text:prompt,profile:p.id,tools:useTools}; draft = ''; busy = true; errorText = '';
+    saveHistory(); refresh(); scrollChat();
+    let timedOut = false;
+      const timeout = setTimeout(() => { timedOut = true; abort.abort(); },REQUEST_TIMEOUT_MS);
+    try {
+       const revision = annualBudgetMode?null:useTools ? MehryarTools.revision() : null;
+           const model = annualBudgetMode?LIGHT_MODEL:aggregateOnly||tomorrowBudgetMode ? HEAVY_MODEL : isClarificationPrompt(prompt) ? LIGHT_MODEL : isInstructionalIdeaPrompt(prompt) ? HEAVY_MODEL : HEAVY_MODEL===LIGHT_MODEL ? modelForPrompt(prompt) : await classifyPrompt(prompt,abort.signal);
+       cacheKey = cacheable ? answerCacheKey(prompt,p,allowToolCalls,model) : null;
+        const text = await request(contents,annualBudgetMode?{grade:p.info.grade,year:p.info.year}:aggregateOnly?{grade:p.info.grade,className:p.info.className}:p.info,abort.signal,p.id,{allowToolCalls,model,fallbackPrompt:prompt,aggregateOnly,annualBudget:annualBudgetMode,tomorrowBudgetMode,annualBudgetText:annualBudgetMode?cleanBudgetText(prompt):'',annualBudgetFallbackGrade:annualBudgetMode?normalizeAnnualBudgetGrade(p.info.grade):'',annualBudgetFallbackYear:annualBudgetMode?p.info.year:''});
+      if (revision !== null && revision !== MehryarTools.revision()) throw new Error('داده‌های کلاس در زمان پاسخ تغییر کرد؛ درخواست را با داده‌های تازه دوباره بفرست.');

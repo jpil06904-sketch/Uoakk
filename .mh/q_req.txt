@@ -1,0 +1,124 @@
+  async function request(contents, info, signal, expectedProfile, options={}) {
+    const allowToolCalls=!!options.allowToolCalls;
+    const annualBudgetMode=!!options.annualBudget;
+    const tomorrowBudgetMode=!!options.tomorrowBudgetMode;
+    const model=options.model===HEAVY_MODEL&&!options.annualBudget&&Date.now()<heavyDownUntil?LIGHT_MODEL:(options.model||LIGHT_MODEL);
+    const fallbackPrompt=options.fallbackPrompt||'';
+    const aggregateOnly=!!options.aggregateOnly;
+     const budgetYearAssumptionRules='\n\nاگر خروجی ابزار get_budget_and_progress شامل budgetYearAssumed=true است، روشن بگو بودجهٔ ثبت‌شده برای پایه وجود دارد اما سالش مشخص نبوده؛ پیشنهاد را فقط با فرض انطباق آن با سال فعال ارائه کن و این فرض را تأییدنشده معرفی کن.';
+     const clarificationModeRules=isClarificationPrompt(fallbackPrompt)?'\n\nاین پیام پیگیری و رفع ابهام است، نه درخواست تشخیص یا ایدهٔ تازه. با توجه به آخرین پاسخ مرتبط در تاریخچه، همان نکته را با فارسی ساده و خودمانی توضیح بده؛ در صورت نیاز فقط یک مثال روشن بزن. اگر معلم در پیام خودش موضوع مشخصی گفته، همان را توضیح بده؛ اگر موضوعی نگفته و پاسخ مرتبطی هم در تاریخچه نیست، فقط یک سؤال کوتاه بپرس که کدام بخش را می‌خواهد روشن‌تر بشنود. قالب چندبخشی، تحلیل تازهٔ کلاس، درخواست گزارش تازه و حدس دربارهٔ یادگیری دانش‌آموز ممنوع است. جملهٔ ثابت دربارهٔ ناکافی‌بودن گزارش برای آزمایش تشخیصی را تکرار نکن.' : '';
+      const ideaMode=!annualBudgetMode&&!tomorrowBudgetMode&&isInstructionalIdeaPrompt(fallbackPrompt), ideaModeRules=ideaMode?'\n\nقانون نهایی همین درخواست: حالت «طراح ایده‌های درسی خفن مهریار» فعال است. پاسخ تشخیصی چندبخشی، فهرست فرضیه‌ها یا توصیهٔ عمومی ممنوع است. برای اولویت شمارهٔ ۱ هر پایه دقیقاً ۳ ایده بده، نه کمتر و نه بیشتر؛ به‌ترتیب حرکتی/هیجانی، کارتی/گروهی و قصه/نمایش/چالشی. هر ایده دقیقاً ۶ بخش قرارداد ایده را داشته باشد و بخش ۶ را حتماً با سه خط جدا و برچسب‌های دقیق «قرمزها:»، «زردها:» و «سبزها:» بنویس. فقط از budget و lessonContext خوانده‌شده استفاده کن. اگر مشاهدهٔ قرمز یا زرد نداریم، ضعف نساز و در هر سه خط وضعیت سنجش آغازین عینی را توضیح بده. تشخیص پزشکی، ادعای نتیجه، اطلاعات حساس و مبحث خارج از بودجه ممنوع است. استاندارد کیفیت ایده‌ها (بدون تغییر در قالب ۳ ایده و ۶ بخش): ۱) هر ایده یک «قلاب» داشته باشد: در بخش اقدام یک جملهٔ آمادهٔ معلم بین گیومه بنویس با لحن معما، ماجرا یا
+       const learnMode=!annualBudgetMode&&!tomorrowBudgetMode&&!ideaMode&&isLearnPrompt(fallbackPrompt),learnModeRules=learnMode?'\n\nقانون نهایی همین درخواست (حالت «بفهمم و یاد بگیرم»): معلم می‌خواهد خودش مطلب را بفهمد. قالب ثابت «۳ ایده»، چرخهٔ تشخیصی ۱۰ بخشی، فهرست فرضیه‌ها و پیشنهاد بازی فعلاً ممنوع است. اول دقیقاً به پرسش پاسخ بده: موضوع یا مفهوم چیست، چرا در این درس آمده، و با مثال‌های ساده و ملموس از صفر توضیح بده، طوری که یک آموزگار تازه‌کار بعد از خواندن آن بداند به بچه‌ها چه بیاموزد. بعد در چند گام کوتاه بگو چطور همین مطلب را به دانش‌آموزی که هیچ نمی‌داند یاد بدهد (مثال، پرسش، اشتباه رایج و راه فهمیدنِ اینکه یاد گرفته). فقط اگر معلم خودش ایده یا بازی خواست، در پایان یک ایدهٔ قوی و مرتبط بده. متن کتاب را در اختیار نداری: از دانش عمومی برنامهٔ درسی و دستور زبان و ریاضی دبستان کمک بگیر؛ اگر دربارهٔ محتوای دقیق همین درس مطمئن نیستی، با یک جملهٔ کوتاه بگو و راه راستی‌آزمایی ب
+       const tomorrowBudgetRules=tomorrowBudgetMode?'\n\nقانون اجباری پیشنهاد درس فردا (برای «امروز» یا بدون روز مشخص هم همین قانون است و همان مبحث بعدی را برای همان روز بگو؛ هرگز جواب «گزارش ضعیف است کافی نیست» یا درخواست نمونهٔ خطا نده): اگر نام درسی نگفته و scheduleBySubject پر است، وضعیت هر درس را جداگانه با همان status بگو و اگر پرسید چطور جبران کند یا برنامه خواست، یک برنامهٔ کوتاه چندروزهٔ جبران بریز: درس‌های عقب‌مانده را به ترتیب catchUpTopics بچین، مباحث نزدیک را با هم ادغام کن، هر روز یک هدف کوچک و قابل‌اجرا بده و هرگز نگو اطلاعات کافی نیست. اگر معلم نام یک درس را گفته، فقط دربارهٔ همان درس جواب بده و درس‌های دیگر را نیاور و هرگز نپرس «کدام درس را اولویت بدهم». اگر گفت عقب است یا پرسید کدام درس باید باشد، از scheduleHint خروجی ابزار استفاده کن: بگو طبق بودجه (تخمین نسبی از تاریخ امروز) تا روز هدف (targetDayPersian؛ اگر معلم «امروز» یا «پس‌فردا» گفته همان است، وگرنه فردا)
+      let tomorrowBudgetRead=false,tomorrowBudgetNextOffset=null,tomorrowToolText='';
+       const context=annualBudgetMode?null:aggregateOnly ? (useTools ? {mode:'student_dossier_only',dossierContext:studentDossierContext(options.fallbackPrompt,state)} : null) : useTools ? (ideaMode ? {today:localISO(),todayPersian:formatPersianDate(localISO()),tomorrow:plusDays(localISO(),1),tomorrowPersian:displayDay(plusDays(localISO(),1)),demo:demoMode,lessonContext:MehryarTools.read({section:'lessonContext',limit:4}),curriculum:MehryarTools.read({section:'curriculum',limit:24})} : {today:localISO(),todayPersian:formatPersianDate(localISO()),tomorrow:plusDays(localISO(),1),tomorrowPersian:displayDay(plusDays(localISO(),1)),demo:demoMode,summary:MehryarTools.read({section:'summary'}),lessonContext:MehryarTools.read({section:'lessonContext',limit:4}),curriculum:MehryarTools.read({section:'curriculum',limit:24}),pendingDraft:MehryarTools.draftContext()}) : null;
+       if(context?.lessonContext&&!ideaMode&&!learnMode&&!isClarificationPrompt(fallbackPrompt)){context.teachingInquiry=buildTeachingInquiry(context.lessonContext,fallbackPrompt);}
+     const evidenceRefs=new Map();
+     const registerEvidence=item=>{
+       const fact=String(item?.evidenceSummary||'').trim();
+       if(!fact)return;
+       const aliases=[item.skillId,item.topicId,item.skill,item.topicLabel,item.skillLabel,[item.subject,item.skill||item.topicLabel||item.skillLabel].filter(Boolean).join(' / ')];
+       for(const alias of aliases){const raw=String(alias||'').trim();if(raw){evidenceRefs.set(raw,fact);evidenceRefs.set(normKey(raw),fact);}}
+     };
+۳) پیش‌بینی گیر کردن: قبل از رسیدن به مبحث سنگین، از سابقهٔ ثبت‌شدهٔ همان مهارت یا پیش‌نیازش چند دانش‌آموز قرمز یا زرد را بشمار و فقط بگو «به‌نظر می‌رسد چند نفر ممکن است گیر کنند»؛ اسم‌ها فقط اگر معلم پرسید یا خواست. ۱۰ دقیقه پیش‌نیاز یا کار با همین چند نفر را در برنامه پیشنهاد بده؛ این پیش‌بینی قطعی نیست.
+۴) الگوهای اتلاف وقت: فقط اگر همان علت دست‌کم سه بار در گزارش‌ها یا گفتگو تکرار شده، آن را به‌صورت «فرضیه» بگو و یک تغییر کوچک در چیدمان همان روز پیشنهاد بده (مثلاً فعالیت عملی کوتاه اول زنگ).
+۵) همیار: وقتی یکی مبحث را خوب فهمیده، دیگری جا مانده و وقت کم است، یک «مأموریت همیار» داوطلبانهٔ کوتاه در بخش تمرین پیشنهاد بده؛ بدون برچسب‌زدن جلوی کلاس.
+۶) پیام خانواده: برای دانش‌آموز جامانده یک برنامهٔ جبرانی خانگی سه‌روزه و یک پیام محترمانه برای والدین بنویس (بدون تشخیص، برچسب و مقایسه)، آماده برای کپی. ارسال خودکار نداری؛ برای چاپ یا پیام از پیش‌نمایش برنامه استفاده کن.
+۷) مرور امتحان: برنامهٔ مرور را بر اساس مشاهده‌ها، پیگیری‌ها و گزارش‌های ثبت‌شدهٔ ماه‌های قبل بچین: بیشتر وقت برای مباحثی که بارها قرمز یا زرد بوده‌اند، کمتر برای مباحث پایدار. اگر داده کم است، تقسیم را برابر و صادقانه «بدون سابقهٔ کافی» اعلام کن.`;
+      // ثبت روزانه (غیبت، گزارش تدریس، مشاهده...): مدل باید واقعاً ابزار ثبت را صدا بزند، نه اینکه JSON را فقط در متن بنویسد.
+      const recordMode=allowToolCalls&&!annualBudgetMode&&!tomorrowBudgetMode&&!ideaMode&&!learnMode&&!aggregateOnly&&isLightRecordPrompt(fallbackPrompt)&&!isBudgetInputPrompt(fallbackPrompt);
+      for(let round=0;round<(tomorrowBudgetMode?8:recordMode?5:MAX_TOOL_ROUNDS);round++) {
+      signal.throwIfAborted();
+          const send=async()=>fetchModelWithRetry(model,{systemInstruction:{parts:[{text:system+(annualBudgetMode?'':useTools&&!ideaMode&&!isClarificationPrompt(fallbackPrompt)?toolRules+(tomorrowBudgetMode?'':COLOR_MAP_RULES)+(tomorrowBudgetMode?'':budgetGuardRules):'')+(useTools&&!annualBudgetMode&&!ideaMode&&!learnMode&&!aggregateOnly&&!isClarificationPrompt(fallbackPrompt)?teacherTypeRules:'')+(!annualBudgetMode&&!ideaMode&&!learnMode&&!aggregateOnly&&isFollowUpPlanPrompt(fallbackPrompt)?followUpPlanRules:'')+(programMode?programThreadRules:'')+ideaModeRules+learnModeRules+tomorrowBudgetRules+(tomorrowBudgetMode?budgetYearAssumptionRules:'')+clarificationModeRules}]},contents,
+            ...(allowToolCalls?{tools:[{functionDeclarations:annualBudgetMode?[ANNUAL_BUDGET_FUNCTION_DECLARATION]:MehryarTools.declarations}]}:{}),
+              ...(tomorrowBudgetMode?{toolConfig:{functionCallingConfig:{mode:tomorrowBudgetRead?'AUTO':'ANY',...(tomorrowBudgetRead?{}:{allowedFunctionNames:['get_budget_and_progress']})}}}:annualBudgetMode?{toolConfig:{functionCallingConfig:{mode:'ANY',allowedFunctionNames:['save_annual_budget']}}}:recordMode&&round<4?{toolConfig:{functionCallingConfig:{mode:'ANY',allowedFunctionNames:['read_class_data','prepare_teacher_report']}}}:{}),
+             generationConfig:{temperature:annualBudgetMode?0:tomorrowBudgetMode?0.4:ideaMode?0.95:0.45,maxOutputTokens:annualBudgetMode?32768:ideaMode?8192:learnMode?6144:isTomorrowPrompt(fallbackPrompt)?2048:3072,...(annualBudgetMode?{thinkingConfig:{thinkingBudget:0}}:model===HEAVY_MODEL&&!thinkingTrimBroken?{thinkingConfig:{thinkingBudget:HEAVY_THINKING_BUDGET}}:ideaMode?{thinkingConfig:{thinkingBudget:1024}}:learnMode?{thinkingConfig:{thinkingBudget:512}}:isTomorrowPrompt(fallbackPrompt)?{thinkingConfig:{thinkingBudget:512}}:!programMode&&!thinkingTrimBroken?{thinkingConfig:{thinkingBudget:allowToolCalls?512:0}}:{})}},signal,annualBudgetMode?120000:ideaMode?90000:MODEL_FETCH_TIMEOUT_MS,annualBudgetMode||ideaMode?1:MAX_MODEL_RETRIES);
+       let response,data;
+       try {
+         ({response,data}=await send());
+        } catch (error) {
+          if(model===HEAVY_MODEL&&isTransientModelFailure(error))heavyDownUntil=Date.now()+120000;
+           if(model!==FALLBACK_MODEL&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL,triedHeavy:true});
+            if(model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode&&isTransientModelFailure(error))return request(contents,info,signal,expectedProfile,{...options,model:error.code==='MODEL_RATE_LIMIT'&&Date.now()>=heavyDownUntil?HEAVY_MODEL:FALLBACK_MODEL,triedHeavy:true});
+            if (!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&model===HEAVY_MODEL&&fallbackPrompt&&/سهمیه|سقف روزانه|موقتاً متوقف|quota|rate limit/i.test(error.message||'')) return workerFallback(fallbackPrompt,signal);
+          throw error;
+        }
+        if(!response.ok) {
+        const reason=(data.error?.details||[]).map(d=>d.reason||'').join(' ');
+        if([401,403].includes(response.status)||/API_KEY_INVALID|API_KEY_EXPIRED/.test(reason))verified=false;
+        const toolSchemaError=response.status===400&&/function_declarations|parameters|toolConfig|function_calling|schema/i.test(data.error?.message||'');
+        if(toolSchemaError)throw new Error('ساختار درخواست ابزارها توسط سرویس پذیرفته نشد (HTTP 400). این خطا از طرح ابزار است، نه لزوماً رمز یا سهمیه. هیچ تغییری ثبت نشده است.');
+          if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&response.status===400&&model===HEAVY_MODEL&&fallbackPrompt)return workerFallback(fallbackPrompt,signal);
+             if(response.status===429){const seconds=retrySeconds(response,data),rate=rateState();rate.backoffUntilByModel[model]=Date.now()+seconds*1000;rate.kindByModel=rate.kindByModel||{};rate.kindByModel[model]=quotaKind(data);rate.secondsByModel=rate.secondsByModel||{};rate.secondsByModel[model]=seconds;rate.rawByModel=rate.rawByModel||{};rate.rawByModel[model]=response.status+': '+String(data.error?.message||'').replace(/\s+/g,' ').slice(0,200)+' (انتظار پیشنهادی: '+seconds+' ثانیه)';saveRateState(rate);if(model!==FALLBACK_MODEL)return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL});if(!options.triedHeavy&&!annualBudgetMode)return request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});if(!annualBudgetMode&&!tomorrowBudgetMode&&WORKER_FALLBACK_ENABLED&&fallbackPrompt)return workerFallback(fallbackPrompt,signal);const quotaError=new Error('سهمیه یا سرعت مجاز مدل '+(model===HEAVY_MODEL?'تحلیلی':'سریع')+' پر شده است. طبق پاسخ سرویس، '+fa(seconds)+' ثانیه صبر کن؛ ثبت اطلاعات محلی همچنان فعال است.');quotaError.code='MODEL_RATE_LIMIT';throw quotaError;}
+           if(model===HEAVY_MODEL&&RETRYABLE_MODEL_STATUSES.has(response.status))heavyDownUntil=Date.now()+120000;
+           if((RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404)&&model!==FALLBACK_MODEL&&!options.triedHeavy)return request(contents,info,signal,expectedProfile,{...options,model:FALLBACK_MODEL,triedHeavy:true});let altNote='';if(response.status===404&&model===FALLBACK_MODEL&&!options.triedHeavy&&!annualBudgetMode&&Date.now()>=heavyDownUntil){try{return await request(contents,info,signal,expectedProfile,{...options,model:HEAVY_MODEL,triedHeavy:true});}catch(altError){if(altError?.name==='AbortError')throw altError;altNote=' مدل تحلیلی را هم امتحان کردم ولی جواب نداد: '+String(altError?.message||altError).slice(0,180);}}
+            const providerError=new Error(friendlyError(response.status,reason,data.error?.message,model)+altNote);
+            if(RETRYABLE_MODEL_STATUSES.has(response.status)||response.status===404){providerError.code='MODEL_UNAVAILABLE';providerError.status=response.status;}
+            throw providerError;
+      }
+      if(data.promptFeedback?.blockReason)throw new Error('این درخواست قابل پاسخ‌گویی نیست. سؤال را آموزشی و بدون اطلاعات حساس بازنویسی کن.');
+      const candidate=data.candidates?.[0], content=candidate?.content;
+      if(candidate?.finishReason&&!['STOP','MAX_TOKENS'].includes(candidate.finishReason))throw new Error('پاسخ کامل نشد؛ هیچ تغییری ثبت نشده است.');
+      const calls=(content?.parts||[]).filter(p=>p.functionCall);
+       if(calls.length) {
+         if(annualBudgetMode&&candidate.finishReason==='MAX_TOKENS')throw new Error('خروجی ابزار کامل نشد؛ هیچ داده‌ای ذخیره نشد. ورودی را به چند بخش ماهانه تقسیم کن و هر بخش را جداگانه بفرست.');
+         if(!allowToolCalls||calls.length>(annualBudgetMode?24:4)||candidate.finishReason==='MAX_TOKENS')throw new Error('برای کم‌کردن مصرف سهمیه، این درخواست ابزار کامل یا مجاز نیست؛ سؤال یا گزارش را کوتاه‌تر و مشخص‌تر بفرست.');
+         if(tomorrowBudgetMode){const okCalls=tomorrowBudgetRead?calls.filter(p=>['get_budget_and_progress','read_class_data'].includes(p.functionCall.name)):calls.filter(p=>p.functionCall.name==='get_budget_and_progress').slice(0,1);if(!okCalls.length){contents.push(content,{role:'user',parts:calls.map(p=>({functionResponse:{name:p.functionCall.name,response:{error:tomorrowBudgetRead?'در پیشنهاد فردا فقط خواندن مجاز است؛ با دادهٔ خوانده‌شده همین حالا پاسخ متنی بده.':'ابتدا فقط get_budget_and_progress را صدا بزن.',nothingSaved:true}}}))});continue;}if(okCalls.length!==calls.length){calls.splice(0,calls.length,...okCalls);content.parts=(content.parts||[]).filter(p=>!p.functionCall||okCalls.includes(p));}}
+         signal.throwIfAborted();
+        if(annualBudgetMode){
+          if(!calls.length||calls.some(p=>p.functionCall.name!=='save_annual_budget'))throw new Error('پارسر بودجه فقط باید ابزار save_annual_budget را صدا بزند؛ چیزی ذخیره نشد.');
+          if(profile().id!==expectedProfile)throw new Error('اطلاعات کلاس تغییر کرده؛ دوباره درخواست بده.');
+           try{const mergedArgs=calls.reduce((acc,p)=>{const a=p.functionCall.args||{};if(!acc.academicYear&&a.academicYear)acc.academicYear=a.academicYear;if(!acc.grade&&a.grade)acc.grade=a.grade;if(Array.isArray(a.months))acc.months.push(...a.months);return acc;},{academicYear:'',grade:'',months:[]});stageAnnualBudgetPreview(mergedArgs,options.annualBudgetText||fallbackPrompt,options.annualBudgetFallbackGrade||'',options.annualBudgetFallbackYear||'');return 'پیش‌نمایش کامل آماده است؛ هنوز چیزی ذخیره نشده است.';}
+          catch(error){contents.push(content,{role:'user',parts:[{functionResponse:{name:'save_annual_budget',response:{error:error.message,nothingSaved:true}}}]});continue;}
+        }
+        if(calls.some(p=>p.functionCall.name==='prepare_output_preview')) {
+          if(calls.length!==1)throw new Error('پیش‌نمایش باید در یک درخواست مستقل آماده شود.');
+          try {const result=MehryarTools.prepareOutput(calls[0].functionCall.args||{});return result.title+'؛ '+fa(result.pages)+' صفحه پیش‌نمایش محلی آماده شد. دکمهٔ «باز کردن پیش‌نمایش» را بزن؛ هنوز چاپ یا ارسال نشده و تنظیمات دائمی تغییر نکرده‌اند.';}
+          catch(error){contents.push(content,{role:'user',parts:[{functionResponse:{name:'prepare_output_preview',response:{error:error.message,nothingSaved:true}}}]});continue;}
+        }
+        if(calls.some(p=>p.functionCall.name==='prepare_teacher_report')) {
+          if(calls.length!==1)throw new Error('گزارش باید در یک بستهٔ مستقل آماده شود؛ دوباره تلاش کن.');
+          if(profile().id!==expectedProfile)throw new Error('اطلاعات کلاس تغییر کرده؛ دوباره درخواست بده.');
+          try {
+             const intent=classWidePromptIntent(fallbackPrompt);
+             const prepared=MehryarTools.prepare(calls[0].functionCall.args?.changes,intent);
+             return isBudgetInputPrompt(fallbackPrompt) ? BUDGET_READONLY_NOTICE : 'پیش‌نویس نسخهٔ '+fa(prepared.version)+' آماده است؛ '+fa(prepared.items.length)+' مورد، هنوز بدون ثبت. جزئیات زیر را بررسی کن. می‌توانی همین‌جا اصلاح بخواهی یا دکمهٔ «تأیید و ثبت در ابزارها» را بزنی.';
+          } catch(error) {
+            contents.push(content,{role:'user',parts:[{functionResponse:{name:'prepare_teacher_report',response:{error:error.message,nothingSaved:true}}}]});
+            continue;
+          }
+        }
+         const results=calls.map(p=>{
+           const call=p.functionCall;let result;
+           try {
+             if(call.name==='save_budget')result={saved:false,error:'ذخیرهٔ بودجه فقط با دکمهٔ تأیید معلم انجام می‌شود.'};
+             else if(call.name==='get_budget')result=MehryarTools.get_budget(call.args||{});
+              else if(call.name==='get_budget_and_progress'){
+                const args=call.args||{},identity=budgetQueryIdentity(fallbackPrompt,info);
+                result=MehryarTools.get_budget_and_progress({...args,grade:identity.grade||info.grade,academicYear:identity.year||info.year,prompt:fallbackPrompt});
+              }
+             else if(call.name==='read_class_data'){
+              result=MehryarTools.read(call.args||{});
+              if(result.section==='lessonContext')for(const item of result.items||[])registerEvidence(item);
+            } else throw new Error('ابزار ناشناخته؛ فقط ابزارهای تعریف‌شده مجازند.');
+             if(JSON.stringify(result).length>60000)throw new Error('خروجی ابزار بیش از حد مجاز است؛ هیچ پیشنهاد فردایی بر پایهٔ دادهٔ ناقص ساخته نشد.');
+             if(tomorrowBudgetMode&&call.name==='get_budget_and_progress'){if(result?.error)throw new Error(result.error);tomorrowBudgetRead=true;tomorrowBudgetNextOffset=result?.nextOffset??null;try{tomorrowToolText+=JSON.stringify(result);}catch(_){}}
+           }catch(error){if(tomorrowBudgetMode&&call.name==='get_budget_and_progress')throw error;result={error:error.message};}
+          return {functionResponse:{name:call.name,response:result}};
+        });
+        // Keep the complete model turn, including Gemini thought signatures.
+        contents.push(content,{role:'user',parts:results});
+         continue;
+       }
+       if(annualBudgetMode)throw new Error('پارسر بودجه باید save_annual_budget را صدا بزند؛ هیچ داده‌ای ذخیره نشد.');
+       if(tomorrowBudgetMode&&!tomorrowBudgetRead)throw new Error('برای پیشنهاد فردا، ابتدا باید get_budget_and_progress اجرا شود؛ پاسخ بدون خواندن داده مجاز نیست.');
+       if(tomorrowBudgetMode&&tomorrowBudgetNextOffset!==null)throw new Error('برای پیشنهاد فردا باید همهٔ صفحه‌های مشاهده خوانده شوند؛ پاسخ پیش از تکمیل صفحه‌بندی رد شد.');
+      const answer=(content?.parts||[]).filter(p=>!p.thought&&typeof p.text==='string').map(p=>p.text).join('\n').trim();
+      if(!answer)throw new Error('پاسخ متنی دریافت نشد؛ اطلاعات ابزارها تغییر نکرده است.');
+         const grounded=answer.replace(/\[شاهد:([^\]\n]+)\]/g,(_,id)=>{const raw=String(id||'').trim(),fact=evidenceRefs.get(raw)||evidenceRefs.get(normKey(raw));return fact?'':'';}).replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+        const safeGrounded=isBudgetInputPrompt(fallbackPrompt)?BUDGET_READONLY_NOTICE:grounded,incompleteNotice=candidate.finishReason==='MAX_TOKENS'&&!safeGrounded.includes('[پاسخ کامل نشد؛ برای ادامه پیام بده.]')?'\n\n[پاسخ کامل نشد؛ برای ادامه پیام بده.]':'',readonlyNotice=useTools&&!isBudgetInputPrompt(fallbackPrompt)&&!safeGrounded.includes('[این پاسخ فقط خواندنی است؛ داده‌های کلاس تغییر نکرده‌اند.]')?'\n\n[این پاسخ فقط خواندنی است؛ داده‌های کلاس تغییر نکرده‌اند.]':'';
+        return tomorrowBudgetMode?stripInventedTopicNotes(hideComputedEvidence(safeGrounded+incompleteNotice+readonlyNotice),tomorrowToolText):hideComputedEvidence(safeGrounded+incompleteNotice+readonlyNotice);
+    }
+    throw new Error('این درخواست به چند مرحلهٔ بیشتر نیاز دارد؛ سؤال یا گزارش را به بخش‌های کوچک‌تر تقسیم کن. هیچ تغییری ثبت نشده است.');
+  }
+

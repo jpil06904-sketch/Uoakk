@@ -1,0 +1,132 @@
+15: async function runSpeedTest(
+50: async function activateCode(
+84: function recordNotice(
+85: function shortHash(
+90: function stripInventedTopicNotes(
+99: function hideComputedEvidence(
+103: function loadAnswerCache(
+111: function saveAnswerCache(
+115: function clearAnswerCache(
+119: function adviceOnly(
+124: function isClarificationPrompt(
+131: function shouldAllowToolCalls(
+146: function cleanBudgetText(
+148: function annualBudgetMonthName(
+149: function annualBudgetMonthsInText(
+150: function normalizeAnnualBudgetGrade(
+151: function extractAnnualBudgetGrade(
+155: function extractAnnualBudgetYear(
+156: function isAnnualBudgetPrompt(
+187: function annualBudgetDigit(
+188: function expandAnnualBudgetTopics(
+189: function normalizeAnnualBudgetPayload(
+199: function hasMonthlyBudgetTable(
+210: function hasBudgetPayload(
+214: function isCurriculumBudgetPrompt(
+220: function isBudgetInputPrompt(
+223: function isBudgetQuestionPrompt(
+227: function canonicalBudgetYear(
+231: function budgetQueryIdentity(
+235: function budgetHistoryIdentity(
+238: function budgetScopesMatch(
+242: function postBudgetExchange(
+246: function answerBudgetQuestion(
+272: function isTeacherBudgetApproval(
+276: function confirm_teacher_report(
+287: function budgetCommitStatus(
+295: function budgetImportMode(
+299: function prepareLocalBudgetPreview(
+302: function isBudgetHistoryMessage(
+303: function latestBudgetMessageFor(
+304: function previousBudgetMessageFor(
+308: function stageAnnualBudgetPreview(
+313: function annualBudgetPreviewHtml(
+318: function saveAnnualBudgetPreview(
+325: function cancelAnnualBudgetPreview(
+326: function isCacheablePrompt(
+334: function isLightRecordPrompt(
+338: function isHeavyPrompt(
+342: function isAggregateReportPrompt(
+346: function classWidePromptIntent(
+354: function modelForPrompt(
+357: function modelLimit(
+358: function answerCacheKey(
+362: function cachedAnswer(
+366: function rememberAnswer(
+374: function rateState(
+391: function saveRateState(
+395: function waitAbortable(
+399: function done(
+403: async function reserveRequestSlot(
+419: function quotaStatus(
+423: async function readResponseJson(
+434: async function fetchWithTimeout(
+454: function isTransientModelFailure(
+457: async function fetchJsonWithTimeout(
+481: async function fetchModelWithRetry(
+488: function hedgedHeavyFetch(
+517: function start(
+527: async function fetchModelOnce(
+562: function quotaKind(
+566: function retrySeconds(
+574: function intentOf(
+577: async function classifyIntent(
+598: async function classifyPrompt(
+655: function profile(
+679: function inquiryKinds(
+696: function usefulInquiryText(
+700: function promptHasConcreteEvidence(
+704: function buildTeachingInquiry(
+735: function isSubjectBudgetQuestion(
+745: function rawTomorrowPrompt(
+753: function focusedFollowUp(
+767: function isFollowUpPlanPrompt(
+772: function isTomorrowPrompt(
+773: function hintedSubjects(
+776: function isGreetingOnly(
+780: function greetingReply(
+784: function threadContext(
+789: function classProblemThread(
+809: function isProgramPrompt(
+815: function tomorrowBudgetRows(
+833: function tomorrowBudgetMatches(
+839: function tomorrowLessonContext(
+864: function tomorrowBudgetContext(
+868: function tomorrowLatestEvidence(
+874: function tomorrowPriorPlans(
+878: function tomorrowPlanWasUsed(
+882: function tomorrowActivityPlan(
+906: function tomorrowPrerequisiteReason(
+912: function tomorrowComparisonReason(
+922: function tomorrowBudgetLine(
+927: function tomorrowRecommendation(
+935: function legacyTomorrowRecommendation(
+955: function isLearnPrompt(
+963: function isInstructionalIdeaPrompt(
+970: function offlineAssistantResponse(
+976: function recordOfflineAssistantReply(
+980: function ideaBudgetRows(
+984: function teachingPreflight(
+1011: function readHistory(
+1031: function saveHistory(
+1045: function paintStorage(
+1051: function refresh(
+1061: function scrollChat(
+1062: function friendlyError(
+1075: function compactClassIdentity(
+1080: function compactClassSnapshot(
+1091: async function workerFallback(
+1114: async function request(
+1282: function cancelRequest(
+1288: function quotaCountdownText(
+1294: function quotaResumeAt(
+1299: function quotaRawNow(
+1304: function clearLocalBackoff(
+1308: function quotaKindNow(
+1313: function startQuotaCountdown(
+1328: async function run(
+1331: async function runInner(
+1458: function openKey(
+1492: function enhanceBudgetPreview(
+1513: function render(
+1635: function fitViewport(

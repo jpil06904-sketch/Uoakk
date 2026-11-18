@@ -1,0 +1,137 @@
+   function render() {
+     const p = profile(), formatted = text => esc(text).replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>').replace(/^#{1,3} (.+)$/gm,'<strong>$1</strong>'),annualBudgetFlow=!!pendingAnnualBudget||!!(pending&&isAnnualBudgetPrompt(pending.text)&&!isBudgetQuestionPrompt(pending.text));
+    const classLabel = [p.info.className !== p.info.grade ? p.info.className : '', 'پایهٔ ' + p.info.grade].filter(Boolean).join(' · ');
+      const toolProposal = MehryarTools.proposal,budgetDraft=toolProposal?.next?.curriculum?.budget?.draft,budgetDependencyList=budgetDraft?{books:budgetDraft.dependencies?.books||[],nodes:budgetDraft.dependencies?.nodes||[]}:null,budgetStatus={matched:'تطبیق‌شده',ambiguous:'چند گزینه',unresolved:'بدون تطبیق',needs_review:'نیازمند بررسی'},budgetDependencyBookIds=new Set((budgetDependencyList?.books||[]).map(book=>book.id)),budgetDependencyNodeIds=new Set((budgetDependencyList?.nodes||[]).map(node=>node.id)),budgetRows=budgetDraft?.rows||[],budgetNewRows=budgetRows.filter(row=>budgetDependencyBookIds.has(row.bookId)||budgetDependencyNodeIds.has(row.nodeId)),budgetExistingRows=budgetRows.filter(row=>row.status==='matched'&&!budgetDependencyBookIds.has(row.bookId)&&!budgetDependencyNodeIds.has(row.nodeId)),budgetReviewRows=budgetRows.filter(row=>row.status!=='matched'),budgetPreviewSummary=budgetDraft?`<div class="ai-budget-summary"><span>موارد موجود: ${fa(budgetExistingRows.length)}</span><span>موارد جدید: ${fa(budgetNewRows.length)}</span><span>ابهام/تکمیل: ${fa(budgetReviewRows.length)}</span><span>کل ردیف‌ها: ${fa(budgetRows.length)}</span></div>`:'',budgetProposalHtml=budgetDraft?`<section class="ai-budget-preview" aria-label="پیش‌نمایش یکپارچهٔ بودجه‌بندی"><h4>پیش‌نمایش یکپارچهٔ بودجه‌بندی</h4><p>متن اصلی، موارد موجود، وابستگی‌های مفقود و ابهام‌ها در یک ثبت آماده شده‌اند؛ هنوز هیچ دادهٔ قطعی ذخیره نشده است.</p>${budgetPreviewSummary}${budgetDependencyList.books.length||budgetDependencyList.nodes.length?`<div class="ai-budget-dependencies"><b>موارد جدید با همین تأیید ساخته می‌شوند</b><ul>${budgetDependencyList.books.map(book=>`<li>کتاب: ${esc(book.title)} <small>${esc(book.sourceLabel||'واردشده توسط معلم؛ تطبیق رسمی بررسی‌نشده')}</small></li>`).join('')}${budgetDependencyList.nodes.map(node=>`<li>مبحث: ${esc(node.bookTitle)} / ${esc(node.title)} <small>${esc(node.sourceLabel||'واردشده توسط معلم؛ تطبیق رسمی بررسی‌نشده')}</small></li>`).join('')}</ul></div>`:''}<div class="ai-budget-rows">${budgetRows.slice(0,80).map(row=>`<div><b>${esc(row.bookTitle||row.subject||'کتاب نامشخص')} ${row.nodeTitle?'· '+esc(row.nodeTitle):'· کل کتاب'}</b><span>${esc(budgetStatus[row.status]||'نیازمند بررسی')} · ${row.startDate&&row.endDate?esc(row.startDate+' تا '+row.endDate):row.month||row.week||row.period?'بازهٔ متنی: '+esc([row.month,row.week,row.period].filter(Boolean).join(' / ')):'بازه نامشخص'}${row.sessions?` · ${fa(row.sessions)} جلسه`:''}${row.activity||row.programType?` · ${esc(row.activity||row.programType)}`:''}</span><small>${esc(row.originalText||'')}</small></div>`).join('')}</div></section>`:'';
+      const messageHtml = (m,i) => `<article class="ai-message ${m.role === 'user' ? 'user' : 'assistant'}"><div class="ai-author">${m.role === 'user' ? 'شما' : 'مهریار'}</div><div class="ai-bubble">${formatted(m.role === 'model' ? hideComputedEvidence(m.text) : m.text)}</div>${m.role === 'model' ? `<button type="button" class="ai-copy" data-ai-copy="${i}">${icon('copy')} کپی پاسخ</button>` : ''}</article>`;
+     mount({title:'چت‌بات مهریار',back:false,actions:`<button type="button" id="ai-open-key" class="ai-key-button" ${busy ? 'disabled' : ''}>${icon('lock')}<span>رمز</span></button>`,content:`
+      <section class="ai-chat" aria-label="گفت‌وگو با مهریار">
+         <div class="ai-toolbar"><span class="ai-dot ${verified ? 'ready' : ''}" aria-hidden="true"></span><div><strong>${p.ready ? esc(classLabel) : 'هم‌فکر روزهای کلاس'}</strong><small>${busy ? 'در حال نوشتن پاسخ…' : !navigator.onLine ? 'اینترنت قطع است' : verified ? 'آمادهٔ گفت‌وگو' : key ? 'رمز وارد شده است' : 'برای شروع، رمز را وارد کن'}</small></div><button type="button" id="ai-clear" class="icon-btn" title="پاک کردن گفت‌وگو" aria-label="پاک کردن گفت‌وگو" ${busy || (!messages.length && !draft && !historyBlocked) ? 'disabled' : ''}>${icon('trash')}</button></div>
+         <div class="ai-tool-strip"><button type="button" id="ai-live-stats" class="btn btn-tinted-gray" ${busy||pendingAnnualBudget?'disabled':''}>آمار زندهٔ کلاس</button><label><input type="checkbox" id="ai-tools-access" ${useTools?'checked':''} ${busy||pendingAnnualBudget?'disabled':''}> دسترسی ابزارها</label><a href="#/outputs">ابزارها</a></div>
+        <div id="ai-log" class="ai-log" role="log" aria-label="پیام‌های گفت‌وگو" aria-live="polite" aria-relevant="additions text" aria-busy="${busy}">
+           ${!messages.length && !pending ? `<div class="ai-welcome"><div class="ai-mark">${icon('assistantChat')}</div><h2>امروز کجای کلاس کمکت کنم؟</h2><p>${p.ready ? 'با دسترسی ابزارها، شواهد کلاس و تجربه‌های ثبت‌شدهٔ تدریس را کنار هم می‌خوانم؛ ایده می‌دهم و همین‌جا پیش‌نویس را با تو اصلاح می‌کنم. ثبت نهایی فقط با تأیید توست.' : 'از یک سؤال کوچک تا یک قدم کاربردی برای کلاس.'}</p><div class="ai-prompts">${suggestions.map(([title,description],i) => `<button class="ai-prompt" type="button" data-ai-prompt="${i}" ${busy ? 'disabled' : ''}><b>${title}</b>${description}</button>`).join('')}</div></div>` : messages.map(messageHtml).join('')}
+           ${pendingAnnualBudget?annualBudgetPreviewHtml(pendingAnnualBudget):''}
+           ${!p.ready&&!annualBudgetFlow ? `<div class="ai-profile-notice"><strong>اطلاعات کلاس را تکمیل کن</strong><p>نام معلم، مدرسه و پایه برای پاسخ‌های مرتبط با کلاس لازم است؛ برای بودجهٔ سالانه، پایه را می‌توانی در خود متن بنویسی.</p><a href="#/class" data-ai-profile>رفتن به اطلاعات کلاس ${icon('arrowLeft')}</a></div>` : ''}
+          ${messages.length && messages.at(-1).profile !== p.id ? '<div class="ai-profile-notice">اطلاعات کلاس تغییر کرده؛ پیام بعدی گفت‌وگویی تازه بر اساس اطلاعات جدید شروع می‌کند. پیام‌های قبلی همچنان اینجا می‌مانند.</div>' : ''}
+          ${pending ? messageHtml(pending,-1) + '<div class="ai-pending" role="status"><span class="ai-spinner" aria-hidden="true"></span>در حال آماده کردن پاسخ…</div>' : ''}
+           ${toolProposal ? `<section class="ai-report-preview" aria-label="پیش‌نمایش ثبت گزارش"><h3>بررسی قبل از ثبت · نسخهٔ ${fa(toolProposal.version)}</h3><p>هنوز ذخیره نشده است${demoMode?'؛ حالت نمونه، بدون تغییر داده‌های واقعی':''}.</p>${toolProposal.items.map(item=>`<article><b>${esc(item.title)} · ${esc(item.student)}</b><small>${esc(displayDay(item.date))}</small><p>${esc(item.detail)}</p></article>`).join('')}${budgetProposalHtml}<div class="ai-report-actions"><button type="button" id="ai-apply-report" class="btn btn-primary" ${busy?'disabled':''}>${budgetDraft?'تأیید و ثبت یکپارچه':'تأیید و ثبت در ابزارها'}</button><button type="button" id="ai-dismiss-report" class="btn btn-tinted-gray" ${busy?'disabled':''}>لغو</button></div><p class="sub">برای اصلاح همین‌جا بنویس؛ مثلاً «۳۰ دقیقه‌اش کن». فقط همین نسخه با دکمه ثبت می‌شود. پیش‌نویسِ تأییدنشده با بستن یا بازخوانی صفحه از بین می‌رود.</p></section>` : ''}
+            ${receipt.length ? `<section class="ai-report-preview"><b>محل ثبت گزارش</b><div class="ai-report-actions">${[...new Map(receipt.map(x=>[x.href,x])).values()].map(x=>`<a href="${esc(x.href)}">${esc(x.title)}</a>`).join('')}</div></section>` : ''}
+          ${MehryarTools.outputPreview ? '<button type="button" id="ai-open-output" class="btn btn-primary">باز کردن پیش‌نمایش</button>' : ''}
+          ${MehryarTools.canUndo ? '<button type="button" id="ai-undo-report" class="btn btn-tinted-gray">واگرد آخرین ثبت چت‌بات</button>' : ''}
+           ${errorText ? `<div class="ai-error" role="alert">${esc(errorText)}<br><button id="ai-retry" type="button" class="btn btn-tinted-gray">تلاش دوباره</button></div>` : ''}
+        </div>
+            <form id="ai-form" class="ai-compose">${pendingAnnualBudget?'<div role="status" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 10px;margin-bottom:8px;border:1px solid currentColor;border-radius:10px;font-size:13px"><span>ارسال پیام تا تعیین تکلیف پیش‌نمایش بودجه بسته است.</span><button id="ai-pending-confirm" type="button" class="btn btn-primary">تایید و ثبت</button><button id="ai-pending-cancel" type="button" class="btn btn-tinted-gray">لغو پیش‌نمایش</button></div>':''}<div class="ai-input-row"><textarea id="ai-message" aria-label="پیام شما" rows="1" placeholder="${pendingAnnualBudget?'برای ادامه، پیش‌نمایش را تأیید یا لغو کن':annualBudgetFlow?'متن کامل بودجهٔ سالانه را وارد کن…':'پیام یا متن کامل بودجهٔ سالانه را بنوی…'}" ${busy||pendingAnnualBudget?'disabled':''}>${esc(draft)}</textarea>${busy ? `<button id="ai-stop" type="button" class="ai-send" aria-label="توقف درخواست" title="توقف درخواست">${icon('x')}</button>` : `<button id="ai-send" type="submit" class="ai-send" aria-label="ارسال پیام" title="ارسال پیام" ${pendingAnnualBudget||!draft.trim() ? 'disabled' : ''}>${icon('arrowLeft')}</button>`}</div><div class="ai-compose-meta"><span id="ai-storage" role="status"></span><span id="ai-counter">${fa(draft.length)}${isAnnualBudgetPrompt(draft)||isCurriculumBudgetPrompt(draft)&&hasBudgetPayload(draft)?' / ورودی بودجهٔ سالانه':' / حداکثر ۶۰۰۰ نویسه برای پیام عادی'}</span></div><p class="ai-disclaimer">ثبت‌های ساده و گزارش‌های واقعی کلاس مستقیم با مدل سبک انجام می‌شوند؛ برای ایده‌پردازی و تحلیل پیچیده مسیر تحلیلی استفاده می‌شود. پاسخ تکراری از حافظهٔ محلی خوانده می‌شود؛ ثبت اطلاعات محلی است و دادهٔ آموزشی لازم با اجازهٔ ابزارها خوانده می‌شود. ثبت نهایی فقط با تأیید توست.</p></form>
+      </section>`});
+     document.getElementById('content').classList.add('ai-page');
+       const welcomeText=document.querySelector('.ai-welcome p');if(welcomeText)welcomeText.textContent='متن کامل بودجه‌بندی را بفرست؛ پیش‌نمایش را می‌بینی و فقط پس از تأیید معلم ذخیره می‌شود.';const disclaimer=document.querySelector('.ai-disclaimer');if(disclaimer)disclaimer.textContent='بودجه‌بندی خام فقط پس از بررسی پیش‌نمایش و کلیک روی «تایید و ثبت» ذخیره می‌شود. ثبت گزارش‌های دیگر هم با تأیید تو انجام می‌شود.';
+     enhanceBudgetPreview(budgetDraft);
+    const get = id => document.getElementById(id), input = get('ai-message');
+    const sizeInput = () => { input.style.height = 'auto'; input.style.height = Math.min(120,input.scrollHeight + 2) + 'px'; input.style.overflowY = input.scrollHeight > input.clientHeight ? 'auto' : 'hidden'; };
+      input.addEventListener('input',() => {
+        draft = input.value; get('ai-counter').textContent = fa(draft.length) + (isAnnualBudgetPrompt(draft)||isCurriculumBudgetPrompt(draft)&&hasBudgetPayload(draft) ? ' / ورودی بودجهٔ سالانه' : ' / حداکثر ۶۰۰۰ نویسه برای پیام عادی');
+      if (get('ai-send')) get('ai-send').disabled = !draft.trim();
+      sizeInput(); clearTimeout(saveTimer); saveTimer = setTimeout(saveHistory,250);
+    });
+    input.addEventListener('keydown',e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) { e.preventDefault(); void run(); } });
+    get('ai-form').addEventListener('submit',e => { e.preventDefault(); void run(); });
+    get('ai-open-key').onclick = () => openKey();
+     get('ai-live-stats').onclick = () => { if(busy||pendingAnnualBudget)return; draft='آمار کلاس'; void run(); };
+    get('ai-tools-access').onchange = e => {
+      if(pendingAnnualBudget){e.target.checked=useTools;return;}
+      if(e.target.checked && !window.confirm('برای پیشنهاد متناسب، نام دانش‌آموزان، شواهد یادگیری و متن گزارش‌های آموزشی لازم به سرویس هوش مصنوعی ارسال می‌شود. فیلدهای تماس، نشانی و سلامت ارسال نمی‌شوند؛ اطلاعات حساس را در متن آزاد گزارش ننویس. اجازه می‌دهی؟')) { e.target.checked=false; return; }
+      useTools=e.target.checked;
+      try { sessionStorage.setItem('mehryar_tools_consent',useTools?'yes':'no'); } catch (_) {}
+      if(!useTools && (MehryarTools.proposal||MehryarTools.outputPreview)) { MehryarTools.dismiss(); recordNotice('دسترسی لغو شد؛ پیشنهاد ثبت نشد.'); }
+      refresh();
+    };
+     get('ai-apply-report')?.addEventListener('click',() => {
+       if(busy)return;
+        try { receipt=confirm_teacher_report(); const budgetStatus=budgetCommitStatus(receipt); if(budgetStatus&&!budgetStatus.success&&!budgetStatus.duplicate)throw new Error(budgetStatus.text); errorText=''; const unchanged=receipt.length&&receipt.every(item=>String(item.detail||'').includes('داده‌ها بدون تغییر'));recordNotice(budgetStatus?budgetStatus.text+'\n'+receipt.map(x=>x.title+' / '+x.student+' / '+displayDay(x.date)+' / '+x.detail).join('\n'):(demoMode?'فقط در نمونهٔ موقت اعمال شد:':unchanged?'درخواست تکراری بود؛ داده‌ها بدون تغییر ماندند:':'در ابزارها با موفقیت ثبت شد:')+'\n'+receipt.map(x=>x.title+' / '+x.student+' / '+displayDay(x.date)+' / '+x.detail).join('\n')); }
+      catch(error) { errorText=error.message; }
+       refresh(); scrollChat();
+     });
+     get('ai-dismiss-report')?.addEventListener('click',() => { if(busy)return; MehryarTools.dismiss(); recordNotice('پیشنهاد لغو شد؛ هیچ تغییری ثبت نشد.'); refresh(); });
+    get('ai-undo-report')?.addEventListener('click',() => {
+      if(busy || !window.confirm('آخرین ثبت چت‌بات واگرد شود؟ در صورت تغییر بعدی داده‌ها، واگرد برای حفاظت از آن تغییرات متوقف می‌شود.'))return;
+      try { MehryarTools.undo(); receipt=[]; errorText=''; recordNotice('آخرین ثبت چت‌بات واگرد شد.'); } catch(error) { errorText=error.message; }
+      refresh();
+    });
+    get('ai-open-output')?.addEventListener('click',()=>{location.hash='#/pulse/assistant-preview';});
+    get('ai-stop')?.addEventListener('click',() => controller?.abort());
+    get('ai-retry')?.addEventListener('click',() => { if (quotaTimer || /Gemini|سهمیه/.test(errorText)) clearLocalBackoff(); void run(); });
+      get('ai-save-annual-budget')?.addEventListener('click',saveAnnualBudgetPreview);
+      get('ai-cancel-annual-budget')?.addEventListener('click',cancelAnnualBudgetPreview);
+      get('ai-pending-confirm')?.addEventListener('click',saveAnnualBudgetPreview);
+      get('ai-pending-cancel')?.addEventListener('click',cancelAnnualBudgetPreview);
+      get('ai-clear').onclick = () => {
+      if (busy || !window.confirm('پیام‌های این گفت‌وگو و پیش‌نویس از حافظهٔ این مرورگر پاک شوند؟ اطلاعات کلاس تغییر نمی‌کند.')) return;
+      try { if (!demoMode) localStorage.removeItem(HISTORY_KEY); } catch (_) { ui.toast('پاک کردن حافظه ممکن نشد؛ پیام‌ها حذف نشدند.'); return; }
+         MehryarTools.clear(); receipt=[]; pendingAnnualBudget=null;messages = []; draft = ''; errorText = ''; historyWarning = ''; historyBlocked = false; lastStored = null; lastSnapshot = JSON.stringify({version:1,messages:[],draft:''}); refresh();
+    };
+    document.querySelectorAll('[data-ai-profile]').forEach(link => link.addEventListener('click',() => { returnToAssistant = true; try { sessionStorage.setItem('mehryar_assistant_return','1'); } catch (_) {} saveHistory(); }));
+    document.querySelectorAll('[data-ai-prompt]').forEach(button => button.addEventListener('click',() => {
+      draft = suggestions[Number(button.dataset.aiPrompt)][2]; input.value = draft; input.dispatchEvent(new Event('input'));
+      if (!p.ready) get('ai-log').querySelector('[data-ai-profile]')?.focus(); else input.focus();
+    }));
+     document.querySelectorAll('[data-ai-copy]').forEach(button => button.addEventListener('click',() => copyText(hideComputedEvidence(messages[Number(button.dataset.aiCopy)].text))));
+    paintStorage(); sizeInput(); scrollChat();
+  }
+  ICONS.assistantChat = '<path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l-2 2V11.5A8.5 8.5 0 0 1 10.5 3h2a8.5 8.5 0 0 1 8.5 8.5Z"/><path d="M7 10h9M7 14h6"/>';
+  if (!TABS.some(t => t[0] === routePath)) TABS.splice(TABS.findIndex(t => t[0] === '#/pro') + 1,0,[routePath,'چت‌بات','assistantChat']);
+  const previousActiveTab = activeTab;
+  activeTab = function() { return location.hash === routePath ? routePath : previousActiveTab(); };
+  ROUTES.unshift([/^#\/pulse\/assistant-preview$/,()=>MehryarTools.viewOutput()],[/^#\/pulse\/assistant$/,render],[/^#\/settings\/ai$/,() => { location.replace(routePath); }]);
+  const previousSettings = renderSettings;
+  renderSettings = function() {
+    previousSettings(); const entry = document.createElement('div'); entry.className = 'list';
+    entry.innerHTML = ui.row({title:'چت‌بات مهریار',subtitle:'گفت‌وگو و ورود رمز',icon:'assistantChat',gradient:'green',href:routePath});
+    document.getElementById('content')?.appendChild(entry);
+  };
+  const previousTools = pdToolLinks;
+  pdToolLinks = function() { return previousTools().replace('<div class="pd-tools">',`<div class="pd-tools"><a href="${routePath}">${icon('assistantChat')}<span>چت‌بات مهریار</span></a>`); };
+  const previousReplace = replaceState;
+  replaceState = function(data) { const result = previousReplace(data); if (result) { cancelRequest(); saveHistory(); } return result; };
+  const previousDemo = loadSample, previousExitDemo = exitDemo;
+  loadSample = function() {
+    if (!demoMode) { cancelRequest(); saveHistory(); demoSnapshot = {messages,draft,historyWarning,historyBlocked,lastStored,lastSnapshot}; messages = []; draft = ''; errorText = ''; historyWarning = ''; historyBlocked = false; }
+    return previousDemo();
+  };
+  exitDemo = function() {
+    if (demoMode) { cancelRequest(); if (demoSnapshot) { ({messages,draft,historyWarning,historyBlocked,lastStored,lastSnapshot} = demoSnapshot); demoSnapshot = null; } errorText = ''; }
+    return previousExitDemo();
+  };
+  window.addEventListener('mehryar:reset',() => {
+     cancelRequest(); clearTimeout(saveTimer); messages = []; draft = ''; errorText = ''; historyWarning = ''; historyBlocked = false; key = ''; verified = false;
+    lastStored = null; lastSnapshot = JSON.stringify({version:1,messages:[],draft:''});
+    clearAnswerCache();
+    useTools=false; try {sessionStorage.removeItem('mehryar_tools_consent');} catch (_) {}
+     try { localStorage.removeItem(CODE_SLOT); } catch (_) {} try { sessionStorage.removeItem(KEY_SLOT); } catch (_) { ui.toast('برای حذف کامل رمز، این برگه را هم ببند.'); }
+  });
+  window.addEventListener('hashchange',() => {
+    if (location.hash !== '#/class') { returnToAssistant = false; try { sessionStorage.removeItem('mehryar_assistant_return'); } catch (_) {} }
+    saveHistory();
+  });
+  window.addEventListener('storage',e => {
+    if (e.key !== HISTORY_KEY || demoMode) return;
+    const changed = JSON.stringify({version:1,messages:messages.slice(-200),draft:pending?.text || draft}) !== lastSnapshot;
+    if (e.newValue && (busy || changed)) { historyBlocked = true; historyWarning = 'چت در برگهٔ دیگری تغییر کرده است؛ برای دیدن نسخهٔ تازه، صفحه را دوباره باز کن.'; paintStorage(); return; }
+    cancelRequest(); readHistory(); if (keyDialog) keyDialog.close(true); refresh();
+  });
+  window.addEventListener('pagehide',saveHistory);
+  document.addEventListener('visibilitychange',() => { if (document.visibilityState === 'hidden') saveHistory(); });
+  window.addEventListener('online',() => { if (!busy) refresh(); });
+  window.addEventListener('offline',() => { if (!busy) refresh(); });
+  function fitViewport() {
+    const height = window.visualViewport?.height || window.innerHeight, root = document.documentElement;
+    root.style.setProperty('--ai-viewport',height + 'px'); root.style.setProperty('--ai-offset',(window.visualViewport?.offsetTop || 0) + 'px'); root.classList.toggle('ai-short',height < 480);
+    const input = document.getElementById('ai-message'); if (input) { input.style.height = 'auto'; input.style.height = Math.min(height < 480 ? 64 : 120,input.scrollHeight + 2) + 'px'; input.style.overflowY = input.scrollHeight > input.clientHeight ? 'auto' : 'hidden'; }
+  }
+  window.visualViewport?.addEventListener('resize',fitViewport); window.visualViewport?.addEventListener('scroll',fitViewport); window.addEventListener('resize',fitViewport); fitViewport();
+  HELP.home.lines.push('از «چت‌بات» کنار «پرو»، دستیار مهریار را باز کن. اطلاعات کلاس را یک‌بار تکمیل کن و در گوشهٔ بالای چت، رمز را وارد کن.');
+  HELP.pulse.lines.push('آمار زنده محلی است. با فعال‌سازی دسترسی ابزارها، دادهٔ آموزشی لازم خوانده می‌شود و ثبت گزارش پس از تأیید معلم در ابزارها اعمال می‌شود. تماس، نشانی و سلامت خودکار فرستاده نمی‌شوند.');
+   try { key = sessionStorage.getItem(KEY_SLOT) || ''; } catch (_) {} if (!key) { try { key = localStorage.getItem(CODE_SLOT) || ''; } catch (_) {} }
+  try { returnToAssistant = location.hash === '#/class' && sessionStorage.getItem('mehryar_assistant_return') === '1'; } catch (_) {}
+  readHistory();
+  loadAnswerCache();
+  init(); route(); revealPhotoApplication();
+})();
+</script>

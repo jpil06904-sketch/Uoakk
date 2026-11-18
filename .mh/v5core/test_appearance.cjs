@@ -1,0 +1,110 @@
+// DOM integration check only: jsdom does not render or measure visual layouts.
+const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const { JSDOM, VirtualConsole } = require('/workspaces/Uoakk/.mh/env/node_modules/jsdom');
+const errors = [], vc = new VirtualConsole();
+vc.on('jsdomError', e => errors.push(e.message));
+vc.on('error', (...args) => errors.push(args.join(' ')));
+const dom = new JSDOM(fs.readFileSync('/workspaces/Uoakk/v5/mehryar-v5.html','utf8'), {
+  url:'https://mehryar.local/', runScripts:'dangerously', pretendToBeVisual:true, virtualConsole:vc,
+  beforeParse(w) {
+    w.sessionStorage.setItem('mehryar_assistant_session_key','test-key');
+    w.fetch = () => Promise.reject(new Error('network blocked'));
+    w.matchMedia = q => ({matches:false,media:q,addListener(){},removeListener(){},addEventListener(){},removeEventListener(){}});
+    w.IntersectionObserver = w.ResizeObserver = class { observe(){} unobserve(){} disconnect(){} };
+    w.scrollTo = () => {}; w.Element.prototype.scrollIntoView = () => {};
+    w.HTMLCanvasElement.prototype.getContext = () => null;
+  }
+});
+const w = dom.window, sleep = ms => new Promise(resolve => setTimeout(resolve,ms));
+(async () => {
+  await new Promise(resolve => w.document.readyState === 'complete' ? resolve() : w.addEventListener('load',resolve));
+  await sleep(350);
+  const date = Object.fromEntries(new Intl.DateTimeFormat('en-US-u-ca-persian',{year:'numeric',month:'numeric'}).formatToParts(new Date()).map(x=>[x.type,Number(x.value)]));
+  const year = date.year - (date.month < 7 ? 1 : 0), academicYear = `${year}-${year+1}`;
+  const months = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+  w.eval(`setState({klass:{...state.klass,teacher:'معلم آزمایشی',school:'آزمایش',className:'الف',grade:'سوم',year:'${academicYear}'}})`);
+  const key = `mehyar_budget_سوم_${academicYear}`;
+  w.localStorage.setItem(key,JSON.stringify({grade:'سوم',academicYear,months:[{monthName:months[date.month-1],subjects:[{subjectTitle:'ریاضی',topics:['صفحه ۴۴']}]}]}));
+  w.localStorage.setItem('mehyar_last_budget_key',key);
+  w.location.hash = '#/pulse'; await sleep(400);
+  const radar = w.document.querySelector('.budget-radar');
+  assert.ok(radar); assert.equal(w.document.querySelectorAll('.budget-radar').length,1);
+  assert.ok(radar.textContent.includes('ریاضی'));
+  assert.match(radar.querySelector('.br-planned').getAttribute('style'),/left:\s*99%;\s*width:\s*1%/);
+  assert.equal(radar.querySelector('.br-track').getAttribute('role'),'img');
+  const css = w.document.getElementById('v5-style').textContent;
+  assert.ok(css.includes('html[data-theme=dark] .budget-radar .br-planned'));
+  assert.ok(css.includes('@media(prefers-reduced-motion:reduce)'));
+  w.location.hash = '#/pulse/assistant'; await sleep(350);
+  for (const selector of ['#ai-options','#v5-menu','#v5-mic','#ai-message','#ai-send']) assert.ok(w.document.querySelector(selector),selector);
+  assert.equal(w.document.querySelectorAll('.ai-tool-strip').length,1,'chat toolbar is not duplicated');
+  assert.equal(w.document.querySelectorAll('#v5-menu').length,1,'V5 menu is not duplicated');
+  // Reading space: both top sections start closed inside one toolbar popover,
+// so the message log starts right under the slim top bar.
+  const pop = w.document.querySelector('#ai-tools-pop');
+  assert.ok(pop, 'one compact tools popover exists');
+  assert.ok(pop.querySelector('summary svg path'), 'tools button has a real SVG icon');
+  assert.match(css,/\.ai-tools-pop-body\{[^}]*right:0;left:auto[^}]*width:min\(300px,92vw\)/);
+  assert.match(css,/\.ai-toolbar\{[^}]*overflow-x:hidden/);
+  assert.equal(pop.getAttribute('open'), null, 'the tools popover starts closed');
+  assert.ok(pop.closest('.ai-toolbar'), 'the popover lives in the top bar, not above the log');
+  const clear = w.document.querySelector('#ai-clear');
+  assert.ok(clear, 'clear button exists');
+  assert.equal(clear.parentElement, pop.parentElement, 'the popover sits beside the clear button in the toolbar');
+  assert.ok(pop.querySelector('#ai-options') && pop.querySelector('#v5-menu'), 'both groups moved into the popover');
+  for (const id of ['ai-options','v5-menu']) assert.equal(w.document.querySelector('#'+id).getAttribute('open'), null, id+' starts collapsed');
+  assert.equal(w.document.querySelectorAll('.ai-tool-strip').length, 1, 'the chat tool strip is not duplicated');
+  assert.equal(pop.querySelectorAll(':scope > summary[aria-label]').length, 1, 'the trigger carries a label');
+  assert.match(css,/\.ai-tools-pop\{[^}]*position:relative/, 'the popover anchors its own panel');
+  assert.match(css,/\.ai-tools-pop-body\{[^}]*position:absolute/, 'the panel floats over the log');
+  assert.equal(w.document.querySelectorAll('#ai-log')[0].previousElementSibling.className, 'ai-toolbar', 'the log directly follows the slim toolbar, no stacked bar');
+  assert.match(css,/\.ai-disclaimer\{[^}]*text-overflow:ellipsis/,'the composer footer stays on one line');
+  // Composer: one line at rest (46px), 15px font, growing to four lines only.
+  const ta = w.document.querySelector('#ai-message');
+  assert.equal(ta.getAttribute('rows'),'1','composer starts as a single row');
+  assert.match(css,/\.ai-input-row textarea\{[^}]*min-height:46px/);
+  assert.match(css,/\.ai-input-row textarea\{[^}]*max-height:120px/);
+  assert.match(css,/\.ai-input-row textarea\{[^}]*font-size:15px/);
+  assert.match(css,/\.ai-input-row textarea\{[^}]*line-height:1\.6/);
+  const fourLines = 4 * 15 * 1.6 + 2 * 10 + 2; // 4 lines + padding + border
+  assert.ok(fourLines <= 120, 'four typed lines fit without clipping: ' + fourLines);
+  assert.match(css,/textarea.*resize:none/);
+  assert.equal(w.document.querySelector('#ai-options').open,false);
+  w.document.querySelector('#ai-options').open=true; await sleep(50);
+  w.confirm=()=>true;
+  const access=w.document.querySelector('#ai-tools-access'); access.checked=true; access.dispatchEvent(new w.Event('change',{bubbles:true})); await sleep(50);
+  assert.equal(w.document.querySelector('#ai-options').open,true,'options stay open after a refresh');
+  assert.equal(w.document.querySelector('#ai-tools-access').checked,true);
+  w.document.querySelector('#ai-options').open=false; await sleep(50);
+  w.document.querySelector('#v5-menu').open=true; await sleep(50);
+  w.document.querySelector('#v5-settings').click(); await sleep(50);
+  assert.equal(w.document.querySelector('#v5-menu').open,true,'V5 menu stays open after a refresh');
+  assert.ok(w.document.querySelector('#v5-panel-close'));
+  w.document.querySelector('#v5-panel-close').click(); await sleep(50);
+  assert.ok(w.document.querySelector('#ai-storage').textContent.includes('گفت‌وگو'));
+  assert.ok(!w.document.querySelector('#ai-storage').textContent.includes('سهمیه'));
+  let finish, callbacks;
+  w.MehryarV5.ask = o => { callbacks=o; o.onStage('DEEP'); return new Promise(resolve => { finish=resolve; }); };
+  const input = w.document.querySelector('#ai-message');
+  input.value='سلام'; input.dispatchEvent(new w.Event('input',{bubbles:true}));
+  w.document.querySelector('#ai-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
+  await sleep(150);
+  const spinner = w.document.querySelector('#v5-live .ai-spinner');
+  assert.ok(spinner && w.document.querySelector('#v5-live [role=status]'));
+  assert.ok(w.document.querySelector('#v5-live').textContent.includes('در حال خواندن پیام'), 'first seconds read the message');
+  await sleep(3200);
+  assert.equal(w.document.querySelector('#v5-live .ai-spinner'),spinner,'status ticker must not restart the animation');
+  assert.ok(w.document.querySelector('#v5-live').textContent.includes('مهریار در حال فکر کردن'), 'three to eight seconds show the thinking line');
+  await sleep(5200);
+  assert.ok(w.document.querySelector('#v5-live').textContent.includes('در حال آماده‌سازی پاسخ دقیق‌تر'), 'eight seconds later the calm preparation line');
+  assert.ok(!w.document.querySelector('#v5-live').textContent.includes('هنوز منتظر پاسخ مدل'), 'the withdrawn waiting line is gone');
+  await sleep(3200);
+  callbacks.onDelta('پاسخ زنده'); await sleep(100);
+  assert.ok(w.document.querySelector('#v5-live .ai-bubble').textContent.includes('پاسخ زنده'));
+  finish({text:'پاسخ نهایی',actions:[],route:'DEEP',totalMs:1}); await sleep(150);
+  assert.ok(!w.document.querySelector('#v5-live'));
+  assert.ok(w.document.querySelector('#ai-log').textContent.includes('پاسخ نهایی'));
+  assert.equal(errors.length,0,errors.join('\n'));
+  console.log('DOM APPEARANCE INTEGRATION PASSED');
+})().catch(e => {console.error(e); process.exitCode=1;}).finally(() => w.close());
